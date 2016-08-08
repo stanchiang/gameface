@@ -1,0 +1,9 @@
+Todo
+----
+☐ set player avatar to arbitrary polygon who's vertices get updated each frame in the update function so that the player can morph to shape depending on the coordinates of the vertices
+
+☑ overlay a gamescene with gamescene objects on top of a samplebufferlayer
+
+☐ make sure dlib facial landmark coordinates are on same system as gamescene coordinates
+
+☐ rename dlib project to kooky_munster

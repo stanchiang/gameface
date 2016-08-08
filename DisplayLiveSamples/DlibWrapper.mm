@@ -138,18 +138,16 @@
 }
 
 + (dlib::rectangle)convertScaleCGRect:(CGRect)rect toDlibRectangleWithImageSize:(CGSize)size {
-    long left = rect.origin.x * size.width;
-    NSLog(@"left %li = rect.origin.x %f * size.width %f", left, rect.origin.x, size.width);
-    
-    long top = rect.origin.y * size.height;
-    NSLog(@"top %li = rect.origin.y %f * height %f", top, rect.origin.y, size.height);
-    
-    long right = (rect.origin.x + rect.size.width) * size.width;
-    NSLog(@"right %li = (rect.origin.x %f + rect.size.width %f) + size.width %f", right, rect.origin.x, rect.size.width, size.width);
-    
-    long bottom = (rect.origin.y + rect.size.height) * size.height;
-    NSLog(@"bottom %li = (rect.origin.y %f + rect.size.height %f) + size.height %f", right, rect.origin.y, rect.size.height, size.height);
-    
+    long right = (1.0 - rect.origin.y ) * size.width;
+    long left = right - rect.size.height * size.width;
+    long top = rect.origin.x * size.height;
+    long bottom = top + rect.size.width * size.height;
+
+//    long right = (rect.origin.x + rect.size.width) * size.width;
+//    long left = rect.origin.x * size.width;
+//    long top = rect.origin.y * size.height;
+//    long bottom = (rect.origin.y + rect.size.height) * size.height;
+
     dlib::rectangle dlibRect(left, top, right, bottom);
     return dlibRect;
 }
