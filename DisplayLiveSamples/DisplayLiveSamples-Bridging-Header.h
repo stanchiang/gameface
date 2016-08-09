@@ -3,3 +3,4 @@
 //
 
 #import "DlibWrapper.h"
+#import "DlibWrapperDelegate.h"

@@ -114,10 +114,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
    
     override func update(currentTime: CFTimeInterval) {
-        for node in children {
-            if node.position.x < -300 {
-                node.removeFromParent()
+//        for node in children {
+//            if node.position.x < -300 {
+//                node.removeFromParent()
+//            }
+//        }
+        let mouth = (UIApplication.sharedApplication().delegate as! AppDelegate).mouth
+        
+        if !mouth.isEmpty {
+            for m in mouth {
+                if m.x == 0 && m.y == 0 {
+                    return
+                }
             }
+            //update player position and shape based on mouth array
+            print(mouth)
         }
     }
 }

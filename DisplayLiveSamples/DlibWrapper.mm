@@ -11,6 +11,7 @@
 
 #include <dlib/image_processing.h>
 #include <dlib/image_io.h>
+#include "DlibWrapperDelegate.h"
 
 @interface DlibWrapper ()
 
@@ -103,7 +104,28 @@
         dlib::point p = shape.part(63); //insideTopLip
         dlib::point q = shape.part(67); //insideBottomLip
         
+//        NSLog(@"%li %li", p.x(), p.y());
         double dist = std::sqrt((p.x()-q.x())*(p.x()-q.x()) + (p.y()-q.y())*(p.y()-q.y()));
+        
+        NSArray *v = @[@62, @64, @66, @68];
+        NSMutableArray *m = [NSMutableArray new];
+        
+//        for (NSNumber *n in v) {
+//            dlib::point point = shape.part(NSInteger(n));
+        dlib::point point62 = shape.part(NSInteger(62));
+        [m addObject: [NSValue valueWithCGPoint:CGPointMake(point62.x(), point62.y())]];
+        
+        dlib::point point64 = shape.part(NSInteger(64));
+        [m addObject: [NSValue valueWithCGPoint:CGPointMake(point64.x(), point64.y())]];
+        
+        dlib::point point66 = shape.part(NSInteger(66));
+        [m addObject: [NSValue valueWithCGPoint:CGPointMake(point66.x(), point66.y())]];
+        
+        dlib::point point68 = shape.part(NSInteger(68));
+        [m addObject: [NSValue valueWithCGPoint:CGPointMake(point68.x(), point68.y())]];
+//        }
+        
+        [_delegate mouthVerticePositions:m];
         
         (dist < 40) ? state = @"closed" : state = @"open";
 //        NSLog(@"%@ %f", state, dist);

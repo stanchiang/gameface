@@ -31,7 +31,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        print("frame:\(self.view.bounds.width) \(self.view.bounds.height)")
         
         sessionHandler.openSession()
         
@@ -41,9 +41,14 @@ class ViewController: UIViewController {
         
         let layer = sessionHandler.layer
         layer.frame = self.view.bounds
+        layer.setAffineTransform(CGAffineTransformMakeRotation(CGFloat(M_PI)))
+        layer.setAffineTransform(CGAffineTransformScale(layer.affineTransform(), 1, -1))
         self.view.layer.addSublayer(layer)
         
-        ////
+        setupGameOverlay()
+    }
+    
+    func setupGameOverlay() {
         if let scene = GameScene.unarchiveFromFileName("GameScene") as? GameScene {
             // Configure the view.
             
@@ -61,8 +66,6 @@ class ViewController: UIViewController {
             scene.backgroundColor = UIColor.clearColor()
             skView.presentScene(scene)
         }
-        ////
-
     }
     
     override func shouldAutorotate() -> Bool {

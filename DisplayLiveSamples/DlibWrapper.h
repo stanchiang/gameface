@@ -9,7 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <CoreMedia/CoreMedia.h>
 
+@protocol DlibWrapperDelegate;
+
 @interface DlibWrapper : NSObject
+
+@property (nonatomic, weak) id<DlibWrapperDelegate> delegate;
 
 - (instancetype)init;
 -(void)doWorkOnSampleBuffer:(CMSampleBufferRef)sampleBuffer inRects:(NSArray<NSValue *> *)rects;

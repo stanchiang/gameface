@@ -8,7 +8,7 @@
 
 import AVFoundation
 
-class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureMetadataOutputObjectsDelegate {
+class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureMetadataOutputObjectsDelegate, DlibWrapperDelegate {
     var session = AVCaptureSession()
     
 //    var preview:AVCaptureVideoPreviewLayer!
@@ -22,9 +22,10 @@ class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, A
     
     override init() {
         currentMetadata = []
+        
 //        preview = AVCaptureVideoPreviewLayer(session: session)
         super.init()
-        
+        wrapper.delegate = self
     }
     
     func openSession() {
@@ -92,5 +93,10 @@ class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, A
     
     func captureOutput(captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [AnyObject]!, fromConnection connection: AVCaptureConnection!) {
         currentMetadata = metadataObjects
+    }
+    
+    func mouthVerticePositions(vertices: NSMutableArray!) {
+        //parse new mouth location and shape from nsmutable array vertices
+        (UIApplication.sharedApplication().delegate as! AppDelegate).mouth = vertices.map({$0.CGPointValue()})
     }
 }
