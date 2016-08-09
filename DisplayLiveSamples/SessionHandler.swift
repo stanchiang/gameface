@@ -8,11 +8,12 @@
 
 import AVFoundation
 
+protocol testDelegate: class {
+    func drawPolygon(mouth:[CGPoint])
+}
+
 class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureMetadataOutputObjectsDelegate, DlibWrapperDelegate {
     var session = AVCaptureSession()
-    
-//    var preview:AVCaptureVideoPreviewLayer!
-    
     let layer = AVSampleBufferDisplayLayer()
     let sampleQueue = dispatch_queue_create("com.zweigraf.DisplayLiveSamples.sampleQueue", DISPATCH_QUEUE_SERIAL)
     let faceQueue = dispatch_queue_create("com.zweigraf.DisplayLiveSamples.faceQueue", DISPATCH_QUEUE_SERIAL)
@@ -20,10 +21,10 @@ class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, A
     
     var currentMetadata: [AnyObject]
     
+    weak var delegate:testDelegate?
+    
     override init() {
         currentMetadata = []
-        
-//        preview = AVCaptureVideoPreviewLayer(session: session)
         super.init()
         wrapper.delegate = self
     }
@@ -98,5 +99,6 @@ class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, A
     func mouthVerticePositions(vertices: NSMutableArray!) {
         //parse new mouth location and shape from nsmutable array vertices
         (UIApplication.sharedApplication().delegate as! AppDelegate).mouth = vertices.map({$0.CGPointValue()})
+        delegate?.drawPolygon(vertices.map({$0.CGPointValue()}))
     }
 }

@@ -15,7 +15,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var polygon:SKShapeNode!
     var scoreLabel: SKLabelNode!
     var transform:CGAffineTransform?
-    var isInitialDrawing = true
     var score: Int = 0 {
         didSet {
             scoreLabel.text = "Score: \(score)"
@@ -49,7 +48,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //        gameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(GameScene.test), userInfo: nil, repeats: true)
         
         for _ in 0 ..< 10 {
-            createOther()
+//            createOther()
         }
     }
     
@@ -121,25 +120,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //        if we have data to work with
         if !mouth.isEmpty && mouth.first!.x != 0 && mouth.first!.y != 0 {
 //        create player position and draw shape based on mouth array
-            if isInitialDrawing {
-
-                addMouth(mouth)
-
-                isInitialDrawing = false
-            } else {
-//                update position and shape
-                
-//                polygon.path = nil
-                if let poNo = childNodeWithName("mouthnode") {
-                    print(poNo.position)
-                    poNo.removeFromParent()
-
-                } else {
-                    print("mouth node not found")
-                }
-
-                addMouth(mouth)
-            }
+            if polygonNode != nil { polygonNode.removeFromParent() }
+            addMouth(mouth)
         }
     }
     
@@ -149,7 +131,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         var center = self.view!.convertPoint( CGPointMake( (mouth[2].x + mouth[6].x) / 2, (mouth[2].y + mouth[6].y) / 2), toScene: self)
         
-        var trueCenter = self.view!.convertPoint(CGPointMake(414/2.0, 736/2.0), toScene: self)
+        let trueCenter = self.view!.convertPoint(CGPointMake(414/2.0, 736/2.0), toScene: self)
 //        print("from \(self.view!.convertPoint(center, fromScene: self))")
 //        var newcenter = self.view!.convertPoint(center, fromScene: self)
         center = rotatePoint(center, aroundOrigin: trueCenter, byDegrees: -90)

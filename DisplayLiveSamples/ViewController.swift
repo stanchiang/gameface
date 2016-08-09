@@ -26,18 +26,16 @@ extension SKNode {
     }
 }
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, testDelegate {
+    
     let sessionHandler = SessionHandler()
+    var shape: CAShapeLayer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("frame:\(self.view.bounds.width) \(self.view.bounds.height)")
         
         sessionHandler.openSession()
-        
-//        let previewLayer: AVCaptureVideoPreviewLayer = sessionHandler.preview
-//        previewLayer.frame = self.view.bounds
-//        self.view.layer.insertSublayer(previewLayer, atIndex: 0)
+        sessionHandler.delegate = self
         
         let layer = sessionHandler.layer
         layer.frame = self.view.bounds
@@ -67,12 +65,6 @@ class ViewController: UIViewController {
             skView.presentScene(scene)
         }
     }
-
-//    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-//        let touch = touches.first!
-//        var location = touch.locationInView(<#T##view: UIView?##UIView?#>)
-//        print(location)
-//    }
     
     override func shouldAutorotate() -> Bool {
         return true
@@ -88,6 +80,22 @@ class ViewController: UIViewController {
     
     override func prefersStatusBarHidden() -> Bool {
         return true
+    }
+    
+    func drawPolygon(mouth: [CGPoint]) {
+        (shape == nil) ? shape = CAShapeLayer() : shape.removeFromSuperlayer()
+
+        let path = UIBezierPath()
+        for m in mouth {
+            (m == mouth.first!) ? path.moveToPoint(m) : path.addLineToPoint(m)
+        }
+        
+        path.closePath()
+        shape.path = path.CGPath
+        shape.fillColor = UIColor.greenColor().CGColor
+        
+        view.layer.addSublayer(shape)
+
     }
 
 }
