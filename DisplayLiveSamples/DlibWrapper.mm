@@ -19,6 +19,7 @@
 
 + (dlib::rectangle)convertScaleCGRect:(CGRect)rect toDlibRectacleWithImageSize:(CGSize)size;
 + (std::vector<dlib::rectangle>)convertCGRectValueArray:(NSArray<NSValue *> *)rects toVectorWithImageSize:(CGSize)size;
++ (CGFloat)pixelToPoints:(CGFloat)px;
 
 @end
 @implementation DlibWrapper {
@@ -104,26 +105,15 @@
         dlib::point p = shape.part(63); //insideTopLip
         dlib::point q = shape.part(67); //insideBottomLip
         
-//        NSLog(@"%li %li", p.x(), p.y());
         double dist = std::sqrt((p.x()-q.x())*(p.x()-q.x()) + (p.y()-q.y())*(p.y()-q.y()));
         
-        NSArray *v = @[@62, @64, @66, @68];
         NSMutableArray *m = [NSMutableArray new];
         
-//        for (NSNumber *n in v) {
-//            dlib::point point = shape.part(NSInteger(n));
-        dlib::point point62 = shape.part(NSInteger(62));
-        [m addObject: [NSValue valueWithCGPoint:CGPointMake(point62.x(), point62.y())]];
-        
-        dlib::point point64 = shape.part(NSInteger(64));
-        [m addObject: [NSValue valueWithCGPoint:CGPointMake(point64.x(), point64.y())]];
-        
-        dlib::point point66 = shape.part(NSInteger(66));
-        [m addObject: [NSValue valueWithCGPoint:CGPointMake(point66.x(), point66.y())]];
-        
-        dlib::point point68 = shape.part(NSInteger(68));
-        [m addObject: [NSValue valueWithCGPoint:CGPointMake(point68.x(), point68.y())]];
-//        }
+        dlib::point point;
+        for(int n=60; n<68; n++) {
+            point = shape.part(n);
+            [m addObject: [NSValue valueWithCGPoint:CGPointMake( [DlibWrapper pixelToPoints:point.x()], [DlibWrapper pixelToPoints:point.y()]) ]];
+        }
         
         [_delegate mouthVerticePositions:m];
         
@@ -182,6 +172,22 @@
         myConvertedRects.push_back(dlibRect);
     }
     return myConvertedRects;
+}
+
+// https://gist.github.com/jordiboehmelopez/3168819
++ (CGFloat)pixelToPoints:(CGFloat)px {
+    CGFloat pointsPerInch = 72.0; // see: http://en.wikipedia.org/wiki/Point%5Fsize#Current%5FDTP%5Fpoint%5Fsystem
+    CGFloat scale = 1; // We dont't use [[UIScreen mainScreen] scale] as we don't want the native pixel, we want pixels for UIFont - it does the retina scaling for us
+    float pixelPerInch; // aka dpi
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        pixelPerInch = 132 * scale;
+    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        pixelPerInch = 163 * scale;
+    } else {
+        pixelPerInch = 160 * scale;
+    }
+    CGFloat result = px * pointsPerInch / pixelPerInch;
+    return result;
 }
 
 @end

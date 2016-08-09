@@ -67,6 +67,12 @@ class ViewController: UIViewController {
             skView.presentScene(scene)
         }
     }
+
+//    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+//        let touch = touches.first!
+//        var location = touch.locationInView(<#T##view: UIView?##UIView?#>)
+//        print(location)
+//    }
     
     override func shouldAutorotate() -> Bool {
         return true

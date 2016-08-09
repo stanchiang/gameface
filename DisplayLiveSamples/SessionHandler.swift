@@ -86,7 +86,7 @@ class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, A
     }
     
     func captureOutput(captureOutput: AVCaptureOutput!, didDropSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
-        print("DidDropSampleBuffer")
+//        print("DidDropSampleBuffer")
     }
     
     // MARK: AVCaptureMetadataOutputObjectsDelegate
