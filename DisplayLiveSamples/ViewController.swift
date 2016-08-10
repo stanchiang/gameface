@@ -31,22 +31,31 @@ class ViewController: UIViewController, testDelegate {
     let sessionHandler = SessionHandler()
     var shape: CAShapeLayer!
     
+    var testView:UIView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         sessionHandler.openSession()
         sessionHandler.delegate = self
         
+        setupCameraLayer()
+        setupGameLayer()
+        
+        testView = UIView(frame: view.frame)
+        self.view.addSubview(testView)
+    }
+    
+    func setupCameraLayer(){
         let layer = sessionHandler.layer
         layer.frame = self.view.bounds
         layer.setAffineTransform(CGAffineTransformMakeRotation(CGFloat(M_PI)))
         layer.setAffineTransform(CGAffineTransformScale(layer.affineTransform(), 1, -1))
         self.view.layer.addSublayer(layer)
         
-        setupGameOverlay()
     }
     
-    func setupGameOverlay() {
+    func setupGameLayer() {
         if let scene = GameScene.unarchiveFromFileName("GameScene") as? GameScene {
             // Configure the view.
             
@@ -93,8 +102,13 @@ class ViewController: UIViewController, testDelegate {
         path.closePath()
         shape.path = path.CGPath
         shape.fillColor = UIColor.greenColor().CGColor
+
+        testView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
+        testView.transform = CGAffineTransformScale(testView.transform, -1, -1)
+        testView.layer.addSublayer(shape)
         
-        view.layer.addSublayer(shape)
+//        shape.fillColor = UIColor.blueColor().CGColor
+//        view.layer.addSublayer(shape)
 
     }
 

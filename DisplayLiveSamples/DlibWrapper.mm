@@ -92,8 +92,6 @@
     // convert the face bounds list to dlib format
     std::vector<dlib::rectangle> convertedRectangles = [DlibWrapper convertCGRectValueArray:rects toVectorWithImageSize:imageSize];
     
-    
-    NSString *state = @"";
     // for every detected face
     for (unsigned long j = 0; j < convertedRectangles.size(); ++j)
     {
@@ -102,29 +100,18 @@
         // detect all landmarks
         dlib::full_object_detection shape = sp(img, oneFaceRect);
         
-        dlib::point p = shape.part(63); //insideTopLip
-        dlib::point q = shape.part(67); //insideBottomLip
-        
-        double dist = std::sqrt((p.x()-q.x())*(p.x()-q.x()) + (p.y()-q.y())*(p.y()-q.y()));
-        
         NSMutableArray *m = [NSMutableArray new];
-        
-        dlib::point point;
-        for(int n=60; n<68; n++) {
-            point = shape.part(n);
-            [m addObject: [NSValue valueWithCGPoint:CGPointMake( [DlibWrapper pixelToPoints:point.x()], [DlibWrapper pixelToPoints:point.y()]) ]];
-        }
-        
-        [_delegate mouthVerticePositions:m];
-        
-        (dist < 40) ? state = @"closed" : state = @"open";
-//        NSLog(@"%@ %f", state, dist);
         
         // and draw them into the image (samplebuffer)
         for (unsigned long k = 0; k < shape.num_parts(); k++) {
             dlib::point p = shape.part(k);
             draw_solid_circle(img, p, 3, dlib::rgb_pixel(0, 255, 255));
+            
+            if (k >= 60) {
+                [m addObject: [NSValue valueWithCGPoint:CGPointMake( [DlibWrapper pixelToPoints:p.x()], [DlibWrapper pixelToPoints:p.y()]) ]];
+            }
         }
+        [_delegate mouthVerticePositions:m];
     }
     
     // lets put everything back where it belongs

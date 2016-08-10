@@ -99,6 +99,6 @@ class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, A
     func mouthVerticePositions(vertices: NSMutableArray!) {
         //parse new mouth location and shape from nsmutable array vertices
         (UIApplication.sharedApplication().delegate as! AppDelegate).mouth = vertices.map({$0.CGPointValue()})
-        delegate?.drawPolygon(vertices.map({$0.CGPointValue()}))
+//        delegate?.drawPolygon(vertices.map({$0.CGPointValue()}))
     }
 }
