@@ -7,3 +7,5 @@ Todo
 ☐ implement basketball-style parabolic shot for game sprite
 
 ☐ BUG - look into collision detections looks like sometimes contact is made but not firing handler; seems like it might be when there is a collision with hammer and while the explosion is excecuting, collisions with the ball are dropped; in that event, may need to somehow handle each collision on a seperate concurrent queue
+☐ BUG - look into how i reset categorybitmask to avoid overlapping collisions; seems like the ball is also triggering explosions
+☐ UX - should pause camera layer when game is paused

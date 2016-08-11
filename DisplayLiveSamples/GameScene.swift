@@ -228,7 +228,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let location = touch.locationInNode(self)
             // Check if the location of the touch is within the button's bounds
             if pauseButton.containsPoint(location) {
-                scene?.view?.paused = !(self.scene?.view?.paused)!
+                if (scene!.view!.paused) {
+                    scene?.view?.paused = false
+                    print("resume game")
+                    gameTimer = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
+                }else {
+                    scene?.view?.paused = true
+                    print("pause game")
+                    gameTimer.invalidate()
+                }
             }
         }
     }
