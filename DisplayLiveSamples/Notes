@@ -2,10 +2,10 @@ Todo
 ----
 
 ☐ set player avatar to arbitrary polygon who's vertices get updated each frame in the update function so that the player can morph to shape depending on the coordinates of the vertices
-    ☑ port over dlibwrapper vertices to gamescene updater
     ☐ make sure dlib facial landmark coordinates are on same system as gamescene coordinates
-    ☑ draw polygon shape / update polygon shape & location based on vertices
     ☑ hook polygon into game scene player object implementation so polygon interact with other game objects
 
-☐ rename dlib project to kooky_munster
-☑ overlay a gamescene with gamescene objects on top of a samplebufferlayer
+☐ initiate game by detecting open mouth
+☐ implement basketball-style parabolic shot for game sprite
+
+☐ BUG - look into collision detections looks like sometimes contact is made but not firing handler; may just need to widen margin of error for contact by increasing mouth polygon scale

@@ -105,7 +105,7 @@
         // and draw them into the image (samplebuffer)
         for (unsigned long k = 0; k < shape.num_parts(); k++) {
             dlib::point p = shape.part(k);
-            draw_solid_circle(img, p, 3, dlib::rgb_pixel(0, 255, 255));
+//            draw_solid_circle(img, p, 3, dlib::rgb_pixel(0, 255, 255));
             
             if (k >= 60) {
                 [m addObject: [NSValue valueWithCGPoint:CGPointMake( [DlibWrapper pixelToPoints:p.x()], [DlibWrapper pixelToPoints:p.y()]) ]];

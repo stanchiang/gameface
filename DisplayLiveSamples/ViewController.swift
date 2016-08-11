@@ -40,9 +40,6 @@ class ViewController: UIViewController, testDelegate {
     }
     
     func setupGameLayer() {
-//        if let scene = GameScene.unarchiveFromFileName("GameScene") as? GameScene {
-            // Configure the view.
-            
             let skView = SKView(frame: view.frame)
             skView.allowsTransparency = true
             self.view.addSubview(skView as UIView)
@@ -57,7 +54,6 @@ class ViewController: UIViewController, testDelegate {
             scene.scaleMode = .AspectFill
             scene.backgroundColor = UIColor.clearColor()
             skView.presentScene(scene)
-//        }
     }
     
     override func prefersStatusBarHidden() -> Bool {
