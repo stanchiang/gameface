@@ -20,7 +20,6 @@
 		A5A1B2D81CEA431600626AC5 /* shape_predictor_68_face_landmarks.dat in Resources */ = {isa = PBXBuildFile; fileRef = A5A1B2D71CEA431600626AC5 /* shape_predictor_68_face_landmarks.dat */; };
 		F6339D921D590573006C4231 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6339D911D590573006C4231 /* GameScene.swift */; };
 		F6339D941D590587006C4231 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6339D931D590587006C4231 /* Helper.swift */; };
-		F6339D971D5905B0006C4231 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = F6339D961D5905B0006C4231 /* GameScene.sks */; };
 		F6339DA41D5905C5006C4231 /* ball.png in Resources */ = {isa = PBXBuildFile; fileRef = F6339D981D5905C5006C4231 /* ball.png */; };
 		F6339DA51D5905C5006C4231 /* ball@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F6339D991D5905C5006C4231 /* ball@2x.png */; };
 		F6339DA61D5905C5006C4231 /* bigSpark.png in Resources */ = {isa = PBXBuildFile; fileRef = F6339D9A1D5905C5006C4231 /* bigSpark.png */; };
@@ -75,7 +74,6 @@
 		A5A1B2D71CEA431600626AC5 /* shape_predictor_68_face_landmarks.dat */ = {isa = PBXFileReference; lastKnownFileType = file; name = shape_predictor_68_face_landmarks.dat; path = lib/shape_predictor_68_face_landmarks.dat; sourceTree = "<group>"; };
 		F6339D911D590573006C4231 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		F6339D931D590587006C4231 /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
-		F6339D961D5905B0006C4231 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		F6339D981D5905C5006C4231 /* ball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ball.png; sourceTree = "<group>"; };
 		F6339D991D5905C5006C4231 /* ball@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ball@2x.png"; sourceTree = "<group>"; };
 		F6339D9A1D5905C5006C4231 /* bigSpark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bigSpark.png; sourceTree = "<group>"; };
@@ -180,7 +178,6 @@
 			children = (
 				F6339D911D590573006C4231 /* GameScene.swift */,
 				F6339D931D590587006C4231 /* Helper.swift */,
-				F6339D961D5905B0006C4231 /* GameScene.sks */,
 			);
 			name = "Game Code";
 			sourceTree = "<group>";
@@ -323,7 +320,6 @@
 			files = (
 				F6339DAF1D5905C5006C4231 /* tv@2x.png in Resources */,
 				F6339DAD1D5905C5006C4231 /* Starfield.sks in Resources */,
-				F6339D971D5905B0006C4231 /* GameScene.sks in Resources */,
 				F6339DAA1D5905C5006C4231 /* player.png in Resources */,
 				F6339DA61D5905C5006C4231 /* bigSpark.png in Resources */,
 				F6339DA51D5905C5006C4231 /* ball@2x.png in Resources */,

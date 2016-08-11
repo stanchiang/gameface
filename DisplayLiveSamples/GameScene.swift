@@ -21,7 +21,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    var possibleEnemies = ["ball", "hammer", "tv"]
+    var possibleEnemies = ["ball", "ball", "hammer"]
     var gameTimer: NSTimer!
     var gameOver = false
     
@@ -29,14 +29,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
         transform = CGAffineTransformMakeScale(1, -1)
-        
-        player = SKSpriteNode(imageNamed: "player")
-        player.position = CGPoint(x: 100, y: 384)
-        player.physicsBody = SKPhysicsBody(texture: player.texture!, size: player.size)
-        player.physicsBody!.contactTestBitMask = 1 | 2
-        player.physicsBody!.categoryBitMask = 0
-//        addChild(player)
-        
+
         scoreLabel = SKLabelNode(fontNamed: "Chalkduster")
         scoreLabel.position = CGPoint(x: 16, y: 16)
         scoreLabel.horizontalAlignmentMode = .Left
@@ -45,48 +38,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.gravity = CGVector(dx: 0, dy: 0)
         physicsWorld.contactDelegate = self
         
-//        gameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(GameScene.test), userInfo: nil, repeats: true)
-        
-        for _ in 0 ..< 10 {
-//            createOther()
-        }
+        NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
     }
     
-    func createOther() {
-//        possibleEnemies.shuffle()
+    func setupNew() {
+        let start = CGPointMake(RandomCGFloat(0, max: self.frame.width), 0)
+        let end = CGPointMake(RandomCGFloat(self.frame.width * 1/4, max: self.frame.width * 3/4), self.frame.height/2)
+        
+        createNew(view!, fromPoint: start, toPoint: end)
+    }
+    
+    func createNew(view : SKView, fromPoint start : CGPoint, toPoint end: CGPoint) {
         //1 is good 2 is bad
         let rand = RandomInt(1, max: 2)
         let sprite = SKSpriteNode(imageNamed: possibleEnemies[rand])
-        sprite.position = CGPoint(x: 600, y: RandomInt(50, max: 736))
-        addChild(sprite)
+        let path = arcBetweenPoints(view, fromPoint: start, toPoint: end)
+        let followArc = SKAction.followPath(path, asOffset: false, orientToPath: true, duration: 1)
         
+        sprite.position = start
         sprite.physicsBody = SKPhysicsBody(texture: sprite.texture!, size: sprite.size)
         sprite.physicsBody?.categoryBitMask = UInt32(rand)
-//        sprite.physicsBody?.velocity = CGVector(dx: -500, dy: 0)
-//        sprite.physicsBody?.angularVelocity = 5
-//        sprite.physicsBody?.linearDamping = 0
-//        sprite.physicsBody?.angularDamping = 0
-    }
-    
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        let touch = touches.first!
-        var location = touch.locationInNode(self)
-//        var viewloc = touch.locationInView(self.view)
         
-        if location.y < 100 {
-            location.y = 100
-        } else if location.y > 668 {
-            location.y = 668
+        self.addChild(sprite)
+        sprite.runAction(followArc) {
+            sprite.removeFromParent()
         }
-        
-        player.position = location
-        print(player.position)
-//        print("viewLoc:\(viewloc)")
-//        print(self.view?.convertPoint(location, fromScene: self))
-//        
-//        print("nodeLoc:\(location)")
-//        print(self.view?.convertPoint(viewloc, toScene: self))
-        
     }
     
     func didBeginContact(contact: SKPhysicsContact) {
@@ -177,5 +153,35 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let x = origin.x + radius * cos(newAzimuth)
         let y = origin.y + radius * sin(newAzimuth)
         return CGPoint(x: x, y: y)
+    }
+    
+    func arcBetweenPoints(view : SKView, fromPoint start : CGPoint, toPoint end: CGPoint) -> CGPath {
+        
+        // Animation's path
+        let path = UIBezierPath()
+        
+        // Move the "cursor" to the start
+        path.moveToPoint(start)
+        
+        // Calculate the control points
+        let factor : CGFloat = 0.5
+        
+        let deltaX : CGFloat = end.x - start.x
+        let deltaY : CGFloat = end.y - start.y
+        
+        let c1 = CGPoint(x: start.x + deltaX * factor, y: start.y)
+        let c2 = CGPoint(x: end.x, y: end.y - deltaY * factor)
+        
+        // Draw a curve towards the end, using control points
+        path.addCurveToPoint(end, controlPoint1:c1, controlPoint2:c2)
+        
+        //        let curve = SKShapeNode()
+        //        curve.path = path.CGPath
+        //        curve.lineWidth = 4
+        //        curve.strokeColor = UIColor.redColor()
+        //        self.addChild(curve)
+        
+        // Use this path as the animation's path (casted to CGPath)
+        return path.CGPath;
     }
 }

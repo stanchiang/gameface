@@ -30,6 +30,10 @@ func RandomCGFloat() -> CGFloat {
 	return CGFloat(RandomFloat())
 }
 
+func RandomCGFloat(min: CGFloat, max: CGFloat) -> CGFloat {
+    return CGFloat(RandomFloat(Float(min), max: Float(max)))
+}
+
 func RandomColor() -> UIColor {
 	return UIColor(red: RandomCGFloat(), green: RandomCGFloat(), blue: RandomCGFloat(), alpha: 1)
 }

@@ -7,24 +7,8 @@
 //
 
 import UIKit
-import AVFoundation
 import SpriteKit
 
-extension SKNode {
-    class func unarchiveFromFileName(fileName : String) -> SKNode? {
-        if let path = NSBundle.mainBundle().pathForResource(fileName, ofType: "sks") {
-            let sceneData = try! NSData(contentsOfFile: path, options: .DataReadingMappedIfSafe)
-            let archiver = NSKeyedUnarchiver(forReadingWithData: sceneData)
-            
-            archiver.setClass(self.classForKeyedUnarchiver(), forClassName: "SKScene")
-            let scene = archiver.decodeObjectForKey(NSKeyedArchiveRootObjectKey) as! GameScene
-            archiver.finishDecoding()
-            return scene
-        } else {
-            return nil
-        }
-    }
-}
 
 class ViewController: UIViewController, testDelegate {
     
@@ -56,7 +40,7 @@ class ViewController: UIViewController, testDelegate {
     }
     
     func setupGameLayer() {
-        if let scene = GameScene.unarchiveFromFileName("GameScene") as? GameScene {
+//        if let scene = GameScene.unarchiveFromFileName("GameScene") as? GameScene {
             // Configure the view.
             
             let skView = SKView(frame: view.frame)
@@ -64,27 +48,16 @@ class ViewController: UIViewController, testDelegate {
             self.view.addSubview(skView as UIView)
             skView.showsFPS = true
             skView.showsNodeCount = true
-            
+
             /* Sprite Kit applies additional optimizations to improve rendering performance */
             skView.ignoresSiblingOrder = true
             
             /* Set the scale mode to scale to fit the window */
+            let scene = GameScene(size: self.view.frame.size)
             scene.scaleMode = .AspectFill
             scene.backgroundColor = UIColor.clearColor()
             skView.presentScene(scene)
-        }
-    }
-    
-    override func shouldAutorotate() -> Bool {
-        return true
-    }
-    
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
-            return UIInterfaceOrientationMask.AllButUpsideDown
-        } else {
-            return UIInterfaceOrientationMask.All
-        }
+//        }
     }
     
     override func prefersStatusBarHidden() -> Bool {
