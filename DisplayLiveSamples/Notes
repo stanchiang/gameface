@@ -1,11 +1,9 @@
 Todo
 ----
 
-☐ set player avatar to arbitrary polygon who's vertices get updated each frame in the update function so that the player can morph to shape depending on the coordinates of the vertices
-    ☐ make sure dlib facial landmark coordinates are on same system as gamescene coordinates
-    ☑ hook polygon into game scene player object implementation so polygon interact with other game objects
 
-☐ initiate game by detecting open mouth
+☐ make sure dlib facial landmark coordinates are on same system as gamescene coordinates
+☑ initiate game by detecting open mouth
 ☐ implement basketball-style parabolic shot for game sprite
 
-☐ BUG - look into collision detections looks like sometimes contact is made but not firing handler; may just need to widen margin of error for contact by increasing mouth polygon scale
+☐ BUG - look into collision detections looks like sometimes contact is made but not firing handler; seems like it might be when there is a collision with hammer and while the explosion is excecuting, collisions with the ball are dropped; in that event, may need to somehow handle each collision on a seperate concurrent queue

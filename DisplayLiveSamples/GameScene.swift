@@ -16,6 +16,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var scoreLabel: SKLabelNode!
     var pauseButton:SKSpriteNode!
     var transform:CGAffineTransform?
+
     var score: Int = 0 {
         didSet {
             scoreLabel.text = "Score: \(score)"
@@ -25,18 +26,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var possibleEnemies = ["ball", "ball", "hammer"]
     var gameTimer: NSTimer!
     var gameOver = false
+    var gameStarted = false
     
     override func didMoveToView(view: SKView) {
-        
         transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
         transform = CGAffineTransformMakeScale(1, -1)
 
         setupInterface()
         
-        NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
     }
     
     func setupInterface(){
+        
         scoreLabel = SKLabelNode(fontNamed: "Chalkduster")
         scoreLabel.position = CGPoint(x: 25, y: self.frame.height - 25)
         scoreLabel.horizontalAlignmentMode = .Left
@@ -106,12 +107,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
    
     override func update(currentTime: CFTimeInterval) {
         let mouth = (UIApplication.sharedApplication().delegate as! AppDelegate).mouth
-//        if we have data to work with
-        if !mouth.isEmpty && mouth.first!.x != 0 && mouth.first!.y != 0 {
-//        create player position and draw shape based on mouth array
-            if polygonNode != nil { polygonNode.removeFromParent() }
-            addMouth(mouth)
+        if !gameStarted {
+            // detect open mouth to kick of gameTimer and start game
+            if gameShouldStart(mouth) {
+                gameStarted = true
+                gameTimer = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
+            }
+        }else {
+            //        if we have data to work with
+            if !mouth.isEmpty && mouth.first!.x != 0 && mouth.first!.y != 0 {
+                //        create player position and draw shape based on mouth array
+                if polygonNode != nil { polygonNode.removeFromParent() }
+                addMouth(mouth)
+            }
         }
+    }
+    
+    func gameShouldStart(mouth:[CGPoint]) -> Bool {
+        var shouldStart = false
+        if !mouth.isEmpty && mouth.first!.x != 0 && mouth.first!.y != 0 {
+            let p1 = mouth[2]
+            let p2 = mouth[6]
+            let distance = hypotf(Float(p1.x) - Float(p2.x), Float(p1.y) - Float(p2.y));
+            print(distance)
+            if distance > 25 {
+                shouldStart = true
+            }
+        }
+        return shouldStart
     }
     
     func addMouth(mouth:[CGPoint]) {
