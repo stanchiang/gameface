@@ -14,6 +14,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var polygonNode:SKSpriteNode!
     var polygon:SKShapeNode!
     var scoreLabel: SKLabelNode!
+    var pauseButton:SKSpriteNode!
     var transform:CGAffineTransform?
     var score: Int = 0 {
         didSet {
@@ -30,16 +31,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
         transform = CGAffineTransformMakeScale(1, -1)
 
+        setupInterface()
+        
+        NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
+    }
+    
+    func setupInterface(){
         scoreLabel = SKLabelNode(fontNamed: "Chalkduster")
         scoreLabel.position = CGPoint(x: 25, y: self.frame.height - 25)
         scoreLabel.horizontalAlignmentMode = .Left
         scoreLabel.text = "Score: \(score)"
         addChild(scoreLabel)
         
+        pauseButton = SKSpriteNode(imageNamed: "tv")
+        pauseButton.size = CGSizeMake(25, 25)
+        pauseButton.position = CGPoint(x: self.frame.width - 25, y: self.frame.height - 25)
+        addChild(pauseButton)
+        
         physicsWorld.gravity = CGVector(dx: 0, dy: 0)
         physicsWorld.contactDelegate = self
-        
-        NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
+
     }
     
     func setupNew() {
@@ -185,5 +196,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // Use this path as the animation's path (casted to CGPath)
         return path.CGPath;
+    }
+
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        // Loop over all the touches in this event
+        for touch: AnyObject in touches {
+            // Get the location of the touch in this scene
+            let location = touch.locationInNode(self)
+            // Check if the location of the touch is within the button's bounds
+            if pauseButton.containsPoint(location) {
+                scene?.view?.paused = !(self.scene?.view?.paused)!
+            }
+        }
     }
 }

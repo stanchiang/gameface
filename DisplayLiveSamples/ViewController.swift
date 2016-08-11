@@ -26,8 +26,8 @@ class ViewController: UIViewController, testDelegate {
         setupCameraLayer()
         setupGameLayer()
         
-        testView = UIView(frame: view.frame)
-        self.view.addSubview(testView)
+//        testView = UIView(frame: view.frame)
+//        self.view.addSubview(testView)
     }
     
     func setupCameraLayer(){
