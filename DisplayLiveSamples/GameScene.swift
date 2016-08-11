@@ -31,9 +31,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         transform = CGAffineTransformMakeScale(1, -1)
 
         scoreLabel = SKLabelNode(fontNamed: "Chalkduster")
-        scoreLabel.position = CGPoint(x: 16, y: 16)
+        scoreLabel.position = CGPoint(x: 25, y: self.frame.height - 25)
         scoreLabel.horizontalAlignmentMode = .Left
-//        addChild(scoreLabel)
+        scoreLabel.text = "Score: \(score)"
+        addChild(scoreLabel)
         
         physicsWorld.gravity = CGVector(dx: 0, dy: 0)
         physicsWorld.contactDelegate = self
@@ -78,6 +79,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if object.categoryBitMask == 1 {
             if let thing = object.node {
+                object.categoryBitMask = 4
                 thing.removeFromParent()
                 score += 100
             }
