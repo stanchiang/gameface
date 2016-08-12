@@ -111,7 +111,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             // detect open mouth to kick of gameTimer and start game
             if gameShouldStart(mouth) {
                 gameStarted = true
-                gameTimer = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
+                gameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
             }
         }else {
             //        if we have data to work with
@@ -231,7 +231,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 if (scene!.view!.paused) {
                     scene?.view?.paused = false
                     print("resume game")
-                    gameTimer = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
+                    gameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
                 }else {
                     scene?.view?.paused = true
                     print("pause game")
