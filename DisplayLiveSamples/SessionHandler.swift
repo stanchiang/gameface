@@ -8,20 +8,14 @@
 
 import AVFoundation
 
-protocol testDelegate: class {
-    func drawPolygon(mouth:[CGPoint])
-}
-
 class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureMetadataOutputObjectsDelegate, DlibWrapperDelegate {
     var session = AVCaptureSession()
     let layer = AVSampleBufferDisplayLayer()
     let sampleQueue = dispatch_queue_create("com.zweigraf.DisplayLiveSamples.sampleQueue", DISPATCH_QUEUE_SERIAL)
     let faceQueue = dispatch_queue_create("com.zweigraf.DisplayLiveSamples.faceQueue", DISPATCH_QUEUE_SERIAL)
     let wrapper = DlibWrapper()
-    
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var currentMetadata: [AnyObject]
-    
-    weak var delegate:testDelegate?
     
     override init() {
         currentMetadata = []
@@ -42,7 +36,7 @@ class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, A
         
         let metaOutput = AVCaptureMetadataOutput()
         metaOutput.setMetadataObjectsDelegate(self, queue: faceQueue)
-    
+        
         session.beginConfiguration()
         
         if session.canAddInput(input) {
@@ -59,7 +53,7 @@ class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, A
         
         let settings: [NSObject : AnyObject] = [kCVPixelBufferPixelFormatTypeKey: Int(kCVPixelFormatType_32BGRA)]
         output.videoSettings = settings
-    
+        
         // availableMetadataObjectTypes change when output is added to session.
         // before it is added, availableMetadataObjectTypes is empty
         metaOutput.metadataObjectTypes = [AVMetadataObjectTypeFace]
@@ -83,11 +77,10 @@ class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, A
         }
         
         layer.enqueueSampleBuffer(sampleBuffer)
-        
     }
     
     func captureOutput(captureOutput: AVCaptureOutput!, didDropSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
-//        print("DidDropSampleBuffer")
+        print("DidDropSampleBuffer")
     }
     
     // MARK: AVCaptureMetadataOutputObjectsDelegate
@@ -98,7 +91,9 @@ class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, A
     
     func mouthVerticePositions(vertices: NSMutableArray!) {
         //parse new mouth location and shape from nsmutable array vertices
-        (UIApplication.sharedApplication().delegate as! AppDelegate).mouth = vertices.map({$0.CGPointValue()})
-//        delegate?.drawPolygon(vertices.map({$0.CGPointValue()}))
+        appDelegate.mouth = vertices.map({$0.CGPointValue()})
+        
+        //testing coordinates from dlib before i pass to gamescene; should be the same as gamescene sprite but more laggy
+        //        (appDelegate.window?.rootViewController as! ViewController).useTemporaryLayer()
     }
 }

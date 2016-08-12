@@ -9,77 +9,70 @@
 import UIKit
 import SpriteKit
 
-
-class ViewController: UIViewController, testDelegate {
-    
+class ViewController: UIViewController {
     let sessionHandler = SessionHandler()
     var shape: CAShapeLayer!
+    var extralayer:CALayer = CALayer()
+    var mouth:[CGPoint]!
     
-    var testView:UIView!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         
         sessionHandler.openSession()
-        sessionHandler.delegate = self
+        
+        self.view.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
+        self.view.transform = CGAffineTransformScale(self.view.transform, 1, -1)
         
         setupCameraLayer()
         setupGameLayer()
         
-//        testView = UIView(frame: view.frame)
-//        self.view.addSubview(testView)
     }
     
     func setupCameraLayer(){
         let layer = sessionHandler.layer
         layer.frame = self.view.bounds
-        layer.setAffineTransform(CGAffineTransformMakeRotation(CGFloat(M_PI)))
-        layer.setAffineTransform(CGAffineTransformScale(layer.affineTransform(), 1, -1))
         self.view.layer.addSublayer(layer)
         
     }
     
     func setupGameLayer() {
-            let skView = SKView(frame: view.frame)
-            skView.allowsTransparency = true
-            self.view.addSubview(skView as UIView)
-            skView.showsFPS = true
-            skView.showsNodeCount = true
-
-            /* Sprite Kit applies additional optimizations to improve rendering performance */
-            skView.ignoresSiblingOrder = true
+        let skView = SKView(frame: view.frame)
+        skView.allowsTransparency = true
+        
+        self.view.addSubview(skView as UIView)
+        skView.showsFPS = true
+        skView.showsNodeCount = true
+        
+        /* Sprite Kit applies additional optimizations to improve rendering performance */
+        skView.ignoresSiblingOrder = true
+        
+        /* Set the scale mode to scale to fit the window */
+        let scene = GameScene(size: self.view.frame.size)
+        scene.scaleMode = .AspectFill
+        scene.backgroundColor = UIColor.clearColor()
+        scene.yScale = -1.0
+        skView.presentScene(scene)
+    }
+    
+    func useTemporaryLayer() {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            self.mouth = (UIApplication.sharedApplication().delegate as! AppDelegate).mouth
             
-            /* Set the scale mode to scale to fit the window */
-            let scene = GameScene(size: self.view.frame.size)
-            scene.scaleMode = .AspectFill
-            scene.backgroundColor = UIColor.clearColor()
-            skView.presentScene(scene)
+            (self.shape == nil) ? self.shape = CAShapeLayer() : self.shape.removeFromSuperlayer()
+            
+            let path = UIBezierPath()
+            for m in self.mouth {
+                (m == self.mouth.first!) ? path.moveToPoint(m) : path.addLineToPoint(m)
+            }
+            
+            path.closePath()
+            self.shape.path = path.CGPath
+            self.shape.fillColor = UIColor.greenColor().CGColor
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                self.view.layer.addSublayer(self.shape)
+            }
+        })
     }
-    
-    override func prefersStatusBarHidden() -> Bool {
-        return true
-    }
-    
-    func drawPolygon(mouth: [CGPoint]) {
-        (shape == nil) ? shape = CAShapeLayer() : shape.removeFromSuperlayer()
-
-        let path = UIBezierPath()
-        for m in mouth {
-            (m == mouth.first!) ? path.moveToPoint(m) : path.addLineToPoint(m)
-        }
-        
-        path.closePath()
-        shape.path = path.CGPath
-        shape.fillColor = UIColor.greenColor().CGColor
-
-        testView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
-        testView.transform = CGAffineTransformScale(testView.transform, -1, -1)
-        testView.layer.addSublayer(shape)
-        
-//        shape.fillColor = UIColor.blueColor().CGColor
-//        view.layer.addSublayer(shape)
-
-    }
-
 }
 

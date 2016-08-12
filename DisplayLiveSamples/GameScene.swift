@@ -142,11 +142,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let pathToDraw:CGMutablePathRef = CGPathCreateMutable()
         
         var center = self.view!.convertPoint( CGPointMake( (mouth[2].x + mouth[6].x) / 2, (mouth[2].y + mouth[6].y) / 2), toScene: self)
-        
+        center = CGPointMake(center.x+50,center.y-100)
         let trueCenter = self.view!.convertPoint(CGPointMake(414/2.0, 736/2.0), toScene: self)
 //        print("from \(self.view!.convertPoint(center, fromScene: self))")
 //        var newcenter = self.view!.convertPoint(center, fromScene: self)
-        center = rotatePoint(center, aroundOrigin: trueCenter, byDegrees: -90)
+//        center = rotatePoint(center, aroundOrigin: trueCenter, byDegrees: -90)
 //        newcenter = CGPointApplyAffineTransform(newcenter, CGAffineTransformMakeRotation(CGFloat(M_PI)))
 //        newcenter = CGPointApplyAffineTransform(newcenter, CGAffineTransformMakeScale(1, -1))
 //        center = self.view!.convertPoint(newcenter, toScene: self)
