@@ -20,10 +20,13 @@
 + (dlib::rectangle)convertScaleCGRect:(CGRect)rect toDlibRectacleWithImageSize:(CGSize)size;
 + (std::vector<dlib::rectangle>)convertCGRectValueArray:(NSArray<NSValue *> *)rects toVectorWithImageSize:(CGSize)size;
 + (CGFloat)pixelToPoints:(CGFloat)px;
++ (bool) hasMoved:(dlib::full_object_detection)shape1 shape2:(dlib::full_object_detection)shape2;
 
 @end
 @implementation DlibWrapper {
     dlib::shape_predictor sp;
+    dlib::full_object_detection prevshape;
+    bool isFirstFrame;
 }
 
 
@@ -40,6 +43,7 @@
     std::string modelFileNameCString = [modelFileName UTF8String];
     
     dlib::deserialize(modelFileNameCString) >> sp;
+    isFirstFrame = true;
     
     // FIXME: test this stuff for memory leaks (cpp object destruction)
     self.prepared = YES;
@@ -52,7 +56,6 @@
     }
     
     dlib::array2d<dlib::bgr_pixel> img;
-    
     // MARK: magic
     CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
     CVPixelBufferLockBaseAddress(imageBuffer, kCVPixelBufferLock_ReadOnly);
@@ -99,13 +102,26 @@
         
         // detect all landmarks
         dlib::full_object_detection shape = sp(img, oneFaceRect);
-        
+
+//        NSLog(@"%lu,%lu",img.size(), previmg.size());
+        if (!isFirstFrame) {
+            //compare current and prev shape
+            if ([DlibWrapper hasMoved:shape shape2:prevshape]) {
+                NSLog(@"moved");
+            }  else {
+                NSLog(@"hasn't moved");
+//                continue;
+            }
+        } else {
+            isFirstFrame = false;
+        }
+        prevshape = shape;
         NSMutableArray *m = [NSMutableArray new];
         
         // and draw them into the image (samplebuffer)
         for (unsigned long k = 0; k < shape.num_parts(); k++) {
             dlib::point p = shape.part(k);
-//            draw_solid_circle(img, p, 3, dlib::rgb_pixel(0, 255, 255));
+            draw_solid_circle(img, p, 3, dlib::rgb_pixel(0, 255, 255));
             
             if (k >= 60) {
                 [m addObject: [NSValue valueWithCGPoint:CGPointMake( [DlibWrapper pixelToPoints:p.x()], [DlibWrapper pixelToPoints:p.y()]) ]];
@@ -175,6 +191,29 @@
     }
     CGFloat result = px * pointsPerInch / pixelPerInch;
     return result;
+}
+
++ (bool) hasMoved:(dlib::full_object_detection)shape1 shape2:(dlib::full_object_detection)shape2{
+    dlib::point center1 = [self calculateCenter:shape1.part(62) point2:shape1.part(66)];
+    dlib::point center2 = [self calculateCenter:shape2.part(62) point2:shape2.part(66)];
+    
+    double distance = [self calculateDistance:center1 point2:center2];
+    if (distance > 7) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
++ (dlib::point) calculateCenter:(dlib::point)point1 point2:(dlib::point)point2 {
+    dlib::point center;
+    center.x() = point1.x() + point2.x() / 2;
+    center.y() = point1.y() + point2.y() / 2;
+    return center;
+}
+
++ (double) calculateDistance:(dlib::point)point1 point2:(dlib::point)point2 {
+    return std::sqrt((point1.x()-point2.x())*(point1.x()-point2.x()) + (point1.y()-point2.y())*(point1.y()-point2.y()));;
 }
 
 @end

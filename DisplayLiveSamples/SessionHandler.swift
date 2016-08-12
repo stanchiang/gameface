@@ -48,7 +48,7 @@ class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, A
         if session.canAddOutput(metaOutput) {
             session.addOutput(metaOutput)
         }
-        
+        session.sessionPreset = AVCaptureSessionPresetHigh
         session.commitConfiguration()
         
         let settings: [NSObject : AnyObject] = [kCVPixelBufferPixelFormatTypeKey: Int(kCVPixelFormatType_32BGRA)]
