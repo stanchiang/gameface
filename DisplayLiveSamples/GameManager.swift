@@ -16,11 +16,13 @@ class GameManager: SKScene, GameSceneDelegate {
     weak var managerDelegate:GameManagerDelegate?
     
     var scoreLabel: SKLabelNode!
+    var scoreShadow: SKLabelNode!
     var pauseButton:SKSpriteNode!
     var gameIsPaused = false
     var score: Int = 0 {
         didSet {
             scoreLabel.text = "Score: \(score)"
+            scoreShadow.text = "Score: \(score)"
         }
     }
     
@@ -30,15 +32,29 @@ class GameManager: SKScene, GameSceneDelegate {
     }
     
     func setupInterface() {
-        scoreLabel = SKLabelNode(fontNamed: "Chalkduster")
-        scoreLabel.position = CGPoint(x: 25, y: self.frame.height - 25)
+
+        let length:CGFloat = 50
+        let offset:CGFloat = 3
+        
+        scoreShadow = SKLabelNode(fontNamed: "ArialRoundedMTBold")
+        scoreShadow.position = CGPoint(x: length - offset, y: self.frame.height - (length + offset))
+        scoreShadow.horizontalAlignmentMode = .Left
+        scoreShadow.text = "Score: \(score)"
+        scoreShadow.fontColor = UIColor.blackColor()
+        addChild(scoreShadow)
+        
+        scoreLabel = SKLabelNode(fontNamed: "ArialRoundedMTBold")
+        
+        
+        
+        scoreLabel.position = CGPoint(x: length, y: self.frame.height - length)
         scoreLabel.horizontalAlignmentMode = .Left
         scoreLabel.text = "Score: \(score)"
         addChild(scoreLabel)
         
         pauseButton = SKSpriteNode(imageNamed: "tv")
-        pauseButton.size = CGSizeMake(25, 25)
-        pauseButton.position = CGPoint(x: self.frame.width - 25, y: self.frame.height - 25)
+        pauseButton.size = CGSizeMake(length, length)
+        pauseButton.position = CGPoint(x: self.frame.width - length, y: self.frame.height - length)
         addChild(pauseButton)
 
     }
