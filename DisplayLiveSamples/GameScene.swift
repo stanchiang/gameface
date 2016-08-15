@@ -8,47 +8,30 @@
 
 import SpriteKit
 
-class GameScene: SKScene, SKPhysicsContactDelegate {
-    var starfield: SKEmitterNode!
-    var player: SKSpriteNode!
+protocol GameSceneDelegate: class {
+    func updateScore(points:Int)
+}
+
+class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
+    
+    weak var sceneDelegate:GameSceneDelegate?
+    
     var polygonNode:SKSpriteNode!
     var polygon:SKShapeNode!
-    var scoreLabel: SKLabelNode!
-    var pauseButton:SKSpriteNode!
-    var transform:CGAffineTransform?
 
-    var score: Int = 0 {
-        didSet {
-            scoreLabel.text = "Score: \(score)"
-        }
-    }
-    
+    var pauseButton:SKSpriteNode!
+
     var possibleEnemies = ["ball", "ball", "hammer"]
     var gameTimer: NSTimer!
     var gameOver = false
     var gameStarted = false
     
     override func didMoveToView(view: SKView) {
-        transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
-        transform = CGAffineTransformMakeScale(1, -1)
-
         setupInterface()
         
     }
     
     func setupInterface(){
-        
-        scoreLabel = SKLabelNode(fontNamed: "Chalkduster")
-        scoreLabel.position = CGPoint(x: 25, y: self.frame.height - 25)
-        scoreLabel.horizontalAlignmentMode = .Left
-        scoreLabel.text = "Score: \(score)"
-        addChild(scoreLabel)
-        
-        pauseButton = SKSpriteNode(imageNamed: "tv")
-        pauseButton.size = CGSizeMake(25, 25)
-        pauseButton.position = CGPoint(x: self.frame.width - 25, y: self.frame.height - 25)
-        addChild(pauseButton)
-        
         physicsWorld.gravity = CGVector(dx: 0, dy: 0)
         physicsWorld.contactDelegate = self
 
@@ -56,14 +39,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func setupNew() {
         let start = CGPointMake(RandomCGFloat(0, max: self.frame.width), 0)
-        let end = CGPointMake(RandomCGFloat(self.frame.width * 1/4, max: self.frame.width * 3/4), self.frame.height/2)
+        let end = CGPointMake(RandomCGFloat(self.frame.width * 1/4, max: self.frame.width * 3/4), self.frame.height)
         
         createNew(view!, fromPoint: start, toPoint: end)
     }
     
     func createNew(view : SKView, fromPoint start : CGPoint, toPoint end: CGPoint) {
         //1 is good 2 is bad
-        let rand = RandomInt(1, max: 2)
+//        let rand = RandomInt(1, max: 2)
+        let rand = 1
         let sprite = SKSpriteNode(imageNamed: possibleEnemies[rand])
         let path = arcBetweenPoints(view, fromPoint: start, toPoint: end)
         let followArc = SKAction.followPath(path, asOffset: false, orientToPath: true, duration: 1)
@@ -93,15 +77,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if let thing = object.node {
                 object.categoryBitMask = 4
                 thing.removeFromParent()
-                score += 100
+                sceneDelegate?.updateScore(100)
             }
         } else {
-            let explosionPath = NSBundle.mainBundle().pathForResource("explosion", ofType: "sks")!
-            let explosion = NSKeyedUnarchiver.unarchiveObjectWithFile(explosionPath) as! SKEmitterNode
-            explosion.position = polygonNode.position
-            addChild(explosion)
-            
-            polygonNode.removeFromParent()
+            print(object.categoryBitMask)
         }
     }
    
@@ -143,14 +122,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         var center = self.view!.convertPoint( CGPointMake( (mouth[2].x + mouth[6].x) / 2, (mouth[2].y + mouth[6].y) / 2), toScene: self)
         center = CGPointMake(center.x+50,center.y-100)
-        let trueCenter = self.view!.convertPoint(CGPointMake(414/2.0, 736/2.0), toScene: self)
-//        print("from \(self.view!.convertPoint(center, fromScene: self))")
-//        var newcenter = self.view!.convertPoint(center, fromScene: self)
-//        center = rotatePoint(center, aroundOrigin: trueCenter, byDegrees: -90)
-//        newcenter = CGPointApplyAffineTransform(newcenter, CGAffineTransformMakeRotation(CGFloat(M_PI)))
-//        newcenter = CGPointApplyAffineTransform(newcenter, CGAffineTransformMakeScale(1, -1))
-//        center = self.view!.convertPoint(newcenter, toScene: self)
-//        print("to \(self.view!.convertPoint(center, fromScene: self))")
         for m in mouth {
             let mm = self.view!.convertPoint(m, toScene: self)
             if m == mouth.first! {
@@ -221,23 +192,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return path.CGPath;
     }
 
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        // Loop over all the touches in this event
-        for touch: AnyObject in touches {
-            // Get the location of the touch in this scene
-            let location = touch.locationInNode(self)
-            // Check if the location of the touch is within the button's bounds
-            if pauseButton.containsPoint(location) {
-                if (scene!.view!.paused) {
-                    scene?.view?.paused = false
-                    print("resume game")
-                    gameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
-                }else {
-                    scene?.view?.paused = true
-                    print("pause game")
-                    gameTimer.invalidate()
-                }
-            }
+    func pauseHandler(willPause: Bool) {
+        if willPause {
+            scene?.view?.paused = true
+            print("pause game")
+            gameTimer.invalidate()
+        } else {
+            scene?.view?.paused = false
+            print("resume game")
+            gameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
         }
     }
 }
