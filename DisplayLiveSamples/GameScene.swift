@@ -10,6 +10,7 @@ import SpriteKit
 
 protocol GameSceneDelegate: class {
     func updateScore(points:Int)
+    func hideInstructions()
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
@@ -31,15 +32,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         
     }
     
-    func setupInterface(){
+    func setupInterface(){        
         physicsWorld.gravity = CGVector(dx: 0, dy: 0)
         physicsWorld.contactDelegate = self
 
     }
     
     func setupNew() {
-        let start = CGPointMake(RandomCGFloat(0, max: self.frame.width), 0)
-        let end = CGPointMake(RandomCGFloat(self.frame.width * 1/4, max: self.frame.width * 3/4), self.frame.height)
+        let start = CGPointMake(RandomCGFloat(0, max: self.frame.width), self.frame.height)
+        let end = CGPointMake(RandomCGFloat(self.frame.width * 1/4, max: self.frame.width * 3/4), 0)
         
         createNew(view!, fromPoint: start, toPoint: end)
     }
@@ -111,6 +112,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             print(distance)
             if distance > 25 {
                 shouldStart = true
+                sceneDelegate?.hideInstructions()
             }
         }
         return shouldStart
@@ -134,8 +136,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         CGPathAddLineToPoint(pathToDraw, nil, anchorPoint.x, anchorPoint.y)
         polygon = SKShapeNode(path: pathToDraw)
         polygon.antialiased = true
-        polygon.strokeColor = SKColor.redColor()
-        polygon.fillColor = SKColor.redColor()
+        polygon.strokeColor = SKColor.greenColor()
+        polygon.fillColor = SKColor.greenColor()
         polygon.name = "mouthshape"
 
         let texture = view!.textureFromNode(polygon)
@@ -196,11 +198,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         if willPause {
             scene?.view?.paused = true
             print("pause game")
-            gameTimer.invalidate()
+//            if let _ = gameTimer {
+                gameTimer.invalidate()
+//            }
         } else {
-            scene?.view?.paused = false
-            print("resume game")
-            gameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
+//            if gameStarted {
+                scene?.view?.paused = false
+                print("resume game")
+                gameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
+//            }
         }
     }
 }

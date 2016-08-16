@@ -14,7 +14,7 @@ protocol GameManagerDelegate: class {
 
 class GameManager: SKScene, GameSceneDelegate {
     weak var managerDelegate:GameManagerDelegate?
-    
+    var instructions:SKLabelNode!
     var scoreLabel: SKLabelNode!
     var scoreShadow: SKLabelNode!
     var pauseButton:SKSpriteNode!
@@ -45,18 +45,23 @@ class GameManager: SKScene, GameSceneDelegate {
         
         scoreLabel = SKLabelNode(fontNamed: "ArialRoundedMTBold")
         
-        
-        
         scoreLabel.position = CGPoint(x: length, y: self.frame.height - length)
         scoreLabel.horizontalAlignmentMode = .Left
         scoreLabel.text = "Score: \(score)"
         addChild(scoreLabel)
         
-        pauseButton = SKSpriteNode(imageNamed: "tv")
+        pauseButton = SKSpriteNode(imageNamed: "pause")
         pauseButton.size = CGSizeMake(length, length)
         pauseButton.position = CGPoint(x: self.frame.width - length, y: self.frame.height - length)
         addChild(pauseButton)
 
+        instructions = SKLabelNode(fontNamed: "ArialRoundedMTBold")
+        instructions.position = CGPoint(x: self.view!.frame.width / 2, y: self.frame.height - length * 2)
+        instructions.horizontalAlignmentMode = .Center
+        instructions.text = "Open Mouth to Start Game"
+        instructions.fontColor = UIColor.blackColor()
+        addChild(instructions)
+        
     }
     
     func updateScore(points:Int) {
@@ -70,13 +75,28 @@ class GameManager: SKScene, GameSceneDelegate {
             let location = touch.locationInNode(self)
             // Check if the location of the touch is within the button's bounds
             if pauseButton.containsPoint(location) {
-                if (gameIsPaused) {
-                    managerDelegate?.pauseHandler(false)
-                }else {
-                    managerDelegate?.pauseHandler(true)
-                }
-                gameIsPaused = !gameIsPaused
+                togglePause()
             }
         }
+    }
+    
+    func togglePause(){
+        toggleOptionsMenu()
+        
+        if (gameIsPaused) {
+            managerDelegate?.pauseHandler(false)
+        }else {
+            managerDelegate?.pauseHandler(true)
+        }
+        
+        gameIsPaused = !gameIsPaused
+    }
+    
+    func toggleOptionsMenu() {
+        
+    }
+    
+    func hideInstructions() {
+        instructions.removeFromParent()
     }
 }

@@ -25,8 +25,8 @@
 @end
 @implementation DlibWrapper {
     dlib::shape_predictor sp;
-    dlib::full_object_detection prevshape;
-    bool isFirstFrame;
+//    dlib::full_object_detection prevshape;
+//    bool isFirstFrame;
 }
 
 
@@ -43,7 +43,7 @@
     std::string modelFileNameCString = [modelFileName UTF8String];
     
     dlib::deserialize(modelFileNameCString) >> sp;
-    isFirstFrame = true;
+//    isFirstFrame = true;
     
     // FIXME: test this stuff for memory leaks (cpp object destruction)
     self.prepared = YES;
@@ -104,18 +104,18 @@
         dlib::full_object_detection shape = sp(img, oneFaceRect);
 
 //        NSLog(@"%lu,%lu",img.size(), previmg.size());
-        if (!isFirstFrame) {
-            //compare current and prev shape
-            if ([DlibWrapper hasMoved:shape shape2:prevshape]) {
-                NSLog(@"moved");
-            }  else {
-                NSLog(@"hasn't moved");
+//        if (!isFirstFrame) {
+//            //compare current and prev shape
+//            if ([DlibWrapper hasMoved:shape shape2:prevshape]) {
+//                NSLog(@"moved");
+//            }  else {
+//                NSLog(@"hasn't moved");
 //                continue;
-            }
-        } else {
-            isFirstFrame = false;
-        }
-        prevshape = shape;
+//            }
+//        } else {
+//            isFirstFrame = false;
+//        }
+//        prevshape = shape;
         NSMutableArray *m = [NSMutableArray new];
         
         // and draw them into the image (samplebuffer)
