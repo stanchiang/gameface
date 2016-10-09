@@ -16,7 +16,8 @@ protocol GameSceneDelegate: class {
 class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     
     weak var sceneDelegate:GameSceneDelegate?
-    
+    let colorArray = [UIColor.greenColor(), UIColor.blackColor(), UIColor.blueColor(), UIColor.redColor(), UIColor.orangeColor(), UIColor.cyanColor(), UIColor.magentaColor(), UIColor.purpleColor(), UIColor.yellowColor()]
+    var chosenColor = 0
     var polygonNode:SKSpriteNode!
     var polygon:SKShapeNode!
 
@@ -40,7 +41,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     
     func setupNew() {
         let start = CGPointMake(RandomCGFloat(0, max: self.frame.width), self.frame.height)
-        let end = CGPointMake(RandomCGFloat(self.frame.width * 1/4, max: self.frame.width * 3/4), 0)
+        let end = CGPointMake(RandomCGFloat(self.frame.width * 1/5, max: self.frame.width * 4/5), 0)
         
         createNew(view!, fromPoint: start, toPoint: end)
     }
@@ -115,15 +116,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                 sceneDelegate?.hideInstructions()
             }
         }
-        return shouldStart
+//        return shouldStart
+        return false
     }
     
     func addMouth(mouth:[CGPoint]) {
+        
         var anchorPoint:CGPoint!
         let pathToDraw:CGMutablePathRef = CGPathCreateMutable()
         
         var center = self.view!.convertPoint( CGPointMake( (mouth[2].x + mouth[6].x) / 2, (mouth[2].y + mouth[6].y) / 2), toScene: self)
-        center = CGPointMake(center.x+50,center.y-100)
+//        center = CGPointMake(center.x+50,center.y-100)
+        center = CGPointMake(center.x,center.y)
         for m in mouth {
             let mm = self.view!.convertPoint(m, toScene: self)
             if m == mouth.first! {
@@ -133,11 +137,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                 CGPathAddLineToPoint(pathToDraw, nil, mm.x, mm.y)
             }
         }
+        
         CGPathAddLineToPoint(pathToDraw, nil, anchorPoint.x, anchorPoint.y)
         polygon = SKShapeNode(path: pathToDraw)
         polygon.antialiased = true
-        polygon.strokeColor = SKColor.greenColor()
-        polygon.fillColor = SKColor.greenColor()
+        polygon.strokeColor = UIColor.cyanColor()//RandomColor()
+        polygon.fillColor = UIColor.cyanColor()//RandomColor()
         polygon.name = "mouthshape"
 
         let texture = view!.textureFromNode(polygon)

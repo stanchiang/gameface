@@ -23,7 +23,7 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
+        print(self.view.frame)
         sessionHandler.openSession()
         self.view.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
         self.view.transform = CGAffineTransformScale(self.view.transform, 1, -1)
@@ -106,4 +106,3 @@ class ViewController: UIViewController {
         })
     }
 }
-

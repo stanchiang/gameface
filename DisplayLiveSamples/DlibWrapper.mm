@@ -20,7 +20,6 @@
 + (dlib::rectangle)convertScaleCGRect:(CGRect)rect toDlibRectacleWithImageSize:(CGSize)size;
 + (std::vector<dlib::rectangle>)convertCGRectValueArray:(NSArray<NSValue *> *)rects toVectorWithImageSize:(CGSize)size;
 + (CGFloat)pixelToPoints:(CGFloat)px;
-+ (bool) hasMoved:(dlib::full_object_detection)shape1 shape2:(dlib::full_object_detection)shape2;
 
 @end
 @implementation DlibWrapper {
@@ -103,19 +102,6 @@
         // detect all landmarks
         dlib::full_object_detection shape = sp(img, oneFaceRect);
 
-//        NSLog(@"%lu,%lu",img.size(), previmg.size());
-//        if (!isFirstFrame) {
-//            //compare current and prev shape
-//            if ([DlibWrapper hasMoved:shape shape2:prevshape]) {
-//                NSLog(@"moved");
-//            }  else {
-//                NSLog(@"hasn't moved");
-//                continue;
-//            }
-//        } else {
-//            isFirstFrame = false;
-//        }
-//        prevshape = shape;
         NSMutableArray *m = [NSMutableArray new];
         
         // and draw them into the image (samplebuffer)
@@ -182,27 +168,17 @@
     CGFloat pointsPerInch = 72.0; // see: http://en.wikipedia.org/wiki/Point%5Fsize#Current%5FDTP%5Fpoint%5Fsystem
     CGFloat scale = 1; // We dont't use [[UIScreen mainScreen] scale] as we don't want the native pixel, we want pixels for UIFont - it does the retina scaling for us
     float pixelPerInch; // aka dpi
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        pixelPerInch = 132 * scale;
-    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//        pixelPerInch = 132 * scale;
+//    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         pixelPerInch = 163 * scale;
-    } else {
-        pixelPerInch = 160 * scale;
-    }
+//    } else {
+//        pixelPerInch = 160 * scale;
+//    }
+    
+    pointsPerInch += 22.5;
     CGFloat result = px * pointsPerInch / pixelPerInch;
     return result;
-}
-
-+ (bool) hasMoved:(dlib::full_object_detection)shape1 shape2:(dlib::full_object_detection)shape2{
-    dlib::point center1 = [self calculateCenter:shape1.part(62) point2:shape1.part(66)];
-    dlib::point center2 = [self calculateCenter:shape2.part(62) point2:shape2.part(66)];
-    
-    double distance = [self calculateDistance:center1 point2:center2];
-    if (distance > 7) {
-        return true;
-    } else {
-        return false;
-    }
 }
 
 + (dlib::point) calculateCenter:(dlib::point)point1 point2:(dlib::point)point2 {
