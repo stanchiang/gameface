@@ -24,6 +24,7 @@
 		F6339DAD1D5905C5006C4231 /* Starfield.sks in Resources */ = {isa = PBXBuildFile; fileRef = F6339DA11D5905C5006C4231 /* Starfield.sks */; };
 		F6339DB21D590FCD006C4231 /* Notes in Resources */ = {isa = PBXBuildFile; fileRef = F6339DB11D590FCD006C4231 /* Notes */; };
 		F66290F21DA9B2F40030C11C /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F66290F11DA9B2F40030C11C /* opencv2.framework */; };
+		F66290F81DA9C4CF0030C11C /* head_pose_estimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F66290F71DA9C4CF0030C11C /* head_pose_estimation.cpp */; };
 		F6B90FC81D6270FE00EC0338 /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B90FC71D6270FE00EC0338 /* GameManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -71,6 +72,8 @@
 		F6339DB11D590FCD006C4231 /* Notes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Notes; sourceTree = "<group>"; };
 		F6339DB41D5914EE006C4231 /* DlibWrapperDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DlibWrapperDelegate.h; sourceTree = "<group>"; };
 		F66290F11DA9B2F40030C11C /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
+		F66290F61DA9C4CF0030C11C /* head_pose_estimation.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = head_pose_estimation.hpp; sourceTree = "<group>"; };
+		F66290F71DA9C4CF0030C11C /* head_pose_estimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = head_pose_estimation.cpp; sourceTree = "<group>"; };
 		F6B90FC71D6270FE00EC0338 /* GameManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -187,6 +190,8 @@
 				A5A1B2D01CEA317B00626AC5 /* DlibWrapper.h */,
 				A5A1B2D11CEA317B00626AC5 /* DlibWrapper.mm */,
 				F6339DB41D5914EE006C4231 /* DlibWrapperDelegate.h */,
+				F66290F61DA9C4CF0030C11C /* head_pose_estimation.hpp */,
+				F66290F71DA9C4CF0030C11C /* head_pose_estimation.cpp */,
 			);
 			name = dlib;
 			sourceTree = "<group>";
@@ -331,6 +336,7 @@
 				A56695F21CE8B34B00BD7EAF /* ViewController.swift in Sources */,
 				F6B90FC81D6270FE00EC0338 /* GameManager.swift in Sources */,
 				A566961E1CE8B4A100BD7EAF /* SessionHandler.swift in Sources */,
+				F66290F81DA9C4CF0030C11C /* head_pose_estimation.cpp in Sources */,
 				A56695F01CE8B34B00BD7EAF /* AppDelegate.swift in Sources */,
 				F6339D941D590587006C4231 /* Helper.swift in Sources */,
 			);
