@@ -23,6 +23,7 @@
 		F6339DA71D5905C5006C4231 /* explosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = F6339D9B1D5905C5006C4231 /* explosion.sks */; };
 		F6339DAD1D5905C5006C4231 /* Starfield.sks in Resources */ = {isa = PBXBuildFile; fileRef = F6339DA11D5905C5006C4231 /* Starfield.sks */; };
 		F6339DB21D590FCD006C4231 /* Notes in Resources */ = {isa = PBXBuildFile; fileRef = F6339DB11D590FCD006C4231 /* Notes */; };
+		F65611331DAB168100F6D1C3 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F65611321DAB168100F6D1C3 /* opencv2.framework */; };
 		F66290F21DA9B2F40030C11C /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F66290F11DA9B2F40030C11C /* opencv2.framework */; };
 		F66290F81DA9C4CF0030C11C /* head_pose_estimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F66290F71DA9C4CF0030C11C /* head_pose_estimation.cpp */; };
 		F6B90FC81D6270FE00EC0338 /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B90FC71D6270FE00EC0338 /* GameManager.swift */; };
@@ -71,6 +72,7 @@
 		F6339DA11D5905C5006C4231 /* Starfield.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Starfield.sks; sourceTree = "<group>"; };
 		F6339DB11D590FCD006C4231 /* Notes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Notes; sourceTree = "<group>"; };
 		F6339DB41D5914EE006C4231 /* DlibWrapperDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DlibWrapperDelegate.h; sourceTree = "<group>"; };
+		F65611321DAB168100F6D1C3 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
 		F66290F11DA9B2F40030C11C /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
 		F66290F61DA9C4CF0030C11C /* head_pose_estimation.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = head_pose_estimation.hpp; sourceTree = "<group>"; };
 		F66290F71DA9C4CF0030C11C /* head_pose_estimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = head_pose_estimation.cpp; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 			files = (
 				F66290F21DA9B2F40030C11C /* opencv2.framework in Frameworks */,
 				A5A1B2D61CEA41E200626AC5 /* Accelerate.framework in Frameworks */,
+				F65611331DAB168100F6D1C3 /* opencv2.framework in Frameworks */,
 				A5A1B2D41CEA35B300626AC5 /* libdlib.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -128,7 +131,7 @@
 		A56695EE1CE8B34B00BD7EAF /* DisplayLiveSamples */ = {
 			isa = PBXGroup;
 			children = (
-				F6339DB31D5914C8006C4231 /* dlib */,
+				F6339DB31D5914C8006C4231 /* facialRec */,
 				A56695EF1CE8B34B00BD7EAF /* AppDelegate.swift */,
 				A56695F11CE8B34B00BD7EAF /* ViewController.swift */,
 				A566961D1CE8B4A100BD7EAF /* SessionHandler.swift */,
@@ -180,10 +183,11 @@
 			name = Content;
 			sourceTree = "<group>";
 		};
-		F6339DB31D5914C8006C4231 /* dlib */ = {
+		F6339DB31D5914C8006C4231 /* facialRec */ = {
 			isa = PBXGroup;
 			children = (
 				A5A1B2D71CEA431600626AC5 /* shape_predictor_68_face_landmarks.dat */,
+				F65611321DAB168100F6D1C3 /* opencv2.framework */,
 				F66290F11DA9B2F40030C11C /* opencv2.framework */,
 				A5A1B2D51CEA41E200626AC5 /* Accelerate.framework */,
 				A5A1B2D31CEA35B300626AC5 /* libdlib.a */,
@@ -193,7 +197,7 @@
 				F66290F61DA9C4CF0030C11C /* head_pose_estimation.hpp */,
 				F66290F71DA9C4CF0030C11C /* head_pose_estimation.cpp */,
 			);
-			name = dlib;
+			name = facialRec;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -25,12 +25,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
 
     var possibleEnemies = ["ball", "ball", "hammer"]
     var gameTimer: NSTimer!
-    var gameOver = false
-    var gameStarted = false
+    
+    var gameState = (UIApplication.sharedApplication().delegate as! AppDelegate).gameState
+    
+    var objectMissedCount = 0;
     
     override func didMoveToView(view: SKView) {
         setupInterface()
-        
     }
     
     func setupInterface(){        
@@ -61,6 +62,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         self.addChild(sprite)
         sprite.runAction(followArc) {
             sprite.removeFromParent()
+            print("object missed")
+            self.objectMissedCount += 1
         }
     }
     
@@ -81,20 +84,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                 thing.removeFromParent()
                 sceneDelegate?.updateScore(100)
             }
-        } else {
-            print(object.categoryBitMask)
         }
     }
-   
+    
     override func update(currentTime: CFTimeInterval) {
+        
+        if gameState == .inPlay && objectMissedCount > 2 {
+            gameState = .postGame
+            gameTimer.invalidate()
+            self.removeAllChildren()
+            loadPostGameModule()
+        }
+        
         let mouth = (UIApplication.sharedApplication().delegate as! AppDelegate).mouth
-        if !gameStarted {
+        if gameState == .preGame {
             // detect open mouth to kick of gameTimer and start game
-            if gameShouldStart(mouth) {
-                gameStarted = true
+            if triggerGameStart(mouth) {
+                gameState = .inPlay
                 gameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
             }
-        }else {
+        }
+        
+        if gameState == .inPlay {
             //        if we have data to work with
             if !mouth.isEmpty && mouth.first!.x != 0 && mouth.first!.y != 0 {
                 //        create player position and draw shape based on mouth array
@@ -104,7 +115,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         }
     }
     
-    func gameShouldStart(mouth:[CGPoint]) -> Bool {
+    func loadPostGameModule(){
+        print("post game started")
+    }
+    
+    func triggerGameStart(mouth:[CGPoint]) -> Bool {
         var shouldStart = false
         if !mouth.isEmpty && mouth.first!.x != 0 && mouth.first!.y != 0 {
             let p1 = mouth[2]
@@ -116,8 +131,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                 sceneDelegate?.hideInstructions()
             }
         }
-//        return shouldStart
-        return false
+        return shouldStart
+//        return false
     }
     
     func addMouth(mouth:[CGPoint]) {
@@ -126,7 +141,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         let pathToDraw:CGMutablePathRef = CGPathCreateMutable()
         
         var center = self.view!.convertPoint( CGPointMake( (mouth[2].x + mouth[6].x) / 2, (mouth[2].y + mouth[6].y) / 2), toScene: self)
-//        center = CGPointMake(center.x+50,center.y-100)
         center = CGPointMake(center.x,center.y)
         for m in mouth {
             let mm = self.view!.convertPoint(m, toScene: self)
@@ -189,29 +203,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         // Draw a curve towards the end, using control points
         path.addCurveToPoint(end, controlPoint1:c1, controlPoint2:c2)
         
-        //        let curve = SKShapeNode()
-        //        curve.path = path.CGPath
-        //        curve.lineWidth = 4
-        //        curve.strokeColor = UIColor.redColor()
-        //        self.addChild(curve)
+//        debugDrawCurvePath(path.CGPath)
         
         // Use this path as the animation's path (casted to CGPath)
         return path.CGPath;
     }
 
+    func debugDrawCurvePath(cgPath:CGPath){
+        let curve = SKShapeNode()
+        curve.path = cgPath
+        curve.lineWidth = 4
+        curve.strokeColor = UIColor.redColor()
+        self.addChild(curve)
+    }
+    
     func pauseHandler(willPause: Bool) {
         if willPause {
             scene?.view?.paused = true
             print("pause game")
-//            if let _ = gameTimer {
-                gameTimer.invalidate()
-//            }
+            gameTimer.invalidate()
         } else {
-//            if gameStarted {
-                scene?.view?.paused = false
-                print("resume game")
-                gameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
-//            }
+            scene?.view?.paused = false
+            print("resume game")
+            gameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
         }
     }
 }

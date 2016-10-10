@@ -13,7 +13,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var mouth = [CGPoint]()
+    
+    enum GameState {
+        case preGame
+        case inPlay
+        case paused
+        case postGame
+    }
 
+    var gameState = GameState.preGame
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         window?.rootViewController = ViewController()
@@ -22,4 +31,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 }
-

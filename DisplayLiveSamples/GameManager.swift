@@ -18,7 +18,9 @@ class GameManager: SKScene, GameSceneDelegate {
     var scoreLabel: SKLabelNode!
     var scoreShadow: SKLabelNode!
     var pauseButton:SKSpriteNode!
-    var gameIsPaused = false
+    
+    var gameState = (UIApplication.sharedApplication().delegate as! AppDelegate).gameState
+    
     var score: Int = 0 {
         didSet {
             scoreLabel.text = "Score: \(score)"
@@ -83,13 +85,13 @@ class GameManager: SKScene, GameSceneDelegate {
     func togglePause(){
         toggleOptionsMenu()
         
-        if (gameIsPaused) {
+        if (gameState == .paused) {
             managerDelegate?.pauseHandler(false)
+            gameState = .inPlay
         }else {
             managerDelegate?.pauseHandler(true)
+            gameState = .paused
         }
-        
-        gameIsPaused = !gameIsPaused
     }
     
     func toggleOptionsMenu() {
