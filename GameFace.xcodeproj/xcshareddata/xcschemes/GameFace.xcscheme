@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A56695EB1CE8B34B00BD7EAF"
-               BuildableName = "DisplayLiveSamples.app"
-               BlueprintName = "DisplayLiveSamples"
-               ReferencedContainer = "container:DisplayLiveSamples.xcodeproj">
+               BuildableName = "GameFace.app"
+               BlueprintName = "GameFace"
+               ReferencedContainer = "container:GameFace.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A56695FF1CE8B34B00BD7EAF"
-               BuildableName = "DisplayLiveSamplesTests.xctest"
-               BlueprintName = "DisplayLiveSamplesTests"
-               ReferencedContainer = "container:DisplayLiveSamples.xcodeproj">
+               BuildableName = "GameFaceTests.xctest"
+               BlueprintName = "GameFaceTests"
+               ReferencedContainer = "container:GameFace.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A566960A1CE8B34B00BD7EAF"
-               BuildableName = "DisplayLiveSamplesUITests.xctest"
-               BlueprintName = "DisplayLiveSamplesUITests"
-               ReferencedContainer = "container:DisplayLiveSamples.xcodeproj">
+               BuildableName = "GameFaceUITests.xctest"
+               BlueprintName = "GameFaceUITests"
+               ReferencedContainer = "container:GameFace.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -53,9 +53,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A56695EB1CE8B34B00BD7EAF"
-            BuildableName = "DisplayLiveSamples.app"
-            BlueprintName = "DisplayLiveSamples"
-            ReferencedContainer = "container:DisplayLiveSamples.xcodeproj">
+            BuildableName = "GameFace.app"
+            BlueprintName = "GameFace"
+            ReferencedContainer = "container:GameFace.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -76,9 +76,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A56695EB1CE8B34B00BD7EAF"
-            BuildableName = "DisplayLiveSamples.app"
-            BlueprintName = "DisplayLiveSamples"
-            ReferencedContainer = "container:DisplayLiveSamples.xcodeproj">
+            BuildableName = "GameFace.app"
+            BlueprintName = "GameFace"
+            ReferencedContainer = "container:GameFace.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -95,9 +95,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A56695EB1CE8B34B00BD7EAF"
-            BuildableName = "DisplayLiveSamples.app"
-            BlueprintName = "DisplayLiveSamples"
-            ReferencedContainer = "container:DisplayLiveSamples.xcodeproj">
+            BuildableName = "GameFace.app"
+            BlueprintName = "GameFace"
+            ReferencedContainer = "container:GameFace.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

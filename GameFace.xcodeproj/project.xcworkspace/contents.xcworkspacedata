@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:DisplayLiveSamples.xcodeproj">
+      location = "self:/Users/stan/dlibdemo/GameFace.xcodeproj">
    </FileRef>
 </Workspace>

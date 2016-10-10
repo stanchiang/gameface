@@ -11,8 +11,6 @@
 		A56695F21CE8B34B00BD7EAF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56695F11CE8B34B00BD7EAF /* ViewController.swift */; };
 		A56695F71CE8B34B00BD7EAF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A56695F61CE8B34B00BD7EAF /* Assets.xcassets */; };
 		A56695FA1CE8B34B00BD7EAF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A56695F81CE8B34B00BD7EAF /* LaunchScreen.storyboard */; };
-		A56696051CE8B34B00BD7EAF /* DisplayLiveSamplesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56696041CE8B34B00BD7EAF /* DisplayLiveSamplesTests.swift */; };
-		A56696101CE8B34B00BD7EAF /* DisplayLiveSamplesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A566960F1CE8B34B00BD7EAF /* DisplayLiveSamplesUITests.swift */; };
 		A566961E1CE8B4A100BD7EAF /* SessionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A566961D1CE8B4A100BD7EAF /* SessionHandler.swift */; };
 		A5A1B2D21CEA317B00626AC5 /* DlibWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5A1B2D11CEA317B00626AC5 /* DlibWrapper.mm */; };
 		A5A1B2D41CEA35B300626AC5 /* libdlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A5A1B2D31CEA35B300626AC5 /* libdlib.a */; };
@@ -29,38 +27,15 @@
 		F6B90FC81D6270FE00EC0338 /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B90FC71D6270FE00EC0338 /* GameManager.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		A56696011CE8B34B00BD7EAF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A56695E41CE8B34B00BD7EAF /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A56695EB1CE8B34B00BD7EAF;
-			remoteInfo = DisplayLiveSamples;
-		};
-		A566960C1CE8B34B00BD7EAF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A56695E41CE8B34B00BD7EAF /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A56695EB1CE8B34B00BD7EAF;
-			remoteInfo = DisplayLiveSamples;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
-		A56695EC1CE8B34B00BD7EAF /* DisplayLiveSamples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DisplayLiveSamples.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A56695EC1CE8B34B00BD7EAF /* DisplayLiveSamples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = DisplayLiveSamples.app; path = GameFace.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A56695EF1CE8B34B00BD7EAF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A56695F11CE8B34B00BD7EAF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A56695F61CE8B34B00BD7EAF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A56695F91CE8B34B00BD7EAF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A56695FB1CE8B34B00BD7EAF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A56696001CE8B34B00BD7EAF /* DisplayLiveSamplesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DisplayLiveSamplesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A56696041CE8B34B00BD7EAF /* DisplayLiveSamplesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayLiveSamplesTests.swift; sourceTree = "<group>"; };
-		A56696061CE8B34B00BD7EAF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A566960B1CE8B34B00BD7EAF /* DisplayLiveSamplesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DisplayLiveSamplesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A566960F1CE8B34B00BD7EAF /* DisplayLiveSamplesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayLiveSamplesUITests.swift; sourceTree = "<group>"; };
-		A56696111CE8B34B00BD7EAF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A566961D1CE8B4A100BD7EAF /* SessionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionHandler.swift; sourceTree = "<group>"; };
-		A5A1B2CF1CEA317B00626AC5 /* DisplayLiveSamples-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DisplayLiveSamples-Bridging-Header.h"; sourceTree = "<group>"; };
+		A5A1B2CF1CEA317B00626AC5 /* gameface-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "gameface-Bridging-Header.h"; sourceTree = "<group>"; };
 		A5A1B2D01CEA317B00626AC5 /* DlibWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DlibWrapper.h; sourceTree = "<group>"; };
 		A5A1B2D11CEA317B00626AC5 /* DlibWrapper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DlibWrapper.mm; sourceTree = "<group>"; };
 		A5A1B2D31CEA35B300626AC5 /* libdlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libdlib.a; path = lib/libdlib.a; sourceTree = "<group>"; };
@@ -91,29 +66,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A56695FD1CE8B34B00BD7EAF /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A56696081CE8B34B00BD7EAF /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		A56695E31CE8B34B00BD7EAF = {
 			isa = PBXGroup;
 			children = (
-				A56695EE1CE8B34B00BD7EAF /* DisplayLiveSamples */,
-				A56696031CE8B34B00BD7EAF /* DisplayLiveSamplesTests */,
-				A566960E1CE8B34B00BD7EAF /* DisplayLiveSamplesUITests */,
+				A56695EE1CE8B34B00BD7EAF /* GameFace */,
 				A56695ED1CE8B34B00BD7EAF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -122,13 +81,11 @@
 			isa = PBXGroup;
 			children = (
 				A56695EC1CE8B34B00BD7EAF /* DisplayLiveSamples.app */,
-				A56696001CE8B34B00BD7EAF /* DisplayLiveSamplesTests.xctest */,
-				A566960B1CE8B34B00BD7EAF /* DisplayLiveSamplesUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A56695EE1CE8B34B00BD7EAF /* DisplayLiveSamples */ = {
+		A56695EE1CE8B34B00BD7EAF /* GameFace */ = {
 			isa = PBXGroup;
 			children = (
 				F6339DB31D5914C8006C4231 /* facialRec */,
@@ -140,28 +97,10 @@
 				A56695F81CE8B34B00BD7EAF /* LaunchScreen.storyboard */,
 				F6339DB11D590FCD006C4231 /* Notes */,
 				A56695FB1CE8B34B00BD7EAF /* Info.plist */,
-				A5A1B2CF1CEA317B00626AC5 /* DisplayLiveSamples-Bridging-Header.h */,
+				A5A1B2CF1CEA317B00626AC5 /* gameface-Bridging-Header.h */,
 				F6339DB01D5905CE006C4231 /* Content */,
 			);
-			path = DisplayLiveSamples;
-			sourceTree = "<group>";
-		};
-		A56696031CE8B34B00BD7EAF /* DisplayLiveSamplesTests */ = {
-			isa = PBXGroup;
-			children = (
-				A56696041CE8B34B00BD7EAF /* DisplayLiveSamplesTests.swift */,
-				A56696061CE8B34B00BD7EAF /* Info.plist */,
-			);
-			path = DisplayLiveSamplesTests;
-			sourceTree = "<group>";
-		};
-		A566960E1CE8B34B00BD7EAF /* DisplayLiveSamplesUITests */ = {
-			isa = PBXGroup;
-			children = (
-				A566960F1CE8B34B00BD7EAF /* DisplayLiveSamplesUITests.swift */,
-				A56696111CE8B34B00BD7EAF /* Info.plist */,
-			);
-			path = DisplayLiveSamplesUITests;
+			path = GameFace;
 			sourceTree = "<group>";
 		};
 		F6339D951D5905A0006C4231 /* Game Code */ = {
@@ -203,9 +142,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A56695EB1CE8B34B00BD7EAF /* DisplayLiveSamples */ = {
+		A56695EB1CE8B34B00BD7EAF /* GameFace */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A56696141CE8B34B00BD7EAF /* Build configuration list for PBXNativeTarget "DisplayLiveSamples" */;
+			buildConfigurationList = A56696141CE8B34B00BD7EAF /* Build configuration list for PBXNativeTarget "GameFace" */;
 			buildPhases = (
 				A56695E81CE8B34B00BD7EAF /* Sources */,
 				A56695E91CE8B34B00BD7EAF /* Frameworks */,
@@ -215,46 +154,10 @@
 			);
 			dependencies = (
 			);
-			name = DisplayLiveSamples;
+			name = GameFace;
 			productName = DisplayLiveSamples;
 			productReference = A56695EC1CE8B34B00BD7EAF /* DisplayLiveSamples.app */;
 			productType = "com.apple.product-type.application";
-		};
-		A56695FF1CE8B34B00BD7EAF /* DisplayLiveSamplesTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A56696171CE8B34B00BD7EAF /* Build configuration list for PBXNativeTarget "DisplayLiveSamplesTests" */;
-			buildPhases = (
-				A56695FC1CE8B34B00BD7EAF /* Sources */,
-				A56695FD1CE8B34B00BD7EAF /* Frameworks */,
-				A56695FE1CE8B34B00BD7EAF /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				A56696021CE8B34B00BD7EAF /* PBXTargetDependency */,
-			);
-			name = DisplayLiveSamplesTests;
-			productName = DisplayLiveSamplesTests;
-			productReference = A56696001CE8B34B00BD7EAF /* DisplayLiveSamplesTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		A566960A1CE8B34B00BD7EAF /* DisplayLiveSamplesUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A566961A1CE8B34B00BD7EAF /* Build configuration list for PBXNativeTarget "DisplayLiveSamplesUITests" */;
-			buildPhases = (
-				A56696071CE8B34B00BD7EAF /* Sources */,
-				A56696081CE8B34B00BD7EAF /* Frameworks */,
-				A56696091CE8B34B00BD7EAF /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				A566960D1CE8B34B00BD7EAF /* PBXTargetDependency */,
-			);
-			name = DisplayLiveSamplesUITests;
-			productName = DisplayLiveSamplesUITests;
-			productReference = A566960B1CE8B34B00BD7EAF /* DisplayLiveSamplesUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
@@ -270,17 +173,9 @@
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 4C8V97R8N3;
 					};
-					A56695FF1CE8B34B00BD7EAF = {
-						CreatedOnToolsVersion = 7.3.1;
-						TestTargetID = A56695EB1CE8B34B00BD7EAF;
-					};
-					A566960A1CE8B34B00BD7EAF = {
-						CreatedOnToolsVersion = 7.3.1;
-						TestTargetID = A56695EB1CE8B34B00BD7EAF;
-					};
 				};
 			};
-			buildConfigurationList = A56695E71CE8B34B00BD7EAF /* Build configuration list for PBXProject "DisplayLiveSamples" */;
+			buildConfigurationList = A56695E71CE8B34B00BD7EAF /* Build configuration list for PBXProject "GameFace" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -293,9 +188,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A56695EB1CE8B34B00BD7EAF /* DisplayLiveSamples */,
-				A56695FF1CE8B34B00BD7EAF /* DisplayLiveSamplesTests */,
-				A566960A1CE8B34B00BD7EAF /* DisplayLiveSamplesUITests */,
+				A56695EB1CE8B34B00BD7EAF /* GameFace */,
 			);
 		};
 /* End PBXProject section */
@@ -311,20 +204,6 @@
 				F6339DA71D5905C5006C4231 /* explosion.sks in Resources */,
 				A56695F71CE8B34B00BD7EAF /* Assets.xcassets in Resources */,
 				A5A1B2D81CEA431600626AC5 /* shape_predictor_68_face_landmarks.dat in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A56695FE1CE8B34B00BD7EAF /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A56696091CE8B34B00BD7EAF /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -346,36 +225,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A56695FC1CE8B34B00BD7EAF /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A56696051CE8B34B00BD7EAF /* DisplayLiveSamplesTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A56696071CE8B34B00BD7EAF /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A56696101CE8B34B00BD7EAF /* DisplayLiveSamplesUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		A56696021CE8B34B00BD7EAF /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A56695EB1CE8B34B00BD7EAF /* DisplayLiveSamples */;
-			targetProxy = A56696011CE8B34B00BD7EAF /* PBXContainerItemProxy */;
-		};
-		A566960D1CE8B34B00BD7EAF /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A56695EB1CE8B34B00BD7EAF /* DisplayLiveSamples */;
-			targetProxy = A566960C1CE8B34B00BD7EAF /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		A56695F81CE8B34B00BD7EAF /* LaunchScreen.storyboard */ = {
@@ -487,7 +337,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/DisplayLiveSamples",
+					"$(PROJECT_DIR)/gameface",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					DLIB_JPEG_SUPPORT,
@@ -496,16 +346,16 @@
 					DLIB_USE_BLAS,
 					DLIB_USE_LAPACK,
 				);
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/DisplayLiveSamples/lib";
-				INFOPLIST_FILE = DisplayLiveSamples/Info.plist;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/gameface/lib";
+				INFOPLIST_FILE = "$(SRCROOT)/GameFace/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/DisplayLiveSamples/lib",
+					"$(PROJECT_DIR)/gameface/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.stan.DisplayLiveSamples;
+				PRODUCT_BUNDLE_IDENTIFIER = com.stan.gameface;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "DisplayLiveSamples/DisplayLiveSamples-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "gameface/gameface-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 2.3;
 			};
@@ -519,7 +369,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/DisplayLiveSamples",
+					"$(PROJECT_DIR)/gameface",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					DLIB_JPEG_SUPPORT,
@@ -528,70 +378,24 @@
 					DLIB_USE_BLAS,
 					DLIB_USE_LAPACK,
 				);
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/DisplayLiveSamples/lib";
-				INFOPLIST_FILE = DisplayLiveSamples/Info.plist;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/gameface/lib";
+				INFOPLIST_FILE = "$(SRCROOT)/GameFace/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/DisplayLiveSamples/lib",
+					"$(PROJECT_DIR)/gameface/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.stan.DisplayLiveSamples;
+				PRODUCT_BUNDLE_IDENTIFIER = com.stan.gameface;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "DisplayLiveSamples/DisplayLiveSamples-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "gameface/gameface-Bridging-Header.h";
 				SWIFT_VERSION = 2.3;
-			};
-			name = Release;
-		};
-		A56696181CE8B34B00BD7EAF /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = DisplayLiveSamplesTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.zweigraf.DisplayLiveSamplesTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DisplayLiveSamples.app/DisplayLiveSamples";
-			};
-			name = Debug;
-		};
-		A56696191CE8B34B00BD7EAF /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = DisplayLiveSamplesTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.zweigraf.DisplayLiveSamplesTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DisplayLiveSamples.app/DisplayLiveSamples";
-			};
-			name = Release;
-		};
-		A566961B1CE8B34B00BD7EAF /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				INFOPLIST_FILE = DisplayLiveSamplesUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.zweigraf.DisplayLiveSamplesUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_TARGET_NAME = DisplayLiveSamples;
-			};
-			name = Debug;
-		};
-		A566961C1CE8B34B00BD7EAF /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				INFOPLIST_FILE = DisplayLiveSamplesUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.zweigraf.DisplayLiveSamplesUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_TARGET_NAME = DisplayLiveSamples;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A56695E71CE8B34B00BD7EAF /* Build configuration list for PBXProject "DisplayLiveSamples" */ = {
+		A56695E71CE8B34B00BD7EAF /* Build configuration list for PBXProject "GameFace" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A56696121CE8B34B00BD7EAF /* Debug */,
@@ -600,29 +404,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A56696141CE8B34B00BD7EAF /* Build configuration list for PBXNativeTarget "DisplayLiveSamples" */ = {
+		A56696141CE8B34B00BD7EAF /* Build configuration list for PBXNativeTarget "GameFace" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A56696151CE8B34B00BD7EAF /* Debug */,
 				A56696161CE8B34B00BD7EAF /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A56696171CE8B34B00BD7EAF /* Build configuration list for PBXNativeTarget "DisplayLiveSamplesTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A56696181CE8B34B00BD7EAF /* Debug */,
-				A56696191CE8B34B00BD7EAF /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A566961A1CE8B34B00BD7EAF /* Build configuration list for PBXNativeTarget "DisplayLiveSamplesUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A566961B1CE8B34B00BD7EAF /* Debug */,
-				A566961C1CE8B34B00BD7EAF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
