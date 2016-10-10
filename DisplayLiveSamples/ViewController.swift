@@ -9,7 +9,7 @@
 import UIKit
 import SpriteKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController,UIKitDelegate {
     let sessionHandler = SessionHandler()
     var shape: CAShapeLayer!
     var extralayer:CALayer = CALayer()
@@ -32,9 +32,9 @@ class ViewController: UIViewController {
         setupGameLayer()
         setupGameManager()
         
-        
         scene.sceneDelegate = manager
         manager.managerDelegate = scene
+        manager.uikitDelegate = self
     }
     
     func setupCameraLayer(){
@@ -104,5 +104,9 @@ class ViewController: UIViewController {
                 self.view.layer.addSublayer(self.shape)
             }
         })
+    }
+    
+    func loadPostGameModal() {
+        print("loading post game modal")
     }
 }

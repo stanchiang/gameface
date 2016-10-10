@@ -12,8 +12,13 @@ protocol GameManagerDelegate: class {
     func pauseHandler(willPause:Bool)
 }
 
+protocol UIKitDelegate: class {
+    func loadPostGameModal()
+}
+
 class GameManager: SKScene, GameSceneDelegate {
     weak var managerDelegate:GameManagerDelegate?
+    weak var uikitDelegate:UIKitDelegate?
     var instructions:SKLabelNode!
     var scoreLabel: SKLabelNode!
     var scoreShadow: SKLabelNode!
@@ -100,5 +105,9 @@ class GameManager: SKScene, GameSceneDelegate {
     
     func hideInstructions() {
         instructions.removeFromParent()
+    }
+    
+    func loadPostGame() {
+        uikitDelegate?.loadPostGameModal()
     }
 }
