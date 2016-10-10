@@ -115,6 +115,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                     addMouth(mouth)
                 }
             }
+            (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).screenshot()
         }
     }
     
@@ -226,6 +227,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             scene?.view?.paused = true
             print("pause game")
             gameTimer.invalidate()
+            
+            let imgSequ = (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).gameFeed
+            let settings = RenderSettings()
+            let imageAnimator = ImageAnimator(renderSettings: settings, imageSequence: imgSequ)
+            imageAnimator.render() {
+                print("yes")
+            }
+
         } else {
             scene?.view?.paused = false
             print("resume game")

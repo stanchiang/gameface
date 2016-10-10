@@ -21,6 +21,9 @@
 		F6339DA71D5905C5006C4231 /* explosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = F6339D9B1D5905C5006C4231 /* explosion.sks */; };
 		F6339DAD1D5905C5006C4231 /* Starfield.sks in Resources */ = {isa = PBXBuildFile; fileRef = F6339DA11D5905C5006C4231 /* Starfield.sks */; };
 		F6339DB21D590FCD006C4231 /* Notes in Resources */ = {isa = PBXBuildFile; fileRef = F6339DB11D590FCD006C4231 /* Notes */; };
+		F640F7F21DAC1D1800541B01 /* RenderSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F640F7EF1DAC1D1800541B01 /* RenderSettings.swift */; };
+		F640F7F31DAC1D1800541B01 /* ImageAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F640F7F01DAC1D1800541B01 /* ImageAnimator.swift */; };
+		F640F7F41DAC1D1800541B01 /* VideoWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F640F7F11DAC1D1800541B01 /* VideoWriter.swift */; };
 		F65611331DAB168100F6D1C3 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F65611321DAB168100F6D1C3 /* opencv2.framework */; };
 		F66290F21DA9B2F40030C11C /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F66290F11DA9B2F40030C11C /* opencv2.framework */; };
 		F66290F81DA9C4CF0030C11C /* head_pose_estimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F66290F71DA9C4CF0030C11C /* head_pose_estimation.cpp */; };
@@ -47,6 +50,9 @@
 		F6339DA11D5905C5006C4231 /* Starfield.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Starfield.sks; sourceTree = "<group>"; };
 		F6339DB11D590FCD006C4231 /* Notes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Notes; sourceTree = "<group>"; };
 		F6339DB41D5914EE006C4231 /* DlibWrapperDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DlibWrapperDelegate.h; sourceTree = "<group>"; };
+		F640F7EF1DAC1D1800541B01 /* RenderSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderSettings.swift; sourceTree = "<group>"; };
+		F640F7F01DAC1D1800541B01 /* ImageAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAnimator.swift; sourceTree = "<group>"; };
+		F640F7F11DAC1D1800541B01 /* VideoWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoWriter.swift; sourceTree = "<group>"; };
 		F65611321DAB168100F6D1C3 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
 		F66290F11DA9B2F40030C11C /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
 		F66290F61DA9C4CF0030C11C /* head_pose_estimation.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = head_pose_estimation.hpp; sourceTree = "<group>"; };
@@ -92,6 +98,7 @@
 				A56695EF1CE8B34B00BD7EAF /* AppDelegate.swift */,
 				A56695F11CE8B34B00BD7EAF /* ViewController.swift */,
 				A566961D1CE8B4A100BD7EAF /* SessionHandler.swift */,
+				F640F7F51DAC1D2000541B01 /* Video Writer */,
 				F6339D951D5905A0006C4231 /* Game Code */,
 				A56695F61CE8B34B00BD7EAF /* Assets.xcassets */,
 				A56695F81CE8B34B00BD7EAF /* LaunchScreen.storyboard */,
@@ -139,6 +146,16 @@
 			name = facialRec;
 			sourceTree = "<group>";
 		};
+		F640F7F51DAC1D2000541B01 /* Video Writer */ = {
+			isa = PBXGroup;
+			children = (
+				F640F7EF1DAC1D1800541B01 /* RenderSettings.swift */,
+				F640F7F01DAC1D1800541B01 /* ImageAnimator.swift */,
+				F640F7F11DAC1D1800541B01 /* VideoWriter.swift */,
+			);
+			name = "Video Writer";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -172,6 +189,7 @@
 					A56695EB1CE8B34B00BD7EAF = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 4C8V97R8N3;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -214,14 +232,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F640F7F31DAC1D1800541B01 /* ImageAnimator.swift in Sources */,
 				F6339D921D590573006C4231 /* GameScene.swift in Sources */,
 				A5A1B2D21CEA317B00626AC5 /* DlibWrapper.mm in Sources */,
 				A56695F21CE8B34B00BD7EAF /* ViewController.swift in Sources */,
 				F6B90FC81D6270FE00EC0338 /* GameManager.swift in Sources */,
 				A566961E1CE8B4A100BD7EAF /* SessionHandler.swift in Sources */,
 				F66290F81DA9C4CF0030C11C /* head_pose_estimation.cpp in Sources */,
+				F640F7F41DAC1D1800541B01 /* VideoWriter.swift in Sources */,
 				A56695F01CE8B34B00BD7EAF /* AppDelegate.swift in Sources */,
 				F6339D941D590587006C4231 /* Helper.swift in Sources */,
+				F640F7F21DAC1D1800541B01 /* RenderSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,7 +355,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 4C8V97R8N3;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/gameface",
@@ -366,7 +390,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 4C8V97R8N3;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/gameface",
