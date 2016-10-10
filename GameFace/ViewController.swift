@@ -22,7 +22,9 @@ class ViewController: UIViewController,UIKitDelegate {
     var manager:GameManager!
     
     var screenShot:UIImageView!
+    var cameraFeed = [UIImage]()
     var gameFeed = [UIImage]()
+    var finalFeed = [UIImage]()
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -117,7 +119,7 @@ class ViewController: UIViewController,UIKitDelegate {
         
     }
     
-    func screenshot() {
+    func screenshot() -> UIImage{
 ////        http://stackoverflow.com/a/8017292/1079379
 //        var imageSize = CGSizeZero
 //
@@ -163,7 +165,7 @@ class ViewController: UIViewController,UIKitDelegate {
         let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         
-        gameFeed.append(image)
+        return image
     }
 
 }

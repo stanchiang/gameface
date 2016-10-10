@@ -14,7 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var mouth = [CGPoint]()
     
-    enum GameState {
+    enum GameState:String {
         case preGame
         case inPlay
         case paused

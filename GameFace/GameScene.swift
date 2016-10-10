@@ -27,8 +27,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     var possibleEnemies = ["ball", "ball", "hammer"]
     var gameTimer: NSTimer!
     
-    var gameState = (UIApplication.sharedApplication().delegate as! AppDelegate).gameState
-    
     var objectMissedCount = 0;
     
     override func didMoveToView(view: SKView) {
@@ -90,23 +88,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     
     override func update(currentTime: CFTimeInterval) {
         
-        if gameState == .inPlay && objectMissedCount > 2 {
-            gameState = .postGame
+        if (UIApplication.sharedApplication().delegate as! AppDelegate).gameState == .inPlay && objectMissedCount > 2 {
+            (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .postGame
             gameTimer.invalidate()
             self.removeAllChildren()
             sceneDelegate?.loadPostGame()
         }
         
         let mouth = (UIApplication.sharedApplication().delegate as! AppDelegate).mouth
-        if gameState == .preGame {
+        if (UIApplication.sharedApplication().delegate as! AppDelegate).gameState == .preGame {
             // detect open mouth to kick of gameTimer and start game
             if triggerGameStart(mouth) {
-                gameState = .inPlay
+                (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .inPlay
                 gameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
             }
         }
-        
-        if gameState == .inPlay {
+        if (UIApplication.sharedApplication().delegate as! AppDelegate).gameState == .inPlay {
             //        if we have data to work with
             if !mouth.isEmpty && mouth.first!.x != 0 && mouth.first!.y != 0 {
                 //        create player position and draw shape based on mouth array
@@ -115,7 +112,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                     addMouth(mouth)
                 }
             }
-            (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).screenshot()
         }
     }
     
@@ -132,7 +128,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             let p1 = mouth[2]
             let p2 = mouth[6]
             let distance = hypotf(Float(p1.x) - Float(p2.x), Float(p1.y) - Float(p2.y));
-            print(distance)
+//            print(distance)
             if distance > 25 {
                 return true
             }
@@ -228,13 +224,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             print("pause game")
             gameTimer.invalidate()
             
-            let imgSequ = (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).gameFeed
-            let settings = RenderSettings()
-            let imageAnimator = ImageAnimator(renderSettings: settings, imageSequence: imgSequ)
-            imageAnimator.render() {
-                print("yes")
+            if (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).cameraFeed.count > 20 &&
+                (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).gameFeed.count > 20 {
+                for i in (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).cameraFeed.indices {
+                    let backImg:UIImage = (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).cameraFeed[i]
+                    let frontImg:UIImage = (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).gameFeed[i]
+                    
+                    UIGraphicsBeginImageContext(backImg.size)
+                    backImg.drawInRect(CGRectMake(0, 0, backImg.size.width, backImg.size.height))
+                    frontImg.drawInRect(CGRectMake(0, 0, backImg.size.width, backImg.size.height))
+                    (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).finalFeed.append(UIGraphicsGetImageFromCurrentImageContext()!)
+                    UIGraphicsEndImageContext()
+                }
+                
+                let imgSequ = (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).finalFeed
+                let settings = RenderSettings()
+                let imageAnimator = ImageAnimator(renderSettings: settings, imageSequence: imgSequ)
+                imageAnimator.render() {
+                    print("done generating video")
+                }
+            }else {
+                print("cam feed = \((((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).cameraFeed.count)")
+                print("game feed = \((((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).gameFeed.count)")
             }
-
         } else {
             scene?.view?.paused = false
             print("resume game")

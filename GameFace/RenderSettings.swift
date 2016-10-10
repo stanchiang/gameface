@@ -12,11 +12,11 @@ import AVFoundation
 
 struct RenderSettings {
     
-    var width: CGFloat = 1280
-    var height: CGFloat = 720
+    var width: CGFloat = UIScreen.mainScreen().bounds.width //720
+    var height: CGFloat = UIScreen.mainScreen().bounds.height //1280
     var fps: Int32 = 30
     var avCodecKey = AVVideoCodecH264
-    var videoFilename = "render"
+    var videoFilename = "render\(NSDate().timeIntervalSince1970)"
     var videoFilenameExt = "mp4"
     
     var size: CGSize {
