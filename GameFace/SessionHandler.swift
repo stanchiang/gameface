@@ -79,14 +79,14 @@ class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, A
         layer.enqueueSampleBuffer(sampleBuffer)
         
         
-        dispatch_async(dispatch_get_main_queue()){
-            if self.appDelegate.gameState == .inPlay && ((self.appDelegate.window?.rootViewController) as! ViewController).cameraFeed.count < 225{
-                print(((self.appDelegate.window?.rootViewController) as! ViewController).cameraFeed.count)
-                ((self.appDelegate.window?.rootViewController) as! ViewController).cameraFeed.append(self.imageFromSampleBuffer(sampleBuffer))
+        dispatch_async(dispatch_get_main_queue()){ [weak self] in
+            if self!.appDelegate.gameState == .inPlay && ((self!.appDelegate.window?.rootViewController) as! ViewController).cameraFeed.count < 225{
+                print(((self!.appDelegate.window?.rootViewController) as! ViewController).cameraFeed.count)
+                ((self!.appDelegate.window?.rootViewController) as! ViewController).cameraFeed.append(self!.imageFromSampleBuffer(sampleBuffer))
                 
 //                autoreleasepool {
 //                ((self.appDelegate.window?.rootViewController) as! ViewController).gameFeed.append(
-                    ((self.appDelegate.window?.rootViewController) as! ViewController).screenshot()
+                    ((self!.appDelegate.window?.rootViewController) as! ViewController).screenshot()
 //                )
 //                }
             }
