@@ -92,22 +92,22 @@ class ViewController: UIViewController,UIKitDelegate {
     }
     
     func useTemporaryLayer() {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            self.mouth = (UIApplication.sharedApplication().delegate as! AppDelegate).mouth
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { [weak self] in
+            self!.mouth = (UIApplication.sharedApplication().delegate as! AppDelegate).mouth
             
-            (self.shape == nil) ? self.shape = CAShapeLayer() : self.shape.removeFromSuperlayer()
+            (self!.shape == nil) ? self!.shape = CAShapeLayer() : self!.shape.removeFromSuperlayer()
             
             let path = UIBezierPath()
-            for m in self.mouth {
-                (m == self.mouth.first!) ? path.moveToPoint(m) : path.addLineToPoint(m)
+            for m in self!.mouth {
+                (m == self!.mouth.first!) ? path.moveToPoint(m) : path.addLineToPoint(m)
             }
             
             path.closePath()
-            self.shape.path = path.CGPath
-            self.shape.fillColor = UIColor.greenColor().CGColor
+            self!.shape.path = path.CGPath
+            self!.shape.fillColor = UIColor.greenColor().CGColor
             
             dispatch_async(dispatch_get_main_queue()) {
-                self.view.layer.addSublayer(self.shape)
+                self!.view.layer.addSublayer(self!.shape)
             }
         })
     }

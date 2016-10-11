@@ -119,11 +119,11 @@ class VideoWriter {
         precondition(videoWriter != nil, "Call start() to initialze the writer")
         
         let queue = dispatch_queue_create("mediaInputQueue", nil)
-        videoWriterInput.requestMediaDataWhenReadyOnQueue(queue) {
-            let isFinished = appendPixelBuffers(self)
+        videoWriterInput.requestMediaDataWhenReadyOnQueue(queue) { [weak self] in
+            let isFinished = appendPixelBuffers(self!)
             if isFinished {
-                self.videoWriterInput.markAsFinished()
-                self.videoWriter.finishWritingWithCompletionHandler() {
+                self!.videoWriterInput.markAsFinished()
+                self!.videoWriter.finishWritingWithCompletionHandler() {
                     dispatch_async(dispatch_get_main_queue()) {
                         completion()
                     }
