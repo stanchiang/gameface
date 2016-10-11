@@ -12,10 +12,10 @@ import SpriteKit
 class ViewController: UIViewController,UIKitDelegate {
     let sessionHandler = SessionHandler()
     var shape: CAShapeLayer!
-    var extralayer:CALayer = CALayer()
+    
     var mouth:[CGPoint]!
     
-    var gameView:UIView!
+//    var gameView:UIView!
     var managerView:UIView!
     
     var scene:GameScene!
@@ -51,14 +51,13 @@ class ViewController: UIViewController,UIKitDelegate {
     }
     
     func setupGameLayer() {
-        gameView = UIView(frame: self.view.frame)
-        self.view.addSubview(gameView)
-        
-        
+
         let skView = SKView(frame: view.frame)
         skView.allowsTransparency = true
-        
+
         self.view.addSubview(skView as UIView)
+//        self.view.layer.addSublayer(skView.layer)
+
 //        skView.showsFPS = true
 //        skView.showsNodeCount = true
         
@@ -119,7 +118,7 @@ class ViewController: UIViewController,UIKitDelegate {
         
     }
     
-    func screenshot() -> UIImage{
+    func screenshot() {// -> UIImage{
 ////        http://stackoverflow.com/a/8017292/1079379
 //        var imageSize = CGSizeZero
 //
@@ -162,10 +161,14 @@ class ViewController: UIViewController,UIKitDelegate {
         UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, false, 0);
         
         self.view.drawViewHierarchyInRect(view.bounds, afterScreenUpdates: true)
-        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+//        autoreleasepool { 
+//            let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+            gameFeed.append(UIGraphicsGetImageFromCurrentImageContext()!)
+//        }
+        
         UIGraphicsEndImageContext()
         
-        return image
+//        return image
     }
 
 }

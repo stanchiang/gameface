@@ -80,12 +80,17 @@ class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, A
         
         
         dispatch_async(dispatch_get_main_queue()){
-            if self.appDelegate.gameState == .inPlay {
+            if self.appDelegate.gameState == .inPlay && ((self.appDelegate.window?.rootViewController) as! ViewController).cameraFeed.count < 225{
+                print(((self.appDelegate.window?.rootViewController) as! ViewController).cameraFeed.count)
                 ((self.appDelegate.window?.rootViewController) as! ViewController).cameraFeed.append(self.imageFromSampleBuffer(sampleBuffer))
-                ((self.appDelegate.window?.rootViewController) as! ViewController).gameFeed.append(((self.appDelegate.window?.rootViewController) as! ViewController).screenshot())
+                
+//                autoreleasepool {
+//                ((self.appDelegate.window?.rootViewController) as! ViewController).gameFeed.append(
+                    ((self.appDelegate.window?.rootViewController) as! ViewController).screenshot()
+//                )
+//                }
             }
         }
-        
     }
     
     func imageFromSampleBuffer(sampleBuffer: CMSampleBuffer) -> UIImage {
@@ -107,9 +112,9 @@ class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, A
         CVPixelBufferUnlockBaseAddress(imageBuffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)))
         
         // Create an image object from the Quartz image
-        let image = UIImage(CGImage:quartzImage!);
+        let image = UIImage(CGImage:quartzImage!)
         
-        return (image);
+        return image
     }
     
     func captureOutput(captureOutput: AVCaptureOutput!, didDropSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
