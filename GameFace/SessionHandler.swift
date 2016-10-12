@@ -78,17 +78,17 @@ class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, A
         
         layer.enqueueSampleBuffer(sampleBuffer)
         
-        
         dispatch_async(dispatch_get_main_queue()){ [weak self] in
-            if self!.appDelegate.gameState == .inPlay && ((self!.appDelegate.window?.rootViewController) as! ViewController).cameraFeed.count < 125{
-                print(((self!.appDelegate.window?.rootViewController) as! ViewController).cameraFeed.count)
-                ((self!.appDelegate.window?.rootViewController) as! ViewController).cameraFeed.append(self!.imageFromSampleBuffer(sampleBuffer))
+            if self!.appDelegate.gameState == .inPlay && ((self!.appDelegate.window?.rootViewController) as! ViewController).cameraFeed.count < 25{
+                print(((self!.appDelegate.window?.rootViewController) as! ViewController).finalFeed.count)
                 
-                autoreleasepool {
-//                ((self.appDelegate.window?.rootViewController) as! ViewController).gameFeed.append(
-                    ((self!.appDelegate.window?.rootViewController) as! ViewController).screenshot()
-//                )
-                }
+                    UIGraphicsBeginImageContext(UIScreen.mainScreen().bounds.size)
+                    
+                    self!.imageFromSampleBuffer(sampleBuffer).drawInRect(CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height))
+                    
+                    ((self!.appDelegate.window?.rootViewController) as! ViewController).screenshot().drawInRect(CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height))
+                        (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).finalFeed.append(UIGraphicsGetImageFromCurrentImageContext()!)
+                    UIGraphicsEndImageContext()
             }
         }
     }

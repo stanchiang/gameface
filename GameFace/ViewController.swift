@@ -15,7 +15,6 @@ class ViewController: UIViewController,UIKitDelegate {
     
     var mouth:[CGPoint]!
     
-//    var gameView:UIView!
     var managerView:UIView!
     
     var scene:GameScene!
@@ -56,7 +55,6 @@ class ViewController: UIViewController,UIKitDelegate {
         skView.allowsTransparency = true
 
         self.view.addSubview(skView as UIView)
-//        self.view.layer.addSublayer(skView.layer)
 
 //        skView.showsFPS = true
 //        skView.showsNodeCount = true
@@ -113,62 +111,18 @@ class ViewController: UIViewController,UIKitDelegate {
     }
     
     func loadPostGameModal() {
-        print("loading post game modal")
-        
-        
+        print("loading post game modal")   
     }
     
-    func screenshot() {// -> UIImage{
-////        http://stackoverflow.com/a/8017292/1079379
-//        var imageSize = CGSizeZero
-//
-//        let orientation = UIApplication.sharedApplication().statusBarOrientation
-//        if UIInterfaceOrientationIsPortrait(orientation) {
-//            imageSize = UIScreen.mainScreen().bounds.size
-//        } else {
-//            imageSize = CGSize(width: UIScreen.mainScreen().bounds.size.height, height: UIScreen.mainScreen().bounds.size.width)
-//        }
-//
-//        UIGraphicsBeginImageContextWithOptions(imageSize, false, 0)
-//        let context = UIGraphicsGetCurrentContext()
-//        for window in UIApplication.sharedApplication().windows {
-//            CGContextSaveGState(context!)
-//            CGContextTranslateCTM(context!, window.center.x, window.center.y)
-//            CGContextConcatCTM(context!, window.transform)
-//            CGContextTranslateCTM(context!, -window.bounds.size.width * window.layer.anchorPoint.x, -window.bounds.size.height * window.layer.anchorPoint.y)
-//            if orientation == .LandscapeLeft {
-//                CGContextRotateCTM(context!, CGFloat(M_PI_2))
-//                CGContextTranslateCTM(context!, 0, -imageSize.width)
-//            } else if orientation == .LandscapeRight {
-//                CGContextRotateCTM(context!, -CGFloat(M_PI_2))
-//                CGContextTranslateCTM(context!, -imageSize.height, 0)
-//            } else if orientation == .PortraitUpsideDown {
-//                CGContextRotateCTM(context!, CGFloat(M_PI))
-//                CGContextTranslateCTM(context!, -imageSize.width, -imageSize.height)
-//            }
-//            
-//            if window.respondsToSelector(#selector(UIView.drawViewHierarchyInRect(_:afterScreenUpdates:))) {
-//                window.drawViewHierarchyInRect(window.bounds, afterScreenUpdates: true)
-//            } else if let context = context {
-//                window.layer.renderInContext(context)
-//            }
-//            CGContextRestoreGState(context!)
-//        }
-//        
-//        let image = UIGraphicsGetImageFromCurrentImageContext()
-//        UIGraphicsEndImageContext()
-
+    func screenshot() -> UIImage{
         UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, false, 0);
         
         self.view.drawViewHierarchyInRect(view.bounds, afterScreenUpdates: true)
-        autoreleasepool { 
-//            let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-            gameFeed.append(UIGraphicsGetImageFromCurrentImageContext()!)
-        }
+            let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         
         UIGraphicsEndImageContext()
         
-//        return image
+        return image
     }
 
 }

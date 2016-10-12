@@ -91,7 +91,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     
     override func update(currentTime: CFTimeInterval) {
         
-        if (UIApplication.sharedApplication().delegate as! AppDelegate).gameState == .inPlay && objectMissedCount > 20 {
+        if (UIApplication.sharedApplication().delegate as! AppDelegate).gameState == .inPlay && objectMissedCount > 120 {
             (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .postGame
             gameTimer.invalidate()
             self.removeAllChildren()
@@ -241,28 +241,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     }
     
     func createVideo() {
-        dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.rawValue), 0)) { [weak self] in
+        dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.rawValue), 0)) {
             
-            if (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).cameraFeed.count > 120 &&
-                (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).gameFeed.count > 120 {
-                for _ in (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).cameraFeed {
-                    autoreleasepool({
-                        self!.backImg = (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).cameraFeed.first!
-                        self!.frontImg = (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).gameFeed.first!
-                        
-                        UIGraphicsBeginImageContext(self!.backImg.size)
-                        self!.backImg.drawInRect(CGRectMake(0, 0, self!.backImg.size.width, self!.backImg.size.height))
-                        self!.frontImg.drawInRect(CGRectMake(0, 0, self!.backImg.size.width, self!.backImg.size.height))
-                        autoreleasepool({
-                            (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).finalFeed.append(UIGraphicsGetImageFromCurrentImageContext()!)
-                            })
-                        UIGraphicsEndImageContext()
-                        
-                        (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).cameraFeed.removeFirst()
-                        (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).gameFeed.removeFirst()
-                    })
-                }
-                
+            if (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).finalFeed.count > 20 {
                 let imgSequ = (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).finalFeed
                 let settings = RenderSettings()
                 let imageAnimator = ImageAnimator(renderSettings: settings, imageSequence: imgSequ)
