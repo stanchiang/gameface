@@ -161,10 +161,10 @@ class ViewController: UIViewController,UIKitDelegate {
         UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, false, 0);
         
         self.view.drawViewHierarchyInRect(view.bounds, afterScreenUpdates: true)
-//        autoreleasepool { 
+        autoreleasepool { 
 //            let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
             gameFeed.append(UIGraphicsGetImageFromCurrentImageContext()!)
-//        }
+        }
         
         UIGraphicsEndImageContext()
         

@@ -24,14 +24,13 @@
 		F640F7F21DAC1D1800541B01 /* RenderSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F640F7EF1DAC1D1800541B01 /* RenderSettings.swift */; };
 		F640F7F31DAC1D1800541B01 /* ImageAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F640F7F01DAC1D1800541B01 /* ImageAnimator.swift */; };
 		F640F7F41DAC1D1800541B01 /* VideoWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F640F7F11DAC1D1800541B01 /* VideoWriter.swift */; };
-		F65611331DAB168100F6D1C3 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F65611321DAB168100F6D1C3 /* opencv2.framework */; };
-		F66290F21DA9B2F40030C11C /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F66290F11DA9B2F40030C11C /* opencv2.framework */; };
+		F64C2F391DADCFA7006E1021 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64C2F381DADCFA7006E1021 /* opencv2.framework */; };
 		F66290F81DA9C4CF0030C11C /* head_pose_estimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F66290F71DA9C4CF0030C11C /* head_pose_estimation.cpp */; };
 		F6B90FC81D6270FE00EC0338 /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B90FC71D6270FE00EC0338 /* GameManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A56695EC1CE8B34B00BD7EAF /* DisplayLiveSamples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = DisplayLiveSamples.app; path = GameFace.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A56695EC1CE8B34B00BD7EAF /* GameFace.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameFace.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A56695EF1CE8B34B00BD7EAF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A56695F11CE8B34B00BD7EAF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A56695F61CE8B34B00BD7EAF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -53,8 +52,7 @@
 		F640F7EF1DAC1D1800541B01 /* RenderSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderSettings.swift; sourceTree = "<group>"; };
 		F640F7F01DAC1D1800541B01 /* ImageAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAnimator.swift; sourceTree = "<group>"; };
 		F640F7F11DAC1D1800541B01 /* VideoWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoWriter.swift; sourceTree = "<group>"; };
-		F65611321DAB168100F6D1C3 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
-		F66290F11DA9B2F40030C11C /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
+		F64C2F381DADCFA7006E1021 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
 		F66290F61DA9C4CF0030C11C /* head_pose_estimation.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = head_pose_estimation.hpp; sourceTree = "<group>"; };
 		F66290F71DA9C4CF0030C11C /* head_pose_estimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = head_pose_estimation.cpp; sourceTree = "<group>"; };
 		F6B90FC71D6270FE00EC0338 /* GameManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
@@ -65,9 +63,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F66290F21DA9B2F40030C11C /* opencv2.framework in Frameworks */,
+				F64C2F391DADCFA7006E1021 /* opencv2.framework in Frameworks */,
 				A5A1B2D61CEA41E200626AC5 /* Accelerate.framework in Frameworks */,
-				F65611331DAB168100F6D1C3 /* opencv2.framework in Frameworks */,
 				A5A1B2D41CEA35B300626AC5 /* libdlib.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -86,7 +83,7 @@
 		A56695ED1CE8B34B00BD7EAF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A56695EC1CE8B34B00BD7EAF /* DisplayLiveSamples.app */,
+				A56695EC1CE8B34B00BD7EAF /* GameFace.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -133,11 +130,10 @@
 			isa = PBXGroup;
 			children = (
 				A5A1B2D71CEA431600626AC5 /* shape_predictor_68_face_landmarks.dat */,
-				F65611321DAB168100F6D1C3 /* opencv2.framework */,
-				F66290F11DA9B2F40030C11C /* opencv2.framework */,
 				A5A1B2D51CEA41E200626AC5 /* Accelerate.framework */,
 				A5A1B2D31CEA35B300626AC5 /* libdlib.a */,
 				A5A1B2D01CEA317B00626AC5 /* DlibWrapper.h */,
+				F64C2F381DADCFA7006E1021 /* opencv2.framework */,
 				A5A1B2D11CEA317B00626AC5 /* DlibWrapper.mm */,
 				F6339DB41D5914EE006C4231 /* DlibWrapperDelegate.h */,
 				F66290F61DA9C4CF0030C11C /* head_pose_estimation.hpp */,
@@ -173,7 +169,7 @@
 			);
 			name = GameFace;
 			productName = DisplayLiveSamples;
-			productReference = A56695EC1CE8B34B00BD7EAF /* DisplayLiveSamples.app */;
+			productReference = A56695EC1CE8B34B00BD7EAF /* GameFace.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -362,6 +358,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/gameface",
+					"$(PROJECT_DIR)/GameFace",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					DLIB_JPEG_SUPPORT,
@@ -397,6 +394,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/gameface",
+					"$(PROJECT_DIR)/GameFace",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					DLIB_JPEG_SUPPORT,

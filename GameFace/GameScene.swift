@@ -228,9 +228,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             scene?.view?.paused = true
             print("pause game")
             gameTimer.invalidate()
-//            autoreleasepool({ 
+            autoreleasepool({ 
                 createVideo()
-//            })
+            })
             
 
         } else {
@@ -243,24 +243,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     func createVideo() {
         dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.rawValue), 0)) { [weak self] in
             
-            if (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).cameraFeed.count > 220 &&
-                (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).gameFeed.count > 220 {
+            if (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).cameraFeed.count > 120 &&
+                (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).gameFeed.count > 120 {
                 for _ in (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).cameraFeed {
-//                    autoreleasepool({
+                    autoreleasepool({
                         self!.backImg = (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).cameraFeed.first!
                         self!.frontImg = (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).gameFeed.first!
                         
                         UIGraphicsBeginImageContext(self!.backImg.size)
                         self!.backImg.drawInRect(CGRectMake(0, 0, self!.backImg.size.width, self!.backImg.size.height))
                         self!.frontImg.drawInRect(CGRectMake(0, 0, self!.backImg.size.width, self!.backImg.size.height))
-//                        autoreleasepool({
+                        autoreleasepool({
                             (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).finalFeed.append(UIGraphicsGetImageFromCurrentImageContext()!)
-//                            })
+                            })
                         UIGraphicsEndImageContext()
                         
                         (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).cameraFeed.removeFirst()
                         (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).gameFeed.removeFirst()
-//                    })
+                    })
                 }
                 
                 let imgSequ = (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).finalFeed
