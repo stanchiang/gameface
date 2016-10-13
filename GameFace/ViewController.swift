@@ -8,8 +8,10 @@
 
 import UIKit
 import SpriteKit
+import AVFoundation
+import ReplayKit
 
-class ViewController: UIViewController,UIKitDelegate {
+class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDelegate {
     let sessionHandler = SessionHandler()
     var shape: CAShapeLayer!
     
@@ -20,10 +22,10 @@ class ViewController: UIViewController,UIKitDelegate {
     var scene:GameScene!
     var manager:GameManager!
     
-    var screenShot:UIImageView!
-    var cameraFeed = [UIImage]()
-    var gameFeed = [UIImage]()
-    var finalFeed = [UIImage]()
+
+//    var cameraFeed = [UIImage]()
+//    var gameFeed = [UIImage]()
+//    var finalFeed = [UIImage]()
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -39,8 +41,10 @@ class ViewController: UIViewController,UIKitDelegate {
         scene.sceneDelegate = manager
         manager.managerDelegate = scene
         manager.uikitDelegate = self
-        screenShot = UIImageView(frame: CGRectMake(0, 0, self.view.frame.width, self.view.frame.height))
-        self.view.addSubview(screenShot)
+        
+        
+        startRecording()
+
     }
     
     func setupCameraLayer(){
@@ -111,18 +115,48 @@ class ViewController: UIViewController,UIKitDelegate {
     }
     
     func loadPostGameModal() {
-        print("loading post game modal")   
+        print("loading post game modal")
     }
     
-    func screenshot() -> UIImage{
-        UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, false, 0);
+    
+    
+//    func screenshot() -> UIImage{
+//        UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, false, 0);
+//        
+//        self.view.drawViewHierarchyInRect(view.bounds, afterScreenUpdates: true)
+//            let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+//        
+//        UIGraphicsEndImageContext()
+//        
+//        return image
+//    }
+
+    func startRecording() {
         
-        self.view.drawViewHierarchyInRect(view.bounds, afterScreenUpdates: true)
-            let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-        
-        UIGraphicsEndImageContext()
-        
-        return image
+        let recorder = RPScreenRecorder.sharedRecorder()
+        recorder.startRecordingWithMicrophoneEnabled(true) {(error) in
+            if let unwrappedError = error {
+                print(unwrappedError.localizedDescription)
+            } else {
+                print("called")
+            }
+        }
     }
 
+    
+    func stopRecording() {
+        
+        let recorder = RPScreenRecorder.sharedRecorder()
+        
+        recorder.stopRecordingWithHandler { [unowned self] (preview, error) in
+            if let previewView = preview {
+                previewView.previewControllerDelegate = self
+                self.presentViewController(previewView, animated: true, completion: nil)
+            }
+        }
+    }
+
+    func stopRecordingHandler() {
+        stopRecording()
+    }
 }

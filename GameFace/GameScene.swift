@@ -12,6 +12,7 @@ protocol GameSceneDelegate: class {
     func updateScore(points:Int)
     func hideInstructions()
     func loadPostGame()
+    func loadStopRecording()
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
@@ -228,11 +229,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             scene?.view?.paused = true
             print("pause game")
             gameTimer.invalidate()
-            autoreleasepool({ 
-                createVideo()
-            })
-            
-
+//            autoreleasepool({ 
+//                createVideo()
+//            })            
+            sceneDelegate?.loadStopRecording()
         } else {
             scene?.view?.paused = false
             print("resume game")
@@ -240,17 +240,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         }
     }
     
-    func createVideo() {
-        dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.rawValue), 0)) {
-            
-            if (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).finalFeed.count > 20 {
-                let imgSequ = (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).finalFeed
-                let settings = RenderSettings()
-                let imageAnimator = ImageAnimator(renderSettings: settings, imageSequence: imgSequ)
-                imageAnimator.render() {
-                    print("done generating video")
-                }
-            }
-        }
-    }
+//    func createVideo() {
+//        dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.rawValue), 0)) {
+//            
+//            if (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).finalFeed.count > 20 {
+//                let imgSequ = (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).finalFeed
+//                let settings = RenderSettings()
+//                let imageAnimator = ImageAnimator(renderSettings: settings, imageSequence: imgSequ)
+//                imageAnimator.render() {
+//                    print("done generating video")
+//                }
+//            }
+//        }
+//    }
 }

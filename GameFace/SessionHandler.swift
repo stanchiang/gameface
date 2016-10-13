@@ -78,19 +78,19 @@ class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, A
         
         layer.enqueueSampleBuffer(sampleBuffer)
         
-        dispatch_async(dispatch_get_main_queue()){ [weak self] in
-            if self!.appDelegate.gameState == .inPlay && ((self!.appDelegate.window?.rootViewController) as! ViewController).cameraFeed.count < 25{
-                print(((self!.appDelegate.window?.rootViewController) as! ViewController).finalFeed.count)
-                
-                    UIGraphicsBeginImageContext(UIScreen.mainScreen().bounds.size)
-                    
-                    self!.imageFromSampleBuffer(sampleBuffer).drawInRect(CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height))
-                    
-                    ((self!.appDelegate.window?.rootViewController) as! ViewController).screenshot().drawInRect(CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height))
-                        (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).finalFeed.append(UIGraphicsGetImageFromCurrentImageContext()!)
-                    UIGraphicsEndImageContext()
-            }
-        }
+//        dispatch_async(dispatch_get_main_queue()){ [weak self] in
+//            if self!.appDelegate.gameState == .inPlay && ((self!.appDelegate.window?.rootViewController) as! ViewController).cameraFeed.count < 25{
+//                print(((self!.appDelegate.window?.rootViewController) as! ViewController).finalFeed.count)
+//                
+//                    UIGraphicsBeginImageContext(UIScreen.mainScreen().bounds.size)
+//                    
+//                    self!.imageFromSampleBuffer(sampleBuffer).drawInRect(CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height))
+//                    
+//                    ((self!.appDelegate.window?.rootViewController) as! ViewController).screenshot().drawInRect(CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height))
+//                        (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).finalFeed.append(UIGraphicsGetImageFromCurrentImageContext()!)
+//                    UIGraphicsEndImageContext()
+//            }
+//        }
     }
     
     func imageFromSampleBuffer(sampleBuffer: CMSampleBuffer) -> UIImage {

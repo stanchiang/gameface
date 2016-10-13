@@ -14,6 +14,7 @@ protocol GameManagerDelegate: class {
 
 protocol UIKitDelegate: class {
     func loadPostGameModal()
+    func stopRecordingHandler()
 }
 
 class GameManager: SKScene, GameSceneDelegate {
@@ -109,5 +110,9 @@ class GameManager: SKScene, GameSceneDelegate {
     
     func loadPostGame() {
         uikitDelegate?.loadPostGameModal()
+    }
+    
+    func loadStopRecording() {
+        uikitDelegate?.stopRecordingHandler()
     }
 }
