@@ -29,7 +29,6 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
         self.view.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
         self.view.transform = CGAffineTransformScale(self.view.transform, 1, -1)
         
-        //        setupCameraLayer()
         setupCameraImage()
         
         setupGameLayer()
@@ -110,8 +109,9 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
     }
     
     func loadPostGameModal() {
-        stopRecording()
         print("loading post game modal")
+        stopRecording()
+        
     }
 
     func startRecording() {
@@ -127,13 +127,16 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
     }
 
     func stopRecording() {
-        sessionHandler.session.stopRunning()
-        let recorder = RPScreenRecorder.sharedRecorder()
         
+        let recorder = RPScreenRecorder.sharedRecorder()
+        print("initiating stop recording")
         recorder.stopRecordingWithHandler { [unowned self] (RPPreviewViewController, error) in
+            print("in completion handler")
             if let previewView = RPPreviewViewController {
+                print("will transition to gameplay video")
                 previewView.previewControllerDelegate = self
                 self.presentViewController(previewView, animated: true, completion: nil)
+                self.sessionHandler.session.stopRunning()
             }
         }
     }
@@ -143,8 +146,5 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
             self.sessionHandler.session.startRunning()
         }
     }
-    
-    func stopRecordingHandler() {
-        stopRecording()
-    }
+
 }

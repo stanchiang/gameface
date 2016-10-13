@@ -14,7 +14,6 @@ protocol GameManagerDelegate: class {
 
 protocol UIKitDelegate: class {
     func loadPostGameModal()
-    func stopRecordingHandler()
 }
 
 class GameManager: SKScene, GameSceneDelegate {
@@ -24,8 +23,7 @@ class GameManager: SKScene, GameSceneDelegate {
     var scoreLabel: SKLabelNode!
     var scoreShadow: SKLabelNode!
     var pauseButton:SKSpriteNode!
-    
-//    var gameState = (UIApplication.sharedApplication().delegate as! AppDelegate).gameState
+    var timer:SKSpriteNode!
     
     var score: Int = 0 {
         didSet {
@@ -36,14 +34,36 @@ class GameManager: SKScene, GameSceneDelegate {
     
     override func didMoveToView(view: SKView) {
         setupInterface()
-        
     }
     
     func setupInterface() {
-
         let length:CGFloat = 50
         let offset:CGFloat = 3
         
+        addScore(length, offset: offset)
+        addPause(length)
+        addTimer(length)
+        addInstructions(length)
+
+    }
+    
+    func addInstructions(length:CGFloat){
+        instructions = SKLabelNode(fontNamed: "ArialRoundedMTBold")
+        instructions.position = CGPoint(x: self.view!.frame.width / 2, y: self.frame.height - length * 2)
+        instructions.horizontalAlignmentMode = .Center
+        instructions.text = "Open Mouth to Start Game"
+        instructions.fontColor = UIColor.blackColor()
+        addChild(instructions)
+    }
+    
+    func addPause(length:CGFloat){
+        pauseButton = SKSpriteNode(imageNamed: "pause")
+        pauseButton.size = CGSizeMake(length, length)
+        pauseButton.position = CGPoint(x: self.frame.width - length, y: self.frame.height - length)
+        addChild(pauseButton)
+    }
+    
+    func addScore(length:CGFloat, offset:CGFloat) {
         scoreShadow = SKLabelNode(fontNamed: "ArialRoundedMTBold")
         scoreShadow.position = CGPoint(x: length - offset, y: self.frame.height - (length + offset))
         scoreShadow.horizontalAlignmentMode = .Left
@@ -57,25 +77,27 @@ class GameManager: SKScene, GameSceneDelegate {
         scoreLabel.horizontalAlignmentMode = .Left
         scoreLabel.text = "Score: \(score)"
         addChild(scoreLabel)
-        
-        pauseButton = SKSpriteNode(imageNamed: "pause")
-        pauseButton.size = CGSizeMake(length, length)
-        pauseButton.position = CGPoint(x: self.frame.width - length, y: self.frame.height - length)
-        addChild(pauseButton)
-
-        instructions = SKLabelNode(fontNamed: "ArialRoundedMTBold")
-        instructions.position = CGPoint(x: self.view!.frame.width / 2, y: self.frame.height - length * 2)
-        instructions.horizontalAlignmentMode = .Center
-        instructions.text = "Open Mouth to Start Game"
-        instructions.fontColor = UIColor.blackColor()
-        addChild(instructions)
-        
+    }
+    
+    func addTimer(length:CGFloat){
+        timer = SKSpriteNode(color: UIColor.greenColor(), size: CGSize(width: UIScreen.mainScreen().bounds.width, height: 30))
+        timer.anchorPoint.x = 0
+        timer.position = CGPoint(x: 0, y: self.frame.height - length * 2)
+        addChild(timer)
     }
     
     func updateScore(points:Int) {
         score += points
+        timer.xScale += 0.1
     }
     
+    func updateTimer(countDown: Double) {
+        timer.xScale += CGFloat(countDown)
+    }
+    
+    func getTimer() -> Double {
+        return Double(timer.xScale)
+    }
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         // Loop over all the touches in this event
         for touch: AnyObject in touches {
@@ -109,8 +131,5 @@ class GameManager: SKScene, GameSceneDelegate {
     func loadPostGame() {
         uikitDelegate?.loadPostGameModal()
     }
-    
-    func loadStopRecording() {
-        uikitDelegate?.stopRecordingHandler()
-    }
+
 }

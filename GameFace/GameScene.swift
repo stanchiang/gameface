@@ -10,9 +10,11 @@ import SpriteKit
 
 protocol GameSceneDelegate: class {
     func updateScore(points:Int)
+    func updateTimer(countDown:Double)
+    func getTimer() -> Double
     func hideInstructions()
     func loadPostGame()
-    func loadStopRecording()
+    
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
@@ -92,7 +94,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     
     override func update(currentTime: CFTimeInterval) {
         
-        if (UIApplication.sharedApplication().delegate as! AppDelegate).gameState == .inPlay && objectMissedCount > 4 {
+        if (UIApplication.sharedApplication().delegate as! AppDelegate).gameState == .inPlay && sceneDelegate?.getTimer() <= 0 {
             (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .postGame
             gameTimer.invalidate()
             self.removeAllChildren()
@@ -109,12 +111,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         }
         
         if (UIApplication.sharedApplication().delegate as! AppDelegate).gameState == .inPlay {
+            
             //        if we have data to work with
             if !mouth.isEmpty && mouth.first!.x != 0 && mouth.first!.y != 0 {
                 //        create player position and draw shape based on mouth array
                 if polygonNode != nil { polygonNode.removeFromParent() }
                 if checkMouth(mouth, dist: 10){
                     addMouth(mouth)
+                    sceneDelegate?.updateTimer(-0.006)
+                }else {
+                    sceneDelegate?.updateTimer(-0.002)
                 }
             }
         }
