@@ -179,17 +179,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
 
     }
     
-    func rotatePoint(target: CGPoint, aroundOrigin origin: CGPoint, byDegrees: CGFloat) -> CGPoint {
-        let dx = target.x - origin.x
-        let dy = target.y - origin.y
-        let radius = sqrt(dx * dx + dy * dy)
-        let azimuth = atan2(dy, dx) // in radians
-        let newAzimuth = azimuth + byDegrees * CGFloat(M_PI / 180.0) // convert it to radians
-        let x = origin.x + radius * cos(newAzimuth)
-        let y = origin.y + radius * sin(newAzimuth)
-        return CGPoint(x: x, y: y)
-    }
-    
     func arcBetweenPoints(view : SKView, fromPoint start : CGPoint, toPoint end: CGPoint) -> CGPath {
         
         // Animation's path
@@ -229,9 +218,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             scene?.view?.paused = true
             print("pause game")
             gameTimer.invalidate()
-//            autoreleasepool({ 
-//                createVideo()
-//            })            
+
             sceneDelegate?.loadStopRecording()
         } else {
             scene?.view?.paused = false
@@ -239,18 +226,4 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             gameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
         }
     }
-    
-//    func createVideo() {
-//        dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.rawValue), 0)) {
-//            
-//            if (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).finalFeed.count > 20 {
-//                let imgSequ = (((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController) as! ViewController).finalFeed
-//                let settings = RenderSettings()
-//                let imageAnimator = ImageAnimator(renderSettings: settings, imageSequence: imgSequ)
-//                imageAnimator.render() {
-//                    print("done generating video")
-//                }
-//            }
-//        }
-//    }
 }

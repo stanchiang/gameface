@@ -22,11 +22,6 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
     var scene:GameScene!
     var manager:GameManager!
     
-
-//    var cameraFeed = [UIImage]()
-//    var gameFeed = [UIImage]()
-//    var finalFeed = [UIImage]()
-    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         print(self.view.frame)
@@ -117,19 +112,6 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
     func loadPostGameModal() {
         print("loading post game modal")
     }
-    
-    
-    
-//    func screenshot() -> UIImage{
-//        UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, false, 0);
-//        
-//        self.view.drawViewHierarchyInRect(view.bounds, afterScreenUpdates: true)
-//            let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-//        
-//        UIGraphicsEndImageContext()
-//        
-//        return image
-//    }
 
     func startRecording() {
         
