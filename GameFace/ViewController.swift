@@ -24,12 +24,12 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
     
     var cameraImage:UIImageView!
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewDidLoad() {
         sessionHandler.openSession()
         self.view.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
         self.view.transform = CGAffineTransformScale(self.view.transform, 1, -1)
         
-//        setupCameraLayer()
+        //        setupCameraLayer()
         setupCameraImage()
         
         setupGameLayer()
@@ -41,13 +41,7 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
         
         startRecording()
     }
-    
-    func setupCameraLayer(){
-        let layer = sessionHandler.layer
-        layer.frame = self.view.bounds
-        self.view.layer.addSublayer(layer)
-    }
-    
+
     func setupCameraImage(){
         cameraImage = UIImageView()
         cameraImage.frame = self.view.frame
@@ -133,7 +127,7 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
     }
 
     func stopRecording() {
-        
+        sessionHandler.session.stopRunning()
         let recorder = RPScreenRecorder.sharedRecorder()
         
         recorder.stopRecordingWithHandler { [unowned self] (RPPreviewViewController, error) in
@@ -145,8 +139,8 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
     }
 
     func previewController(previewController: RPPreviewViewController, didFinishWithActivityTypes activityTypes: Set<String>) {
-        dismissViewControllerAnimated(true) { 
-            print("dismissed")
+        dismissViewControllerAnimated(true) { [unowned self] in
+            self.sessionHandler.session.startRunning()
         }
     }
     

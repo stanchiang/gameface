@@ -76,10 +76,6 @@ class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, A
             wrapper.doWorkOnSampleBuffer(sampleBuffer, inRects: boundsArray)
         }
         
-//        if layer.readyForMoreMediaData {
-//            layer.enqueueSampleBuffer(sampleBuffer)
-//        }
-        
         let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
         let cameraImage = CIImage(CVPixelBuffer: pixelBuffer!)
         
@@ -87,8 +83,6 @@ class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, A
             ((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController as! ViewController).cameraImage.image = UIImage(CIImage: cameraImage)
         }
     }
-    
-    
     
     func captureOutput(captureOutput: AVCaptureOutput!, didDropSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
 //        print("DidDropSampleBuffer")
