@@ -9,7 +9,7 @@
 import SpriteKit
 
 protocol GameManagerDelegate: class {
-    func pauseHandler(willPause:Bool)
+    func updatePauseHandler(to state:GameState)
 }
 
 protocol UIKitDelegate: class {
@@ -25,7 +25,7 @@ class GameManager: SKScene, GameSceneDelegate {
     var scoreShadow: SKLabelNode!
     var pauseButton:SKSpriteNode!
     
-    var gameState = (UIApplication.sharedApplication().delegate as! AppDelegate).gameState
+//    var gameState = (UIApplication.sharedApplication().delegate as! AppDelegate).gameState
     
     var score: Int = 0 {
         didSet {
@@ -89,19 +89,17 @@ class GameManager: SKScene, GameSceneDelegate {
     }
     
     func togglePause(){
-        toggleOptionsMenu()
-        
-        if (gameState == .paused) {
-            managerDelegate?.pauseHandler(false)
-            gameState = .inPlay
+        if ((UIApplication.sharedApplication().delegate as! AppDelegate).gameState == .paused) {
+            managerDelegate?.updatePauseHandler(to: .inPlay)
         }else {
-            managerDelegate?.pauseHandler(true)
-            gameState = .paused
+            managerDelegate?.updatePauseHandler(to: .paused)
         }
+        
+        toggleOptionsMenu()
     }
     
     func toggleOptionsMenu() {
-        
+        print("toggle options menu")
     }
     
     func hideInstructions() {

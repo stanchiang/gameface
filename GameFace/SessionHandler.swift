@@ -76,33 +76,19 @@ class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, A
             wrapper.doWorkOnSampleBuffer(sampleBuffer, inRects: boundsArray)
         }
         
-        layer.enqueueSampleBuffer(sampleBuffer)
+//        if layer.readyForMoreMediaData {
+//            layer.enqueueSampleBuffer(sampleBuffer)
+//        }
         
+        let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
+        let cameraImage = CIImage(CVPixelBuffer: pixelBuffer!)
+        
+        dispatch_async(dispatch_get_main_queue()){
+            ((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController as! ViewController).cameraImage.image = UIImage(CIImage: cameraImage)
+        }
     }
     
-    func imageFromSampleBuffer(sampleBuffer: CMSampleBuffer) -> UIImage {
-        let imageBuffer:CVImageBuffer! = CMSampleBufferGetImageBuffer(sampleBuffer)
-        
-        CVPixelBufferLockBaseAddress(imageBuffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)))
-        
-        let baseAddress: UnsafeMutablePointer<Void> = CVPixelBufferGetBaseAddress(imageBuffer)
-        let bytesPerRow = CVPixelBufferGetBytesPerRow(imageBuffer)
-        let width = CVPixelBufferGetWidth(imageBuffer)
-        let height = CVPixelBufferGetHeight(imageBuffer)
-        
-        let colorSpace = CGColorSpaceCreateDeviceRGB();
-        
-        // Create a bitmap graphics context with the sample buffer data
-        let context = CGBitmapContextCreate(baseAddress, width, height, 8, bytesPerRow, colorSpace, CGBitmapInfo.ByteOrder32Little.rawValue | CGImageAlphaInfo.PremultipliedFirst.rawValue);
-        let quartzImage = CGBitmapContextCreateImage(context!)
-        
-        CVPixelBufferUnlockBaseAddress(imageBuffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)))
-        
-        // Create an image object from the Quartz image
-        let image = UIImage(CGImage:quartzImage!)
-        
-        return image
-    }
+    
     
     func captureOutput(captureOutput: AVCaptureOutput!, didDropSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
 //        print("DidDropSampleBuffer")

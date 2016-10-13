@@ -92,7 +92,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     
     override func update(currentTime: CFTimeInterval) {
         
-        if (UIApplication.sharedApplication().delegate as! AppDelegate).gameState == .inPlay && objectMissedCount > 120 {
+        if (UIApplication.sharedApplication().delegate as! AppDelegate).gameState == .inPlay && objectMissedCount > 4 {
             (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .postGame
             gameTimer.invalidate()
             self.removeAllChildren()
@@ -118,7 +118,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                 }
             }
         }
-
     }
     
     func triggerGameStart(mouth:[CGPoint]) -> Bool {
@@ -213,14 +212,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         self.addChild(curve)
     }
     
-    func pauseHandler(willPause: Bool) {
-        if willPause {
+    func updatePauseHandler(to state:GameState) {
+        if state == .paused {
+            (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .paused
             scene?.view?.paused = true
             print("pause game")
             gameTimer.invalidate()
-
-            sceneDelegate?.loadStopRecording()
         } else {
+            (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .inPlay
             scene?.view?.paused = false
             print("resume game")
             gameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)

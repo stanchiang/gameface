@@ -9,17 +9,11 @@
 import UIKit
 
 @UIApplicationMain
+
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var mouth = [CGPoint]()
-    
-    enum GameState:String {
-        case preGame
-        case inPlay
-        case paused
-        case postGame
-    }
 
     var gameState = GameState.preGame
     
@@ -29,5 +23,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         return true
     }
-
+    
+    func applicationWillResignActive(application: UIApplication) {
+        if gameState == .inPlay {
+            (window?.rootViewController as! ViewController).manager.togglePause()
+        }
+    }
 }

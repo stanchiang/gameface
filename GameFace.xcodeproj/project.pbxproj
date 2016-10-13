@@ -16,6 +16,7 @@
 		A5A1B2D41CEA35B300626AC5 /* libdlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A5A1B2D31CEA35B300626AC5 /* libdlib.a */; };
 		A5A1B2D61CEA41E200626AC5 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5A1B2D51CEA41E200626AC5 /* Accelerate.framework */; };
 		A5A1B2D81CEA431600626AC5 /* shape_predictor_68_face_landmarks.dat in Resources */ = {isa = PBXBuildFile; fileRef = A5A1B2D71CEA431600626AC5 /* shape_predictor_68_face_landmarks.dat */; };
+		F614CDD41DAFFDAA0061F7FA /* enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = F614CDD31DAFFDAA0061F7FA /* enum.swift */; };
 		F6339D921D590573006C4231 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6339D911D590573006C4231 /* GameScene.swift */; };
 		F6339D941D590587006C4231 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6339D931D590587006C4231 /* Helper.swift */; };
 		F6339DA71D5905C5006C4231 /* explosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = F6339D9B1D5905C5006C4231 /* explosion.sks */; };
@@ -40,6 +41,7 @@
 		A5A1B2D31CEA35B300626AC5 /* libdlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libdlib.a; path = lib/libdlib.a; sourceTree = "<group>"; };
 		A5A1B2D51CEA41E200626AC5 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		A5A1B2D71CEA431600626AC5 /* shape_predictor_68_face_landmarks.dat */ = {isa = PBXFileReference; lastKnownFileType = file; name = shape_predictor_68_face_landmarks.dat; path = lib/shape_predictor_68_face_landmarks.dat; sourceTree = "<group>"; };
+		F614CDD31DAFFDAA0061F7FA /* enum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = enum.swift; sourceTree = "<group>"; };
 		F6339D911D590573006C4231 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		F6339D931D590587006C4231 /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		F6339D9B1D5905C5006C4231 /* explosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = explosion.sks; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 			children = (
 				F6339DB31D5914C8006C4231 /* facialRec */,
 				A56695EF1CE8B34B00BD7EAF /* AppDelegate.swift */,
+				F614CDD31DAFFDAA0061F7FA /* enum.swift */,
 				A56695F11CE8B34B00BD7EAF /* ViewController.swift */,
 				A566961D1CE8B4A100BD7EAF /* SessionHandler.swift */,
 				F6339D951D5905A0006C4231 /* Game Code */,
@@ -216,6 +219,7 @@
 				A56695F21CE8B34B00BD7EAF /* ViewController.swift in Sources */,
 				F6B90FC81D6270FE00EC0338 /* GameManager.swift in Sources */,
 				A566961E1CE8B4A100BD7EAF /* SessionHandler.swift in Sources */,
+				F614CDD41DAFFDAA0061F7FA /* enum.swift in Sources */,
 				F66290F81DA9C4CF0030C11C /* head_pose_estimation.cpp in Sources */,
 				A56695F01CE8B34B00BD7EAF /* AppDelegate.swift in Sources */,
 				F6339D941D590587006C4231 /* Helper.swift in Sources */,

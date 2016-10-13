@@ -22,14 +22,16 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
     var scene:GameScene!
     var manager:GameManager!
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        print(self.view.frame)
+    var cameraImage:UIImageView!
+    
+    override func viewWillAppear(animated: Bool) {
         sessionHandler.openSession()
         self.view.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
         self.view.transform = CGAffineTransformScale(self.view.transform, 1, -1)
-
-        setupCameraLayer()
+        
+//        setupCameraLayer()
+        setupCameraImage()
+        
         setupGameLayer()
         setupGameManager()
         
@@ -37,15 +39,19 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
         manager.managerDelegate = scene
         manager.uikitDelegate = self
         
-        
         startRecording()
-
     }
     
     func setupCameraLayer(){
         let layer = sessionHandler.layer
         layer.frame = self.view.bounds
         self.view.layer.addSublayer(layer)
+    }
+    
+    func setupCameraImage(){
+        cameraImage = UIImageView()
+        cameraImage.frame = self.view.frame
+        self.view.addSubview(cameraImage)
     }
     
     func setupGameLayer() {
@@ -89,27 +95,28 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
     }
     
     func useTemporaryLayer() {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { [weak self] in
-            self!.mouth = (UIApplication.sharedApplication().delegate as! AppDelegate).mouth
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { [unowned self] in
+            self.mouth = (UIApplication.sharedApplication().delegate as! AppDelegate).mouth
             
-            (self!.shape == nil) ? self!.shape = CAShapeLayer() : self!.shape.removeFromSuperlayer()
+            (self.shape == nil) ? self.shape = CAShapeLayer() : self.shape.removeFromSuperlayer()
             
             let path = UIBezierPath()
-            for m in self!.mouth {
-                (m == self!.mouth.first!) ? path.moveToPoint(m) : path.addLineToPoint(m)
+            for m in self.mouth {
+                (m == self.mouth.first!) ? path.moveToPoint(m) : path.addLineToPoint(m)
             }
             
             path.closePath()
-            self!.shape.path = path.CGPath
-            self!.shape.fillColor = UIColor.greenColor().CGColor
+            self.shape.path = path.CGPath
+            self.shape.fillColor = UIColor.greenColor().CGColor
             
             dispatch_async(dispatch_get_main_queue()) {
-                self!.view.layer.addSublayer(self!.shape)
+                self.view.layer.addSublayer(self.shape)
             }
         })
     }
     
     func loadPostGameModal() {
+        stopRecording()
         print("loading post game modal")
     }
 
@@ -125,19 +132,24 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
         }
     }
 
-    
     func stopRecording() {
         
         let recorder = RPScreenRecorder.sharedRecorder()
         
-        recorder.stopRecordingWithHandler { [unowned self] (preview, error) in
-            if let previewView = preview {
+        recorder.stopRecordingWithHandler { [unowned self] (RPPreviewViewController, error) in
+            if let previewView = RPPreviewViewController {
                 previewView.previewControllerDelegate = self
                 self.presentViewController(previewView, animated: true, completion: nil)
             }
         }
     }
 
+    func previewController(previewController: RPPreviewViewController, didFinishWithActivityTypes activityTypes: Set<String>) {
+        dismissViewControllerAnimated(true) { 
+            print("dismissed")
+        }
+    }
+    
     func stopRecordingHandler() {
         stopRecording()
     }
