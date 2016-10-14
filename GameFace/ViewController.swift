@@ -114,12 +114,21 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
     func startRecording() {
         
         let recorder = RPScreenRecorder.sharedRecorder()
-        recorder.startRecordingWithMicrophoneEnabled(true) { [unowned self] (error) in
-            if let unwrappedError = error {
-                print(unwrappedError.localizedDescription)
-            } else {
-                print("called")
-                self.manager.instructions.text = "Open Mouth to Start Game"
+        while !recorder.available {
+            print("recorder not avaliable")
+            if recorder.available {
+                break
+            }
+        }
+        recorder.microphoneEnabled = true
+        if recorder.available && recorder.microphoneEnabled{
+            recorder.startRecordingWithMicrophoneEnabled(true) { [unowned self] (error) in
+                if let unwrappedError = error {
+                    print(unwrappedError.localizedDescription)
+                } else {
+                    print("called")
+                    self.manager.instructions.text = "Open Mouth to Start Game"
+                }
             }
         }
     }
@@ -130,20 +139,23 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
         self.scene.sceneDelegate = self.manager
         self.manager.managerDelegate = self.scene
         self.manager.uikitDelegate = self
-
+        (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .preGame
     }
     
     func stopRecording() {
         
         let recorder = RPScreenRecorder.sharedRecorder()
-        print("initiating stop recording")
-        recorder.stopRecordingWithHandler { [unowned self] (RPPreviewViewController, error) in
-            print("in completion handler")
-            if let previewView = RPPreviewViewController {
-                print("will transition to gameplay video")
-                previewView.previewControllerDelegate = self
-                self.presentViewController(previewView, animated: true, completion: nil)
-                self.sessionHandler.session.stopRunning()
+        recorder.microphoneEnabled = true
+        if recorder.available && recorder.microphoneEnabled {
+            print("initiating stop recording")
+            recorder.stopRecordingWithHandler { [unowned self] (RPPreviewViewController, error) in
+                print("in completion handler")
+                if let previewView = RPPreviewViewController {
+                    print("will transition to gameplay video")
+                    previewView.previewControllerDelegate = self
+                    self.presentViewController(previewView, animated: true, completion: nil)
+                    self.sessionHandler.session.stopRunning()
+                }
             }
         }
     }
@@ -151,12 +163,13 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
     func previewController(previewController: RPPreviewViewController, didFinishWithActivityTypes activityTypes: Set<String>) {
         dismissViewControllerAnimated(true) { [unowned self] in
 //            self.sessionHandler.session.startRunning()
-//            (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .preGame
+            
 ////            self.manager.timer.xScale = 1
 //            self.managerView.removeFromSuperview()
 //            self.gameView.removeFromSuperview()
 //            self.view.sendSubviewToBack(self.cameraImage)
 //            self.startRecording()
+            
             (UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController = ViewController()
         }
     }
