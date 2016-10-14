@@ -17,6 +17,7 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
     
     var mouth:[CGPoint]!
     
+    var gameView:UIView!
     var managerView:UIView!
     
     var scene:GameScene!
@@ -30,15 +31,9 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
         self.view.transform = CGAffineTransformScale(self.view.transform, 1, -1)
         
         setupCameraImage()
-        
-        setupGameLayer()
-        setupGameManager()
-        
-        scene.sceneDelegate = manager
-        manager.managerDelegate = scene
-        manager.uikitDelegate = self
-        
+        loadGame()
         startRecording()
+        
     }
 
     func setupCameraImage(){
@@ -48,11 +43,13 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
     }
     
     func setupGameLayer() {
-
+        gameView = UIView(frame: self.view.frame)
+        self.view.addSubview(gameView)
+        
         let skView = SKView(frame: view.frame)
         skView.allowsTransparency = true
 
-        self.view.addSubview(skView as UIView)
+        gameView.addSubview(skView as UIView)
 
 //        skView.showsFPS = true
 //        skView.showsNodeCount = true
@@ -117,15 +114,25 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
     func startRecording() {
         
         let recorder = RPScreenRecorder.sharedRecorder()
-        recorder.startRecordingWithMicrophoneEnabled(true) {(error) in
+        recorder.startRecordingWithMicrophoneEnabled(true) { [unowned self] (error) in
             if let unwrappedError = error {
                 print(unwrappedError.localizedDescription)
             } else {
                 print("called")
+                self.manager.instructions.text = "Open Mouth to Start Game"
             }
         }
     }
 
+    func loadGame(){
+        self.setupGameLayer()
+        self.setupGameManager()
+        self.scene.sceneDelegate = self.manager
+        self.manager.managerDelegate = self.scene
+        self.manager.uikitDelegate = self
+
+    }
+    
     func stopRecording() {
         
         let recorder = RPScreenRecorder.sharedRecorder()
@@ -143,7 +150,14 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
 
     func previewController(previewController: RPPreviewViewController, didFinishWithActivityTypes activityTypes: Set<String>) {
         dismissViewControllerAnimated(true) { [unowned self] in
-            self.sessionHandler.session.startRunning()
+//            self.sessionHandler.session.startRunning()
+//            (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .preGame
+////            self.manager.timer.xScale = 1
+//            self.managerView.removeFromSuperview()
+//            self.gameView.removeFromSuperview()
+//            self.view.sendSubviewToBack(self.cameraImage)
+//            self.startRecording()
+            (UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController = ViewController()
         }
     }
 

@@ -51,7 +51,7 @@ class GameManager: SKScene, GameSceneDelegate {
         instructions = SKLabelNode(fontNamed: "ArialRoundedMTBold")
         instructions.position = CGPoint(x: self.view!.frame.width / 2, y: self.frame.height - length * 2)
         instructions.horizontalAlignmentMode = .Center
-        instructions.text = "Open Mouth to Start Game"
+        instructions.text = "detecting face"
         instructions.fontColor = UIColor.blackColor()
         addChild(instructions)
     }

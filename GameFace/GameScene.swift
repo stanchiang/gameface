@@ -93,7 +93,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     }
     
     override func update(currentTime: CFTimeInterval) {
-        
+//        print((UIApplication.sharedApplication().delegate as! AppDelegate).gameState)
         if (UIApplication.sharedApplication().delegate as! AppDelegate).gameState == .inPlay && sceneDelegate?.getTimer() <= 0 {
             (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .postGame
             gameTimer.invalidate()
