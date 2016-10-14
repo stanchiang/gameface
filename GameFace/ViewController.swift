@@ -12,7 +12,7 @@ import AVFoundation
 import ReplayKit
 
 class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDelegate {
-    let sessionHandler = SessionHandler()
+    let cameraHandler = CameraHandler()
     var shape: CAShapeLayer!
     
     var mouth:[CGPoint]!
@@ -26,12 +26,11 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
     var cameraImage:UIImageView!
     
     override func viewDidLoad() {
-        sessionHandler.openSession()
+        cameraHandler.openSession()
         self.view.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
         self.view.transform = CGAffineTransformScale(self.view.transform, 1, -1)
         
         setupCameraImage()
-        loadGame()
         startRecording()
         
     }
@@ -108,7 +107,6 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
     func loadPostGameModal() {
         print("loading post game modal")
         stopRecording()
-        
     }
 
     func startRecording() {
@@ -127,7 +125,7 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
                     print(unwrappedError.localizedDescription)
                 } else {
                     print("called")
-                    self.manager.instructions.text = "Open Mouth to Start Game"
+                    self.loadGame()
                 }
             }
         }
@@ -140,10 +138,14 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
         self.manager.managerDelegate = self.scene
         self.manager.uikitDelegate = self
         (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .preGame
+        self.manager.instructions.text = "Open Mouth to Start Game"
     }
     
     func stopRecording() {
-        
+        self.cameraHandler.session.stopRunning()
+//        self.managerView.removeFromSuperview()
+//        self.gameView.removeFromSuperview()
+
         let recorder = RPScreenRecorder.sharedRecorder()
         recorder.microphoneEnabled = true
         if recorder.available && recorder.microphoneEnabled {
@@ -154,7 +156,7 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
                     print("will transition to gameplay video")
                     previewView.previewControllerDelegate = self
                     self.presentViewController(previewView, animated: true, completion: nil)
-                    self.sessionHandler.session.stopRunning()
+                    
                 }
             }
         }

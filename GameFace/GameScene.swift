@@ -34,6 +34,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     
     var backImg:UIImage!
     var frontImg:UIImage!
+    
+    var lastState:GameState = .postGame
 
     override func didMoveToView(view: SKView) {
         setupInterface()
@@ -93,7 +95,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     }
     
     override func update(currentTime: CFTimeInterval) {
-        print((UIApplication.sharedApplication().delegate as! AppDelegate).gameState)
+        if lastState != (UIApplication.sharedApplication().delegate as! AppDelegate).gameState {
+            lastState = (UIApplication.sharedApplication().delegate as! AppDelegate).gameState
+            print(lastState)
+        }
+        
         if (UIApplication.sharedApplication().delegate as! AppDelegate).gameState == .inPlay && sceneDelegate?.getTimer() <= 0 {
             (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .postGame
             gameTimer.invalidate()
@@ -116,7 +122,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             if !mouth.isEmpty && mouth.first!.x != 0 && mouth.first!.y != 0 {
                 //        create player position and draw shape based on mouth array
                 if polygonNode != nil { polygonNode.removeFromParent() }
-                if checkMouth(mouth, dist: 10){
+                if checkMouth(mouth, dist: 5){
                     addMouth(mouth)
                     sceneDelegate?.updateTimer(-0.006)
                 }else {
@@ -134,13 +140,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         return false
     }
     
-    func checkMouth(mouth:[CGPoint], dist:Int) -> Bool{
+    func checkMouth(mouth:[CGPoint], dist:Float) -> Bool{
         if !mouth.isEmpty && mouth.first!.x != 0 && mouth.first!.y != 0 {
             let p1 = mouth[2]
             let p2 = mouth[6]
             let distance = hypotf(Float(p1.x) - Float(p2.x), Float(p1.y) - Float(p2.y));
 //            print(distance)
-            if distance > 25 {
+            if distance > dist {
                 return true
             }
         }

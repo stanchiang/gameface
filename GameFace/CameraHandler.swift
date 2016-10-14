@@ -8,7 +8,7 @@
 
 import AVFoundation
 
-class SessionHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureMetadataOutputObjectsDelegate, DlibWrapperDelegate {
+class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureMetadataOutputObjectsDelegate, DlibWrapperDelegate {
     var session = AVCaptureSession()
     let layer = AVSampleBufferDisplayLayer()
     let sampleQueue = dispatch_queue_create("com.zweigraf.DisplayLiveSamples.sampleQueue", DISPATCH_QUEUE_SERIAL)
