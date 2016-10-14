@@ -128,6 +128,8 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
                     self.loadGame()
                 }
             }
+        }else {
+            print("can't start recorder or microphone not avaliable")
         }
     }
 
@@ -159,6 +161,8 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
                     
                 }
             }
+        }else {
+            print("can't stop recorder or microphone not avaliable")
         }
     }
 
@@ -175,5 +179,4 @@ class ViewController: UIViewController, RPPreviewViewControllerDelegate, UIKitDe
             (UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController = ViewController()
         }
     }
-
 }

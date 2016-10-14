@@ -43,8 +43,13 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         
         self.items.addObjectsFromArray(["Card #1"])
         self.items.addObjectsFromArray(["Card #2"])
-        self.items.addObjectsFromArray(["Card #3"])
         self.view.addSubview(self.collectionView)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        collectionView.layoutIfNeeded()
+        
+        collectionView.scrollToItemAtIndexPath(NSIndexPath(forItem: 1, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.None, animated: false)
     }
     
     var previousScrollViewYOffset:CGFloat = 0.0
