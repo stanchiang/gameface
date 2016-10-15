@@ -122,9 +122,10 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     }
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-        if (UIApplication.sharedApplication().delegate as! AppDelegate).gameState == .inPlay {
-            scene.updatePauseHandler(to: .paused)
-        }
+        resetGame()
+//        if (UIApplication.sharedApplication().delegate as! AppDelegate).gameState == .inPlay {
+//            scene.updatePauseHandler(to: .paused)
+//        }
     }
     
     //MARK: Basketball SpriteKit methods
@@ -170,6 +171,15 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     }
     
     func resetGame() {
+        (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .postGame
+        self.scene.removeAllChildren()
+        
+        self.cameraHandler.session.stopRunning()
+        if scene.gameTimer != nil {
+            self.scene.gameTimer.invalidate()
+        }
+        
+        
         managerView.removeFromSuperview()
         gameView.removeFromSuperview()
         
@@ -192,11 +202,6 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     //MARK: custom UIKitDelegate
     func loadPostGameModal() {
         print("load post game modal")
-        (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .postGame
-        self.scene.removeAllChildren()
-        
-        self.cameraHandler.session.stopRunning()
-        self.scene.gameTimer.invalidate()
         self.resetGame()
     }
 

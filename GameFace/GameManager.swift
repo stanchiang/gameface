@@ -42,7 +42,7 @@ class GameManager: SKScene, GameSceneDelegate {
         let offset:CGFloat = 3
         
         addScore(length, offset: offset)
-        addPause(length)
+//        addPause(length)
         addTimer(length)
         addInstructions(length)
 
