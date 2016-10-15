@@ -26,6 +26,7 @@
 		F669C0391DB15C3D001161E1 /* GameGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = F669C0381DB15C3D001161E1 /* GameGallery.swift */; };
 		F669C03C1DB1698D001161E1 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F669C03A1DB1698D001161E1 /* CardView.swift */; };
 		F669C03D1DB1698D001161E1 /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F669C03B1DB1698D001161E1 /* CustomCollectionViewCell.swift */; };
+		F6772BC01DB207AC00328961 /* DebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6772BBF1DB207AC00328961 /* DebugView.swift */; };
 		F6B90FC81D6270FE00EC0338 /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B90FC71D6270FE00EC0338 /* GameManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -55,6 +56,7 @@
 		F669C0381DB15C3D001161E1 /* GameGallery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameGallery.swift; sourceTree = "<group>"; };
 		F669C03A1DB1698D001161E1 /* CardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		F669C03B1DB1698D001161E1 /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
+		F6772BBF1DB207AC00328961 /* DebugView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugView.swift; sourceTree = "<group>"; };
 		F6B90FC71D6270FE00EC0338 /* GameManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -148,6 +150,7 @@
 				F669C03A1DB1698D001161E1 /* CardView.swift */,
 				F669C03B1DB1698D001161E1 /* CustomCollectionViewCell.swift */,
 				F669C0381DB15C3D001161E1 /* GameGallery.swift */,
+				F6772BBF1DB207AC00328961 /* DebugView.swift */,
 			);
 			name = collectionView;
 			sourceTree = "<group>";
@@ -228,6 +231,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6772BC01DB207AC00328961 /* DebugView.swift in Sources */,
 				F6339D921D590573006C4231 /* GameScene.swift in Sources */,
 				A5A1B2D21CEA317B00626AC5 /* DlibWrapper.mm in Sources */,
 				F6B90FC81D6270FE00EC0338 /* GameManager.swift in Sources */,

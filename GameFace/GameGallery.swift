@@ -7,10 +7,9 @@
 //
 
 import UIKit
-import ReplayKit
 import SpriteKit
 
-class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate, UIKitDelegate, RPPreviewViewControllerDelegate {
+class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate, UIKitDelegate {
     lazy var collectionView:UICollectionView = {
         var cv = UICollectionView(frame: self.view.bounds, collectionViewLayout: self.flowLayout)
         cv.delegate = self
@@ -49,7 +48,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.hideKeyboardWhenTappedAround()
         cameraHandler.openSession()
         setupCameraImage()
         
@@ -91,6 +90,11 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as! CustomCollectionViewCell
+        
+        if indexPath.row == 0 {
+            cell.contentView.addSubview(DebugView(frame: self.view.frame))
+        }
+        
         if indexPath.row == 1 {
             cell.contentView.addSubview(setupGameLayer())
             cell.contentView.addSubview(setupGameManager())
@@ -113,6 +117,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         if (UIApplication.sharedApplication().delegate as! AppDelegate).gameState == .inPlay {
             scene.updatePauseHandler(to: .paused)
+            
         }
     }
     
@@ -188,26 +193,5 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         self.scene.gameTimer.invalidate()
         self.resetGame()
     }
-    
-    //MARK: debug mode
-    func useTemporaryLayer() {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { [unowned self] in
-            self.mouth = (UIApplication.sharedApplication().delegate as! AppDelegate).mouth
-            
-            (self.shape == nil) ? self.shape = CAShapeLayer() : self.shape.removeFromSuperlayer()
-            
-            let path = UIBezierPath()
-            for m in self.mouth {
-                (m == self.mouth.first!) ? path.moveToPoint(m) : path.addLineToPoint(m)
-            }
-            
-            path.closePath()
-            self.shape.path = path.CGPath
-            self.shape.fillColor = UIColor.greenColor().CGColor
-            
-            dispatch_async(dispatch_get_main_queue()) {
-                self.view.layer.addSublayer(self.shape)
-            }
-        })
-    }
+
 }
