@@ -14,7 +14,7 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate, MFMessageComposeV
     var dict = [String:[String:Double]]()
     var prevView:UIView!
     let spacer:CGFloat = 15
-    let messageVC = MFMessageComposeViewController()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -56,19 +56,20 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate, MFMessageComposeV
         let smsButton:UIButton = UIButton(frame: CGRectMake(0,400,300,100))
         smsButton.addTarget(self, action: #selector(sendText(_:)), forControlEvents: .TouchUpInside)
         smsButton.setTitle("report config", forState: .Normal)
-//        self.addSubview(smsButton)
+        self.addSubview(smsButton)
         
     }
     
     func sendText(sender:UIButton) {
+        var bodyText = "config: "
         for view in subviews {
             if view is UIStepper {
-//                messageVC.body += "(\((view as! UIStepper).tag), \((view as! UIStepper).value)  "
+                bodyText += "(\((view as! UIStepper).tag), \((view as! UIStepper).value)) "
             }
         }
 
-        
-        
+        let messageVC = MFMessageComposeViewController()
+        messageVC.body = bodyText
         messageVC.recipients = ["3143230873"]
         messageVC.messageComposeDelegate = self;
         
@@ -170,7 +171,6 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate, MFMessageComposeV
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
 }
 
 extension UIViewController {
