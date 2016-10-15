@@ -116,7 +116,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         }
     }
     
-    //MARK: Basketball SpriteKit setup methods
+    //MARK: Basketball SpriteKit methods
     func setupGameLayer() -> UIView {
         gameView = UIView(frame: self.view.frame)
         gameView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
@@ -156,6 +156,19 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         manager.backgroundColor = UIColor.clearColor()
         skView.presentScene(manager)
         return managerView
+    }
+    
+    func resetGame() {
+        managerView.removeFromSuperview()
+        gameView.removeFromSuperview()
+        
+        self.collectionView.reloadData()
+        setupGameLayer()
+        setupGameManager()
+        
+        (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .preGame
+        self.manager.timer.xScale = 1.0
+        self.cameraHandler.session.startRunning()
     }
     
     //MARK: ReplayKit recording handlers
@@ -216,6 +229,9 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     func previewController(previewController: RPPreviewViewController, didFinishWithActivityTypes activityTypes: Set<String>) {
         dismissViewControllerAnimated(true) { [unowned self] in
             print("dismissed")
+            
+            //reset game-in the future the copy will express some continuation of the last round - like top you last score...
+            self.resetGame()
         }
     }
     
