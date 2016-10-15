@@ -108,9 +108,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         }
         
         if (UIApplication.sharedApplication().delegate as! AppDelegate).gameState == .inPlay && sceneDelegate?.getTimer() <= 0 {
-            (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .postGame
-            gameTimer.invalidate()
-            self.removeAllChildren()
             sceneDelegate?.loadPostGame()
         }
         

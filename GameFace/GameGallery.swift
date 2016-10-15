@@ -171,74 +171,22 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         self.cameraHandler.session.startRunning()
     }
     
-    //MARK: ReplayKit recording handlers
     func startRecording() {
-        self.scene.alreadyStarting = true
-        
-        let recorder = RPScreenRecorder.sharedRecorder()
-        while !recorder.available {
-            self.scene.alreadyStarting = false
-            print("recorder not avaliable")
-            if recorder.available {
-                break
-            }
-        }
-        recorder.microphoneEnabled = true
-        if recorder.available && recorder.microphoneEnabled{
-            recorder.startRecordingWithMicrophoneEnabled(true) { [unowned self] (error) in
-                if let unwrappedError = error {
-                    self.scene.alreadyStarting = false
-                    print("uh, oh - game error \(unwrappedError.localizedDescription)")
-                } else {
-                    print("called")
-                    
-                    //start basketball drops and mouth sprite updates
-                    (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .inPlay
-                    self.scene.alreadyStarting = false
-                    self.scene.addGameTimer()
-                    
-                }
-            }
-        }else {
-            print("can't start recorder or microphone not avaliable")
-            self.scene.alreadyStarting = false
-        }
-    }
-    
-    func stopRecording() {
-        self.cameraHandler.session.stopRunning()
-        self.scene.gameTimer.invalidate()
-        
-        let recorder = RPScreenRecorder.sharedRecorder()
-        recorder.microphoneEnabled = true
-        if recorder.available && recorder.microphoneEnabled {
-            print("initiating stop recording")
-            recorder.stopRecordingWithHandler { [unowned self] (RPPreviewViewController, error) in
-                print("in completion handler")
-                if let previewView = RPPreviewViewController {
-                    print("will transition to gameplay video")
-                    previewView.previewControllerDelegate = self
-                    self.presentViewController(previewView, animated: true, completion: nil)   
-                }
-            }
-        }else {
-            print("can't stop recorder or microphone not avaliable")
-        }
-    }
-    
-    func previewController(previewController: RPPreviewViewController, didFinishWithActivityTypes activityTypes: Set<String>) {
-        dismissViewControllerAnimated(true) { [unowned self] in
-            print("dismissed")
-            
-            //reset game-in the future the copy will express some continuation of the last round - like top you last score...
-            self.resetGame()
-        }
+        //start basketball drops and mouth sprite updates
+        (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .inPlay
+        self.scene.alreadyStarting = false
+        self.scene.addGameTimer()
     }
     
     //MARK: custom UIKitDelegate
     func loadPostGameModal() {
         print("load post game modal")
-        stopRecording()
+        (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .postGame
+        self.scene.removeAllChildren()
+        
+        self.cameraHandler.session.stopRunning()
+        self.scene.gameTimer.invalidate()
+        self.resetGame()
     }
     
     //MARK: debug mode
