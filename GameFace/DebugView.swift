@@ -7,13 +7,14 @@
 //
 
 import UIKit
+import MessageUI
 
-class DebugView: UIView, UITextFieldDelegate, GameVarDelegate {
+class DebugView: UIView, UITextFieldDelegate, GameVarDelegate, MFMessageComposeViewControllerDelegate {
 
     var dict = [String:[String:Double]]()
     var prevView:UIView!
     let spacer:CGFloat = 15
-    
+    let messageVC = MFMessageComposeViewController()
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -30,7 +31,7 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate {
             let input = UITextField()
             input.translatesAutoresizingMaskIntoConstraints = false
             input.delegate = self
-            input.keyboardType = UIKeyboardType.NumberPad
+            input.keyboardType = UIKeyboardType.DecimalPad
             input.backgroundColor = UIColor.whiteColor()
             input.text = "\(option.1["value"]!)"
             addSubview(input)
@@ -52,6 +53,31 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate {
             
         }
         
+        let smsButton:UIButton = UIButton(frame: CGRectMake(0,400,300,100))
+        smsButton.addTarget(self, action: #selector(sendText(_:)), forControlEvents: .TouchUpInside)
+        smsButton.setTitle("report config", forState: .Normal)
+//        self.addSubview(smsButton)
+        
+    }
+    
+    func sendText(sender:UIButton) {
+        for view in subviews {
+            if view is UIStepper {
+//                messageVC.body += "(\((view as! UIStepper).tag), \((view as! UIStepper).value)  "
+            }
+        }
+
+        
+        
+        messageVC.recipients = ["3143230873"]
+        messageVC.messageComposeDelegate = self;
+        
+        (window?.rootViewController as! GameGallery).presentViewController(messageVC, animated: true, completion: nil)
+
+    }
+    
+    func messageComposeViewController(controller: MFMessageComposeViewController, didFinishWithResult result: MessageComposeResult) {
+        controller.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func stepperValueChanged(sender:UIStepper!) {
@@ -73,6 +99,35 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate {
             }
         }
         return 25.0
+    }
+    
+    func getOpenMouthDrainRate() -> Double {
+        for view in subviews {
+            if view is UIStepper && view.tag == 1 {
+                return (view as! UIStepper).value
+            }
+        }
+        return 6.0
+    }
+    
+    
+    func getClosedMouthDrainRate() -> Double {
+        for view in subviews {
+            if view is UIStepper && view.tag == 2 {
+                return (view as! UIStepper).value
+            }
+        }
+        return 2.0
+    }
+    
+    func getGameScoreBonus() -> Double {
+        for view in subviews {
+            if view is UIStepper && view.tag == 3 {
+                return (view as! UIStepper).value
+            }
+        }
+        return 1.0
+
     }
     
     func setDelegate(scene:GameScene) {
@@ -107,8 +162,9 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate {
     
     func loadDict() {
         dict.updateValue(["tag":0,"value":25,"min":0,"max":50,"step":1], forKey: "start game mouth open distance")
-        dict.updateValue(["tag":1,"value":16,"min":1,"max":51,"step":1], forKey: "open mouth drain rate")
-        dict.updateValue(["tag":2,"value":17,"min":2,"max":52,"step":1], forKey: "closed mouth drain rate")
+        dict.updateValue(["tag":1,"value":6,"min":0,"max":20,"step":1], forKey: "open mouth drain rate")
+        dict.updateValue(["tag":2,"value":1,"min":0,"max":20,"step":1], forKey: "closed mouth drain rate")
+        dict.updateValue(["tag":3,"value":2,"min":0,"max":10,"step":1], forKey: "game score bonus")
     }
     
     required init?(coder aDecoder: NSCoder) {

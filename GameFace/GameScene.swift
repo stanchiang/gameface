@@ -19,6 +19,9 @@ protocol GameSceneDelegate: class {
 
 protocol GameVarDelegate: class {
     func getGameStartMouthDist() -> Float
+    func getOpenMouthDrainRate() -> Double
+    func getClosedMouthDrainRate() -> Double
+    func getGameScoreBonus() -> Double
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
@@ -98,6 +101,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                 object.categoryBitMask = 4
                 thing.removeFromParent()
                 sceneDelegate?.updateScore(100)
+                sceneDelegate?.updateTimer((gameVarDelegate?.getGameScoreBonus())! / 10.0)
             }
         }
     }
@@ -132,16 +136,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                 if polygonNode != nil { polygonNode.removeFromParent() }
                 if checkMouth(mouth, dist: 5){
                     addMouth(mouth)
-                    sceneDelegate?.updateTimer(-0.006)
+                    sceneDelegate?.updateTimer((gameVarDelegate?.getOpenMouthDrainRate())! * -1.0 / 1000)
                 }else {
-                    sceneDelegate?.updateTimer(-0.002)
+                    sceneDelegate?.updateTimer((gameVarDelegate?.getClosedMouthDrainRate())! * -1.0 / 1000)
                 }
             }
         }
     }
     
     func triggerGameStart(mouth:[CGPoint]) -> Bool {
-        if checkMouth(mouth, dist: (gameVarDelegate?.getGameStartMouthDist())!) {
+        guard ((gameVarDelegate?.getGameStartMouthDist()) != nil) else {
+            return false
+        }
+        if (UIApplication.sharedApplication().delegate as! AppDelegate).currentCell == 1 && checkMouth(mouth, dist: (gameVarDelegate?.getGameStartMouthDist())!) {
             return true
         }
         return false

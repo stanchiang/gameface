@@ -56,7 +56,6 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         
         debugView = DebugView(frame: self.view.frame)
         
-        
         self.items.addObjectsFromArray(["Card #1"])
         self.items.addObjectsFromArray(["Card #2"])
         self.view.addSubview(self.collectionView)
@@ -74,6 +73,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     override func viewDidLayoutSubviews() {
         collectionView.layoutIfNeeded()
         collectionView.scrollToItemAtIndexPath(NSIndexPath(forItem: 1, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.None, animated: false)
+        (UIApplication.sharedApplication().delegate as! AppDelegate).currentCell = 1
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize{
@@ -128,6 +128,20 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
 //        }
     }
     
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        if collectionView.visibleCells().count == 1 {
+            for cell in collectionView.visibleCells() {
+                let cell = cell as! CustomCollectionViewCell
+                if collectionView.indexPathForCell(cell)!.row == 0 {
+                    cameraHandler.session.stopRunning()
+                } else {
+                    cameraHandler.session.startRunning()
+                }
+                (UIApplication.sharedApplication().delegate as! AppDelegate).currentCell = collectionView.indexPathForCell(cell)!.row
+            }
+        }
+    }
+    
     //MARK: Basketball SpriteKit methods
     func setupGameLayer() -> UIView {
         gameView = UIView(frame: self.view.frame)
@@ -178,7 +192,6 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         if scene.gameTimer != nil {
             self.scene.gameTimer.invalidate()
         }
-        
         
         managerView.removeFromSuperview()
         gameView.removeFromSuperview()

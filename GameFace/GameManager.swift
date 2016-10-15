@@ -89,11 +89,13 @@ class GameManager: SKScene, GameSceneDelegate {
     
     func updateScore(points:Int) {
         score += points
-        timer.xScale += 0.1
     }
     
-    func updateTimer(countDown: Double) {
-        timer.xScale += CGFloat(countDown)
+    func updateTimer(rate: Double) {
+        timer.xScale += CGFloat(rate)
+        if timer.xScale > 1.0 {
+            timer.xScale = 1.0
+        }
     }
     
     func getTimer() -> Double {
