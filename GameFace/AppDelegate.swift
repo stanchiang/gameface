@@ -25,8 +25,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationWillResignActive(application: UIApplication) {
-        if gameState == .inPlay {
-            (window?.rootViewController as! GameGallery).manager.togglePause()
-        }
+//        if gameState == .inPlay {
+//            (window?.rootViewController as! GameGallery).manager.togglePause()
+//        }
+        
+        (window?.rootViewController as! GameGallery).resetGame()
     }
 }
