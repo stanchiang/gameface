@@ -19,7 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
-//        window?.rootViewController = ViewController()
         window?.rootViewController = GameGallery()
         window?.makeKeyAndVisible()
         return true
@@ -27,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillResignActive(application: UIApplication) {
         if gameState == .inPlay {
-            (window?.rootViewController as! ViewController).manager.togglePause()
+            (window?.rootViewController as! GameGallery).manager.togglePause()
         }
     }
 }

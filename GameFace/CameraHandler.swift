@@ -11,8 +11,8 @@ import AVFoundation
 class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureMetadataOutputObjectsDelegate, DlibWrapperDelegate {
     var session = AVCaptureSession()
     let layer = AVSampleBufferDisplayLayer()
-    let sampleQueue = dispatch_queue_create("com.zweigraf.DisplayLiveSamples.sampleQueue", DISPATCH_QUEUE_SERIAL)
-    let faceQueue = dispatch_queue_create("com.zweigraf.DisplayLiveSamples.faceQueue", DISPATCH_QUEUE_SERIAL)
+    let sampleQueue = dispatch_queue_create("com.stan.gameface.sampleQueue", DISPATCH_QUEUE_SERIAL)
+    let faceQueue = dispatch_queue_create("com.stan.gameface.faceQueue", DISPATCH_QUEUE_SERIAL)
     let wrapper = DlibWrapper()
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var currentMetadata: [AnyObject]
@@ -80,7 +80,7 @@ class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AV
         let cameraImage = CIImage(CVPixelBuffer: pixelBuffer!)
         
         dispatch_async(dispatch_get_main_queue()){
-            ((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController as! ViewController).cameraImage.image = UIImage(CIImage: cameraImage)
+            ((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController as! GameGallery).cameraImage.image = UIImage(CIImage: cameraImage)
         }
     }
     
@@ -99,6 +99,6 @@ class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AV
         appDelegate.mouth = vertices.map({$0.CGPointValue()})
         
         //testing coordinates from dlib before i pass to gamescene; should be the same as gamescene sprite but more laggy
-        //        (appDelegate.window?.rootViewController as! ViewController).useTemporaryLayer()
+//        (appDelegate.window?.rootViewController as! GameGallery).useTemporaryLayer()
     }
 }

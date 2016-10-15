@@ -14,7 +14,7 @@ protocol GameSceneDelegate: class {
     func getTimer() -> Double
     func hideInstructions()
     func loadPostGame()
-    
+    func startRecordingGamePlay()
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
@@ -36,7 +36,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     var frontImg:UIImage!
     
     var lastState:GameState = .postGame
-
+    
+    var alreadyStarting = false
+    
     override func didMoveToView(view: SKView) {
         setupInterface()
     }
@@ -95,6 +97,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     }
     
     override func update(currentTime: CFTimeInterval) {
+        
+        if alreadyStarting {
+            return
+        }
+        
         if lastState != (UIApplication.sharedApplication().delegate as! AppDelegate).gameState {
             lastState = (UIApplication.sharedApplication().delegate as! AppDelegate).gameState
             print(lastState)
@@ -109,15 +116,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         
         let mouth = (UIApplication.sharedApplication().delegate as! AppDelegate).mouth
         if (UIApplication.sharedApplication().delegate as! AppDelegate).gameState == .preGame {
-            // detect open mouth to kick of gameTimer and start game
             if triggerGameStart(mouth) {
-                (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .inPlay
-                gameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
+                sceneDelegate?.hideInstructions()
+                sceneDelegate?.startRecordingGamePlay()
             }
         }
         
         if (UIApplication.sharedApplication().delegate as! AppDelegate).gameState == .inPlay {
-            
             //        if we have data to work with
             if !mouth.isEmpty && mouth.first!.x != 0 && mouth.first!.y != 0 {
                 //        create player position and draw shape based on mouth array
@@ -134,7 +139,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     
     func triggerGameStart(mouth:[CGPoint]) -> Bool {
         if checkMouth(mouth, dist: 25) {
-            sceneDelegate?.hideInstructions()
             return true
         }
         return false
@@ -234,7 +238,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .inPlay
             scene?.view?.paused = false
             print("resume game")
-            gameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
+            addGameTimer()
         }
+    }
+    
+    func addGameTimer(){
+        gameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
     }
 }

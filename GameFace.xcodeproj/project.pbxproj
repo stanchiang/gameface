@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		A56695F01CE8B34B00BD7EAF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56695EF1CE8B34B00BD7EAF /* AppDelegate.swift */; };
-		A56695F21CE8B34B00BD7EAF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56695F11CE8B34B00BD7EAF /* ViewController.swift */; };
 		A56695F71CE8B34B00BD7EAF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A56695F61CE8B34B00BD7EAF /* Assets.xcassets */; };
 		A56695FA1CE8B34B00BD7EAF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A56695F81CE8B34B00BD7EAF /* LaunchScreen.storyboard */; };
 		A566961E1CE8B4A100BD7EAF /* CameraHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A566961D1CE8B4A100BD7EAF /* CameraHandler.swift */; };
@@ -33,7 +32,6 @@
 /* Begin PBXFileReference section */
 		A56695EC1CE8B34B00BD7EAF /* GameFace.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameFace.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A56695EF1CE8B34B00BD7EAF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A56695F11CE8B34B00BD7EAF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A56695F61CE8B34B00BD7EAF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A56695F91CE8B34B00BD7EAF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A56695FB1CE8B34B00BD7EAF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -96,7 +94,6 @@
 				F6339DB31D5914C8006C4231 /* facialRec */,
 				A56695EF1CE8B34B00BD7EAF /* AppDelegate.swift */,
 				F614CDD31DAFFDAA0061F7FA /* enum.swift */,
-				A56695F11CE8B34B00BD7EAF /* ViewController.swift */,
 				A566961D1CE8B4A100BD7EAF /* CameraHandler.swift */,
 				F669C03E1DB16994001161E1 /* collectionView */,
 				F6339D951D5905A0006C4231 /* Game Code */,
@@ -233,7 +230,6 @@
 			files = (
 				F6339D921D590573006C4231 /* GameScene.swift in Sources */,
 				A5A1B2D21CEA317B00626AC5 /* DlibWrapper.mm in Sources */,
-				A56695F21CE8B34B00BD7EAF /* ViewController.swift in Sources */,
 				F6B90FC81D6270FE00EC0338 /* GameManager.swift in Sources */,
 				A566961E1CE8B4A100BD7EAF /* CameraHandler.swift in Sources */,
 				F614CDD41DAFFDAA0061F7FA /* enum.swift in Sources */,

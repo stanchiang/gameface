@@ -14,6 +14,7 @@ protocol GameManagerDelegate: class {
 
 protocol UIKitDelegate: class {
     func loadPostGameModal()
+    func startRecording()
 }
 
 class GameManager: SKScene, GameSceneDelegate {
@@ -51,7 +52,7 @@ class GameManager: SKScene, GameSceneDelegate {
         instructions = SKLabelNode(fontNamed: "ArialRoundedMTBold")
         instructions.position = CGPoint(x: self.view!.frame.width / 2, y: self.frame.height - length * 2)
         instructions.horizontalAlignmentMode = .Center
-        instructions.text = "detecting face"
+        instructions.text = "loading..."
         instructions.fontColor = UIColor.blackColor()
         addChild(instructions)
     }
@@ -98,6 +99,7 @@ class GameManager: SKScene, GameSceneDelegate {
     func getTimer() -> Double {
         return Double(timer.xScale)
     }
+    
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         // Loop over all the touches in this event
         for touch: AnyObject in touches {
@@ -131,5 +133,8 @@ class GameManager: SKScene, GameSceneDelegate {
     func loadPostGame() {
         uikitDelegate?.loadPostGameModal()
     }
-
+    
+    func startRecordingGamePlay() {
+        uikitDelegate?.startRecording()
+    }
 }
