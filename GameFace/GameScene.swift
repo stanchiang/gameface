@@ -17,9 +17,15 @@ protocol GameSceneDelegate: class {
     func startRecordingGamePlay()
 }
 
+protocol GameVarDelegate: class {
+    func getGameStartMouthDist() -> Float
+}
+
 class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     
     weak var sceneDelegate:GameSceneDelegate?
+    weak var gameVarDelegate:GameVarDelegate?
+    
     let colorArray = [UIColor.greenColor(), UIColor.blackColor(), UIColor.blueColor(), UIColor.redColor(), UIColor.orangeColor(), UIColor.cyanColor(), UIColor.magentaColor(), UIColor.purpleColor(), UIColor.yellowColor()]
     var chosenColor = 0
     var polygonNode:SKSpriteNode!
@@ -52,16 +58,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     func setupNew() {
         let start = CGPointMake(RandomCGFloat(0, max: self.frame.width), self.frame.height)
         let end = CGPointMake(RandomCGFloat(self.frame.width * 1/5, max: self.frame.width * 4/5), 0)
-        
-        createNew(view!, fromPoint: start, toPoint: end)
+        print("start \(start) | end \(end)")
+        createNew(fromPoint: start, toPoint: end)
     }
     
-    func createNew(view : SKView, fromPoint start : CGPoint, toPoint end: CGPoint) {
+    func createNew(fromPoint start : CGPoint, toPoint end: CGPoint) {
         //1 is good 2 is bad
 //        let rand = RandomInt(1, max: 2)
         let rand = 1
         let sprite = SKSpriteNode(imageNamed: possibleEnemies[rand])
-        let path = arcBetweenPoints(view, fromPoint: start, toPoint: end)
+        let path = arcBetweenPoints(fromPoint: start, toPoint: end)
         let followArc = SKAction.followPath(path, asOffset: false, orientToPath: true, duration: 1)
         
         sprite.position = start
@@ -135,7 +141,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     }
     
     func triggerGameStart(mouth:[CGPoint]) -> Bool {
-        if checkMouth(mouth, dist: 25) {
+        if checkMouth(mouth, dist: (gameVarDelegate?.getGameStartMouthDist())!) {
             return true
         }
         return false
@@ -191,7 +197,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
 
     }
     
-    func arcBetweenPoints(view : SKView, fromPoint start : CGPoint, toPoint end: CGPoint) -> CGPath {
+    func arcBetweenPoints(fromPoint start : CGPoint, toPoint end: CGPoint) -> CGPath {
         
         // Animation's path
         let path = UIBezierPath()

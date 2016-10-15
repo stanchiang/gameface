@@ -46,11 +46,16 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     var shape: CAShapeLayer!
     var mouth:[CGPoint]!
     
+    var debugView:DebugView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideKeyboardWhenTappedAround()
         cameraHandler.openSession()
         setupCameraImage()
+        
+        debugView = DebugView(frame: self.view.frame)
+        
         
         self.items.addObjectsFromArray(["Card #1"])
         self.items.addObjectsFromArray(["Card #2"])
@@ -92,7 +97,8 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as! CustomCollectionViewCell
         
         if indexPath.row == 0 {
-            cell.contentView.addSubview(DebugView(frame: self.view.frame))
+            cell.contentView.addSubview(debugView)
+            
         }
         
         if indexPath.row == 1 {
@@ -100,6 +106,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
             cell.contentView.addSubview(setupGameManager())
             
             scene.sceneDelegate = manager
+            scene.gameVarDelegate = debugView
             manager.managerDelegate = scene
             manager.uikitDelegate = self
             
@@ -117,7 +124,6 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         if (UIApplication.sharedApplication().delegate as! AppDelegate).gameState == .inPlay {
             scene.updatePauseHandler(to: .paused)
-            
         }
     }
     

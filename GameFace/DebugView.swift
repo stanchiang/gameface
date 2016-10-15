@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DebugView: UIView, UITextFieldDelegate {
+class DebugView: UIView, UITextFieldDelegate, GameVarDelegate {
 
     var dict = [String:[String:Double]]()
     var prevView:UIView!
@@ -37,7 +37,7 @@ class DebugView: UIView, UITextFieldDelegate {
             
             let stepper = UIStepper()
             stepper.translatesAutoresizingMaskIntoConstraints = false
-            
+            stepper.tag = Int(option.1["tag"]!)
             stepper.value = option.1["value"]!
             stepper.minimumValue = option.1["min"]!
             stepper.maximumValue = option.1["max"]!
@@ -54,8 +54,7 @@ class DebugView: UIView, UITextFieldDelegate {
         
     }
     
-    func stepperValueChanged(sender:UIStepper!)
-    {
+    func stepperValueChanged(sender:UIStepper!) {
         let indexOfInput = subviews.indexOf(sender)! - 1
         (subviews[indexOfInput] as! UITextField).text = "\(sender.value)"
     }
@@ -63,7 +62,21 @@ class DebugView: UIView, UITextFieldDelegate {
     func textFieldDidEndEditing(textField: UITextField) {
         let indexOfStepper = subviews.indexOf(textField)! + 1
         print(Double(textField.text!)!)
-        (subviews[indexOfStepper] as! UIStepper).value = Double(textField.text!)!
+        let stepper = (subviews[indexOfStepper] as! UIStepper)
+        stepper.value = Double(textField.text!)!
+    }
+    
+    func getGameStartMouthDist() -> Float {
+        for view in subviews {
+            if view is UIStepper && view.tag == 0 {
+                return Float((view as! UIStepper).value)
+            }
+        }
+        return 25.0
+    }
+    
+    func setDelegate(scene:GameScene) {
+        scene.gameVarDelegate = self
     }
     
     override func layoutSubviews() {
@@ -93,9 +106,9 @@ class DebugView: UIView, UITextFieldDelegate {
     }
     
     func loadDict() {
-        dict.updateValue(["value":15,"min":0,"max":50,"step":1], forKey: "start game mouth open distance")
-        dict.updateValue(["value":16,"min":1,"max":51,"step":2], forKey: "open mouth drain rate")
-        dict.updateValue(["value":17,"min":2,"max":52,"step":3], forKey: "closed mouth drain rate")
+        dict.updateValue(["tag":0,"value":25,"min":0,"max":50,"step":1], forKey: "start game mouth open distance")
+        dict.updateValue(["tag":1,"value":16,"min":1,"max":51,"step":1], forKey: "open mouth drain rate")
+        dict.updateValue(["tag":2,"value":17,"min":2,"max":52,"step":1], forKey: "closed mouth drain rate")
     }
     
     required init?(coder aDecoder: NSCoder) {
