@@ -8,7 +8,7 @@
 
 import AVFoundation
 
-class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureMetadataOutputObjectsDelegate, DlibWrapperDelegate {
+class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureMetadataOutputObjectsDelegate, DlibWrapperDelegate, CVFImageProcessorDelegate {
     var session = AVCaptureSession()
     let layer = AVSampleBufferDisplayLayer()
     let sampleQueue = dispatch_queue_create("com.stan.gameface.sampleQueue", DISPATCH_QUEUE_SERIAL)
@@ -17,10 +17,13 @@ class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AV
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     var currentMetadata: [AnyObject]
     
+    var faceDetect = CVFFaceDetect()
+    
     override init() {
         currentMetadata = []
         super.init()
         wrapper.delegate = self
+        faceDetect.delegate = self
     }
     
     func openSession() {
@@ -66,22 +69,24 @@ class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AV
     // MARK: AVCaptureVideoDataOutputSampleBufferDelegate
     func captureOutput(captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
         
-        connection.videoOrientation = AVCaptureVideoOrientation.Portrait
+//        connection.videoOrientation = AVCaptureVideoOrientation.Portrait
         
-        if !currentMetadata.isEmpty {
-            let boundsArray = currentMetadata
-                .flatMap { $0 as? AVMetadataFaceObject }
-                .map { NSValue(CGRect: $0.bounds) }
-            
-            wrapper.doWorkOnSampleBuffer(sampleBuffer, inRects: boundsArray)
-        }
+//        if !currentMetadata.isEmpty {
+//            let boundsArray = currentMetadata
+//                .flatMap { $0 as? AVMetadataFaceObject }
+//                .map { NSValue(CGRect: $0.bounds) }
+//            
+//            wrapper.doWorkOnSampleBuffer(sampleBuffer, inRects: boundsArray)
+//        }
         
         let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
-        let cameraImage = CIImage(CVPixelBuffer: pixelBuffer!)
         
-        dispatch_async(dispatch_get_main_queue()){
-            ((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController as! GameGallery).cameraImage.image = UIImage(CIImage: cameraImage)
-        }
+        faceDetect.processImageBuffer(pixelBuffer, withMirroring: false)
+        
+//        let cameraImage = CIImage(CVPixelBuffer: pixelBuffer!)
+//        dispatch_async(dispatch_get_main_queue()){
+//            ((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController as! GameGallery).cameraImage.image = UIImage(CIImage: cameraImage)
+//        }
     }
     
     func captureOutput(captureOutput: AVCaptureOutput!, didDropSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
@@ -100,5 +105,9 @@ class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AV
         
         //testing coordinates from dlib before i pass to gamescene; should be the same as gamescene sprite but more laggy
 //        (appDelegate.window?.rootViewController as! GameGallery).useTemporaryLayer()
+    }
+    
+    func imageProcessor(imageProcessor: CVFImageProcessor!, didCreateImage image: UIImage!) {
+        ((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController as! GameGallery).cameraImage.image = image
     }
 }

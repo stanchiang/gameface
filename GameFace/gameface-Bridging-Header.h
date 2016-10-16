@@ -4,3 +4,8 @@
 
 #import "DlibWrapper.h"
 #import "DlibWrapperDelegate.h"
+
+#import "CVFImageProcessor.h"
+#import "CVFImageProcessorDelegate.h"
+
+#import "CVFFaceDetect.h"
