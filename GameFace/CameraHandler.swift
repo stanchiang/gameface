@@ -12,17 +12,15 @@ class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AV
     var session = AVCaptureSession()
     let layer = AVSampleBufferDisplayLayer()
     let sampleQueue = dispatch_queue_create("com.stan.gameface.sampleQueue", DISPATCH_QUEUE_SERIAL)
-    let faceQueue = dispatch_queue_create("com.stan.gameface.faceQueue", DISPATCH_QUEUE_SERIAL)
-    let wrapper = DlibWrapper()
+
+//    let wrapper = DlibWrapper()
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-    var currentMetadata: [AnyObject]
-    
+
     var faceDetect = CVFFaceDetect()
     
     override init() {
-        currentMetadata = []
         super.init()
-        wrapper.delegate = self
+//        wrapper.delegate = self
         faceDetect.delegate = self
     }
     
@@ -37,9 +35,6 @@ class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AV
         let output = AVCaptureVideoDataOutput()
         output.setSampleBufferDelegate(self, queue: sampleQueue)
         
-        let metaOutput = AVCaptureMetadataOutput()
-        metaOutput.setMetadataObjectsDelegate(self, queue: faceQueue)
-        
         session.beginConfiguration()
         
         if session.canAddInput(input) {
@@ -48,55 +43,22 @@ class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AV
         if session.canAddOutput(output) {
             session.addOutput(output)
         }
-        if session.canAddOutput(metaOutput) {
-            session.addOutput(metaOutput)
-        }
+
         session.sessionPreset = AVCaptureSessionPresetHigh
         session.commitConfiguration()
         
         let settings: [NSObject : AnyObject] = [kCVPixelBufferPixelFormatTypeKey: Int(kCVPixelFormatType_32BGRA)]
         output.videoSettings = settings
         
-        // availableMetadataObjectTypes change when output is added to session.
-        // before it is added, availableMetadataObjectTypes is empty
-        metaOutput.metadataObjectTypes = [AVMetadataObjectTypeFace]
-        
-        wrapper.prepare()
+//        wrapper.prepare()
         
         session.startRunning()
     }
     
     // MARK: AVCaptureVideoDataOutputSampleBufferDelegate
     func captureOutput(captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
-        
-//        connection.videoOrientation = AVCaptureVideoOrientation.Portrait
-        
-//        if !currentMetadata.isEmpty {
-//            let boundsArray = currentMetadata
-//                .flatMap { $0 as? AVMetadataFaceObject }
-//                .map { NSValue(CGRect: $0.bounds) }
-//            
-//            wrapper.doWorkOnSampleBuffer(sampleBuffer, inRects: boundsArray)
-//        }
-        
         let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
-        
         faceDetect.processImageBuffer(pixelBuffer, withMirroring: false)
-        
-//        let cameraImage = CIImage(CVPixelBuffer: pixelBuffer!)
-//        dispatch_async(dispatch_get_main_queue()){
-//            ((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController as! GameGallery).cameraImage.image = UIImage(CIImage: cameraImage)
-//        }
-    }
-    
-    func captureOutput(captureOutput: AVCaptureOutput!, didDropSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
-//        print("DidDropSampleBuffer")
-    }
-    
-    // MARK: AVCaptureMetadataOutputObjectsDelegate
-    
-    func captureOutput(captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [AnyObject]!, fromConnection connection: AVCaptureConnection!) {
-        currentMetadata = metadataObjects
     }
     
     func mouthVerticePositions(vertices: NSMutableArray!) {

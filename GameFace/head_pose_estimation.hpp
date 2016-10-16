@@ -26,13 +26,6 @@ const static cv::Point3f P3D_NOSE(21.0, 0., -48.0);
 const static cv::Point3f P3D_STOMMION(10.0, 0., -75.0);
 const static cv::Point3f P3D_MENTON(0., 0.,-133.0);
 
-
-
-static const int MAX_FEATURES_TO_TRACK=100;
-
-#define HEAD_POSE_ESTIMATION_DEBUG 1
-#define _UPSAMPLE 0 // << added because no upsampling should be performed.
-
 // Interesting facial features with their landmark index
 enum FACIAL_FEATURE {
     NOSE=30,

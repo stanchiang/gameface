@@ -30,34 +30,12 @@ void HeadPoseEstimation::update(cv::InputArray _image, double subsample_detectio
 
     Mat image = _image.getMat();
 
-    if (opticalCenterX == -1) // not initialized yet
-    {
-        opticalCenterX = image.cols / 2;
-        opticalCenterY = image.rows / 2;
-        cerr << "Setting the optical center to (" << opticalCenterX << ", " << opticalCenterY << ")" << endl;
-    }
 	current_image = cv_image<bgr_pixel>(image);
 	shapes.clear();
-	// Perform subsampling, if the variable 'subsample_detection_frame' > 0. Subsampling is only
-	// performed on the detection frame.
-	if(subsample_detection_frame>0){
-		Mat image_subsample;
-		cv::resize(image,image_subsample, cv::Size(0,0), 1/subsample_detection_frame, 1/subsample_detection_frame);
-		dlib::cv_image<dlib::bgr_pixel> image_sub = cv_image<bgr_pixel>(image_subsample);
-		faces = detector(image_sub,_UPSAMPLE);
-	} else {
-		faces = detector(current_image,_UPSAMPLE);
-	}
+	
+	faces = detector(current_image,0);
+	
 	for (auto face : faces){
-		if(subsample_detection_frame>0){
-			// Rescale the x an y axes of the locations of the faces
-			int left, right, top, bottom;
-			left	= int(face.left()*subsample_detection_frame);
-			top		= int(face.top()*subsample_detection_frame);
-			right	= int(face.right()*subsample_detection_frame);
-			bottom	= int(face.bottom()*subsample_detection_frame);
-			face	= dlib::rectangle(left,top,right,bottom);
-		}
 		// Find the pose of each face.
 		shapes.push_back(pose_model(current_image, face));
 	}
@@ -127,11 +105,7 @@ head_pose HeadPoseEstimation::pose(size_t face_idx, Mat image) const {
     solvePnP(head_points, detected_points,
             projection, noArray(),
             rvec, tvec, false,
-#ifdef OPENCV3
-            cv::SOLVEPNP_ITERATIVE);
-#else
             cv::ITERATIVE);
-#endif
     Matx33d rotation;
     Rodrigues(rvec, rotation);
 
