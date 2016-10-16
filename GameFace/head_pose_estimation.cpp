@@ -64,13 +64,13 @@ void HeadPoseEstimation::update(cv::InputArray _image, double subsample_detectio
 
     // Draws the contours of the face and face features onto the image
     
-    _debug = image.clone();
+//    _debug = image.clone();
 
     // Define colors for drawing.
     Scalar delaunay_color(255,255,255), points_color(0, 0, 255);
 
     // Rectangle to be used with Subdiv2D
-    Size size = _debug.size();
+    Size size = image.size();
     Rect rect(0, 0, size.width, size.height);
 
     // Create an instance of Subdiv2D
@@ -83,7 +83,7 @@ void HeadPoseEstimation::update(cv::InputArray _image, double subsample_detectio
             subdiv.insert(toCv(d.part(i)));
         }
 
-        draw_delaunay( _debug, subdiv, delaunay_color );
+        draw_delaunay( image, subdiv, delaunay_color );
     }
 }
 
