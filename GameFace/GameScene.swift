@@ -36,7 +36,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
 
     var pauseButton:SKSpriteNode!
 
-    var possibleEnemies = ["ball", "ball", "hammer"]
+    var possibleEnemies = ["ball", "candy", "hammer"]
     var gameTimer: NSTimer!
     
     var objectMissedCount = 0;
@@ -60,7 +60,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     
     func setupNew() {
         let start = CGPointMake(RandomCGFloat(0, max: self.frame.width), self.frame.height)
-        let end = CGPointMake(RandomCGFloat(self.frame.width * 1/5, max: self.frame.width * 4/5), 0)
+        let end = CGPointMake(RandomCGFloat(self.frame.width * 1/3, max: self.frame.width * 2/3), 0)
         print("start \(start) | end \(end)")
         createNew(fromPoint: start, toPoint: end)
     }
@@ -70,6 +70,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
 //        let rand = RandomInt(1, max: 2)
         let rand = 1
         let sprite = SKSpriteNode(imageNamed: possibleEnemies[rand])
+        sprite.size = CGSizeMake(50, 50)
         let path = arcBetweenPoints(fromPoint: start, toPoint: end)
         let followArc = SKAction.followPath(path, asOffset: false, orientToPath: true, duration: 1)
         
