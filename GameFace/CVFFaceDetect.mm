@@ -96,7 +96,7 @@ double scale = 1;
 
     estimator.update(mat,0);
     
-    for(auto pose : estimator.poses()) {
+    for(auto pose : estimator.poses(mat)) {
         cout << "Head pose: (" << pose.transformation_matrix(0,3) << ", " << pose.transformation_matrix(1,3) << ", " << pose.transformation_matrix(2,3) << ")" << endl;
     }
     

@@ -69,17 +69,13 @@ public:
     void draw_point( cv::Mat& img, cv::Point2f fp, cv::Scalar color );
     void draw_delaunay( cv::Mat& img, cv::Subdiv2D& subdiv, cv::Scalar delaunay_color );
 
-    head_pose pose(size_t face_idx) const;
+    head_pose pose(size_t face_idx, cv::Mat image) const;
 
-    std::vector<head_pose> poses() const;
+    std::vector<head_pose> poses(cv::Mat image) const;
 
     float focalLength;
     float opticalCenterX;
     float opticalCenterY;
-
-#ifdef HEAD_POSE_ESTIMATION_DEBUG
-    mutable cv::Mat _debug;
-#endif
 
 private:
 

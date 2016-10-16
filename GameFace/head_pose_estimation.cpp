@@ -63,8 +63,6 @@ void HeadPoseEstimation::update(cv::InputArray _image, double subsample_detectio
 	}
 
     // Draws the contours of the face and face features onto the image
-    
-//    _debug = image.clone();
 
     // Define colors for drawing.
     Scalar delaunay_color(255,255,255), points_color(0, 0, 255);
@@ -77,9 +75,11 @@ void HeadPoseEstimation::update(cv::InputArray _image, double subsample_detectio
     Subdiv2D subdiv(rect);
     
     for (unsigned long i = 0; i < shapes.size(); ++i) {
+        
         const full_object_detection& d = shapes[i];
-
+        
         for (auto i = 0; i < 68 ; i++) {
+            //TODO - check if coordindate to insert is within bounds of subdiv
             subdiv.insert(toCv(d.part(i)));
         }
 
@@ -87,7 +87,7 @@ void HeadPoseEstimation::update(cv::InputArray _image, double subsample_detectio
     }
 }
 
-head_pose HeadPoseEstimation::pose(size_t face_idx) const {
+head_pose HeadPoseEstimation::pose(size_t face_idx, Mat image) const {
 
     cv::Mat projectionMat = cv::Mat::zeros(3,3,CV_32F);
     cv::Matx33f projection = projectionMat;
@@ -148,7 +148,7 @@ head_pose HeadPoseEstimation::pose(size_t face_idx) const {
     projectPoints(head_points, rvec, tvec, projection, noArray(), reprojected_points);
 
     for (auto point : reprojected_points) {
-        circle(_debug, point,2, Scalar(0,255,255),2);
+        circle(image, point,2, Scalar(0,255,255),2);
     }
 
     std::vector<Point3f> axes;
@@ -160,11 +160,11 @@ head_pose HeadPoseEstimation::pose(size_t face_idx) const {
 
     projectPoints(axes, rvec, tvec, projection, noArray(), projected_axes);
 
-    line(_debug, projected_axes[0], projected_axes[3], Scalar(255,0,0),2,CV_AA);
-    line(_debug, projected_axes[0], projected_axes[2], Scalar(0,255,0),2,CV_AA);
-    line(_debug, projected_axes[0], projected_axes[1], Scalar(0,0,255),2,CV_AA);
+    line(image, projected_axes[0], projected_axes[3], Scalar(255,0,0),2,CV_AA);
+    line(image, projected_axes[0], projected_axes[2], Scalar(0,255,0),2,CV_AA);
+    line(image, projected_axes[0], projected_axes[1], Scalar(0,0,255),2,CV_AA);
 
-    // putText(_debug, "(" + to_string(int(pose(0,3) * 100)) + "cm, " + to_string(int(pose(1,3) * 100)) + "cm, " + to_string(int(pose(2,3) * 100)) + "cm)", coordsOf(face_idx, SELLION), FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0,0,255),2);
+    // putText(image, "(" + to_string(int(pose(0,3) * 100)) + "cm, " + to_string(int(pose(1,3) * 100)) + "cm, " + to_string(int(pose(2,3) * 100)) + "cm)", coordsOf(face_idx, SELLION), FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0,0,255),2);
 
 	head_pose pose_head	=	{pose,	// transformation matrix
 							tvec,	// vector with translations
@@ -173,12 +173,12 @@ head_pose HeadPoseEstimation::pose(size_t face_idx) const {
     return pose_head;
 }
 
-std::vector<head_pose> HeadPoseEstimation::poses() const {
+std::vector<head_pose> HeadPoseEstimation::poses(Mat image) const {
 
     std::vector<head_pose> res;
 
     for (auto i = 0; i < faces.size(); i++){
-        res.push_back(pose(i));
+        res.push_back(pose(i, image));
     }
 
     return res;
