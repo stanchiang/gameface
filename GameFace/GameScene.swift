@@ -9,10 +9,9 @@
 import SpriteKit
 
 protocol GameSceneDelegate: class {
-    func updateScore(points:Int)
     func updateTimer(countDown:Double)
     func getTimer() -> Double
-    func hideInstructions()
+    func swapInstructionsWithScore()
     func loadPostGame()
     func startRecordingGamePlay()
 }
@@ -101,7 +100,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             if let thing = object.node {
                 object.categoryBitMask = 4
                 thing.removeFromParent()
-                sceneDelegate?.updateScore(100)
                 sceneDelegate?.updateTimer((gameVarDelegate?.getGameScoreBonus())! / 10.0)
             }
         }
@@ -125,7 +123,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         let mouth = (UIApplication.sharedApplication().delegate as! AppDelegate).mouth
         if (UIApplication.sharedApplication().delegate as! AppDelegate).gameState == .preGame {
             if triggerGameStart(mouth) {
-                sceneDelegate?.hideInstructions()
+                sceneDelegate?.swapInstructionsWithScore()
                 sceneDelegate?.startRecordingGamePlay()
             }
         }

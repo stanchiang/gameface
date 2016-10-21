@@ -24,36 +24,47 @@ class GameManager: SKScene, GameSceneDelegate {
     var scoreLabel: SKLabelNode!
     var scoreShadow: SKLabelNode!
     var pauseButton:SKSpriteNode!
+    
+    let length:CGFloat = 50
     var timer:SKSpriteNode!
+    var scoreTitle:SKLabelNode!
+    var scoreValue:SKLabelNode!
     
-    var score: Int = 0 {
-        didSet {
-            scoreLabel.text = "Score: \(score)"
-            scoreShadow.text = "Score: \(score)"
-        }
-    }
-    
+    var startTime = NSTimeInterval()
+
     override func didMoveToView(view: SKView) {
         setupInterface()
     }
     
     func setupInterface() {
-        let length:CGFloat = 50
-        let offset:CGFloat = 3
-        
-        addScore(length, offset: offset)
-//        addPause(length)
         addTimer(length)
         addInstructions(length)
-
+    }
+    
+    func addScoreValue(length:CGFloat) {
+        scoreValue = SKLabelNode()
+        scoreValue.position = CGPoint(x: self.view!.frame.width / 2, y: self.frame.height * 0.9)
+        scoreValue.text = "00.00.00"
+        scoreValue.fontColor = UIColor(netHex: 0x5C5854)
+        scoreValue.fontName = "San Francisco-Bold"
+        scoreValue.fontSize = 40
+        addChild(scoreValue)
+    }
+    
+    func addScoreTitle(length:CGFloat){
+        scoreTitle = SKLabelNode()
+        scoreTitle.position = CGPoint(x: self.view!.frame.width / 2, y: self.frame.height * 0.85)
+        scoreTitle.text = "score"
+        scoreTitle.fontName = "San Francisco-Medium"
+        scoreTitle.fontColor = UIColor(netHex: 0x5C5854)
+        addChild(scoreTitle)
     }
     
     func addInstructions(length:CGFloat){
-        instructions = SKLabelNode(fontNamed: "ArialRoundedMTBold")
-        instructions.position = CGPoint(x: self.view!.frame.width / 2, y: self.frame.height - length * 2)
-        instructions.horizontalAlignmentMode = .Center
-        instructions.text = "loading..."
-        instructions.fontColor = UIColor.blackColor()
+        instructions = SKLabelNode(fontNamed: "San Francisco-Bold")
+        instructions.position = CGPoint(x: self.view!.frame.width / 2, y: self.frame.height * 0.9)
+        instructions.text = "😮 To Start Game"
+        instructions.fontColor = UIColor(netHex: 0x5C5854)
         addChild(instructions)
     }
     
@@ -64,51 +75,58 @@ class GameManager: SKScene, GameSceneDelegate {
         addChild(pauseButton)
     }
     
-    func addScore(length:CGFloat, offset:CGFloat) {
-        scoreShadow = SKLabelNode(fontNamed: "ArialRoundedMTBold")
-        scoreShadow.position = CGPoint(x: length - offset, y: self.frame.height - (length + offset))
-        scoreShadow.horizontalAlignmentMode = .Left
-        scoreShadow.text = "Score: \(score)"
-        scoreShadow.fontColor = UIColor.blackColor()
-        addChild(scoreShadow)
-        
-        scoreLabel = SKLabelNode(fontNamed: "ArialRoundedMTBold")
-        
-        scoreLabel.position = CGPoint(x: length, y: self.frame.height - length)
-        scoreLabel.horizontalAlignmentMode = .Left
-        scoreLabel.text = "Score: \(score)"
-        addChild(scoreLabel)
-    }
-    
     func addTimer(length:CGFloat){
-        timer = SKSpriteNode(color: UIColor.greenColor(), size: CGSize(width: UIScreen.mainScreen().bounds.width, height: 30))
+        timer = SKSpriteNode(color: UIColor.greenColor(), size: CGSize(width: UIScreen.mainScreen().bounds.width, height: self.frame.height * 0.40))
         timer.alpha = 0.5
         timer.anchorPoint.x = 0
-        timer.position = CGPoint(x: 0, y: self.frame.height - length * 2)
+        timer.position = CGPoint(x: 0, y: self.frame.height)
         addChild(timer)
     }
     
-    func updateScore(points:Int) {
-        score += points
-        timer.color = updateTimerColor(timer.xScale)
+    func updateScore() {
+        
+        let currentTime = NSDate.timeIntervalSinceReferenceDate()
+        
+        //Find the difference between current time and start time.
+        var elapsedTime: NSTimeInterval = currentTime - startTime
+        
+        //calculate the minutes in elapsed time.
+        let minutes = UInt8(elapsedTime / 60.0)
+        elapsedTime -= (NSTimeInterval(minutes) * 60)
+        
+        //calculate the seconds in elapsed time.
+        let seconds = UInt8(elapsedTime)
+        elapsedTime -= NSTimeInterval(seconds)
+        
+        //find out the fraction of milliseconds to be displayed.
+        let fraction = UInt8(elapsedTime * 100)
+        
+        //add the leading zero for minutes, seconds and millseconds and store them as string constants
+        
+        let strMinutes = String(format: "%02d", minutes)
+        let strSeconds = String(format: "%02d", seconds)
+        let strFraction = String(format: "%02d", fraction)
+        
+        //concatenate minuets, seconds and milliseconds as assign it to the UILabel
+        scoreValue.text = "\(strMinutes).\(strSeconds).\(strFraction)"
     }
     
     func updateTimer(rate: Double) {
         timer.xScale += CGFloat(rate)
-        if timer.xScale > 1.0 {
-            timer.xScale = 1.0
-        }
+        if timer.xScale > 1.0 { timer.xScale = 1.0 }
         timer.color = updateTimerColor(timer.xScale)
+        
+        updateScore()
     }
     
     func updateTimerColor(xScale:CGFloat) -> UIColor {
         switch xScale {
         case  _ where xScale > 0.5 :
-            return UIColor.greenColor()
+            return UIColor(netHex:0x7ED321) //green
         case  _ where xScale > 0.25 :
-            return UIColor.yellowColor()
+            return UIColor(netHex:0xF8E71C) //yellow
         default:
-            return UIColor.redColor()
+            return UIColor(netHex:0xD0021B) //red
         }
     }
     
@@ -142,8 +160,12 @@ class GameManager: SKScene, GameSceneDelegate {
         print("toggle options menu")
     }
     
-    func hideInstructions() {
+    func swapInstructionsWithScore() {
         instructions.removeFromParent()
+        
+        addScoreTitle(length)
+        addScoreValue(length)
+        startTime = NSDate.timeIntervalSinceReferenceDate()
     }
     
     func loadPostGame() {
@@ -152,5 +174,19 @@ class GameManager: SKScene, GameSceneDelegate {
     
     func startRecordingGamePlay() {
         uikitDelegate?.startRecording()
+    }
+}
+
+extension UIColor {
+    convenience init(red: Int, green: Int, blue: Int) {
+        assert(red >= 0 && red <= 255, "Invalid red component")
+        assert(green >= 0 && green <= 255, "Invalid green component")
+        assert(blue >= 0 && blue <= 255, "Invalid blue component")
+        
+        self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
+    }
+    
+    convenience init(netHex:Int) {
+        self.init(red:(netHex >> 16) & 0xff, green:(netHex >> 8) & 0xff, blue:netHex & 0xff)
     }
 }

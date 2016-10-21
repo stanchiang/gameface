@@ -111,7 +111,6 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
             manager.uikitDelegate = self
             
             (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .preGame
-            self.manager.instructions.text = "Open Mouth to Start Game"
         }
         
         return cell
@@ -186,6 +185,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     
     func resetGame() {
         (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .postGame
+        (UIApplication.sharedApplication().delegate as! AppDelegate).mouth = []
         self.scene.removeAllChildren()
         
         self.cameraHandler.session.stopRunning()
