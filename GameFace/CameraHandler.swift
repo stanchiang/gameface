@@ -8,7 +8,7 @@
 
 import AVFoundation
 
-class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureMetadataOutputObjectsDelegate, DlibWrapperDelegate, CVFImageProcessorDelegate {
+class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureMetadataOutputObjectsDelegate, CVFImageProcessorDelegate {
     var session = AVCaptureSession()
     let layer = AVSampleBufferDisplayLayer()
     let sampleQueue = dispatch_queue_create("com.stan.gameface.sampleQueue", DISPATCH_QUEUE_SERIAL)

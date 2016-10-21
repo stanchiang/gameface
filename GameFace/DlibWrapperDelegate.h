@@ -10,8 +10,8 @@
 
 @class DlibWrapper;
 
-@protocol DlibWrapperDelegate <NSObject>
-
--(void) mouthVerticePositions:(NSMutableArray *)vertices;
-
-@end
+//@protocol DlibWrapperDelegate <NSObject>
+//
+//-(void) mouthVerticePositions:(NSMutableArray *)vertices;
+//
+//@end

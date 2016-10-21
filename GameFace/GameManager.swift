@@ -82,6 +82,7 @@ class GameManager: SKScene, GameSceneDelegate {
     
     func addTimer(length:CGFloat){
         timer = SKSpriteNode(color: UIColor.greenColor(), size: CGSize(width: UIScreen.mainScreen().bounds.width, height: 30))
+        timer.alpha = 0.5
         timer.anchorPoint.x = 0
         timer.position = CGPoint(x: 0, y: self.frame.height - length * 2)
         addChild(timer)
@@ -89,12 +90,25 @@ class GameManager: SKScene, GameSceneDelegate {
     
     func updateScore(points:Int) {
         score += points
+        timer.color = updateTimerColor(timer.xScale)
     }
     
     func updateTimer(rate: Double) {
         timer.xScale += CGFloat(rate)
         if timer.xScale > 1.0 {
             timer.xScale = 1.0
+        }
+        timer.color = updateTimerColor(timer.xScale)
+    }
+    
+    func updateTimerColor(xScale:CGFloat) -> UIColor {
+        switch xScale {
+        case  _ where xScale > 0.5 :
+            return UIColor.greenColor()
+        case  _ where xScale > 0.25 :
+            return UIColor.yellowColor()
+        default:
+            return UIColor.redColor()
         }
     }
     

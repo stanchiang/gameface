@@ -28,6 +28,8 @@
 #include "head_pose_estimation.hpp"
 //End - from attentiontracker
 
+#include "CVFImageProcessorDelegate.h"
+
 using namespace std;
 using namespace cv;
 
@@ -96,14 +98,34 @@ dlib::shape_predictor sp;
 //        dlib::draw_rectangle(dlibMat, dlibRect, dlib::rgb_pixel(0, 255, 255));
         
         dlib::full_object_detection shape = sp(dlibMat, dlibRect);
-        
+        NSMutableArray *m = [NSMutableArray new];
         for (unsigned long k = 0; k < shape.num_parts(); k++) {
             draw_solid_circle(dlibMat, shape.part(k), 3, dlib::rgb_pixel(0, 255, 255));
+            if (k >= 60) {
+                [m addObject: [NSValue valueWithCGPoint:CGPointMake( [self pixelToPoints:shape.part(k).x()], [self pixelToPoints:shape.part(k).y()]) ]];
+            }
         }
-        
+        [self.delegate mouthVerticePositions:m];
     }
     
     [self matReady:mat];
+}
+
+- (CGFloat)pixelToPoints:(CGFloat)px {
+    CGFloat pointsPerInch = 72.0; // see: http://en.wikipedia.org/wiki/Point%5Fsize#Current%5FDTP%5Fpoint%5Fsystem
+    CGFloat scale = 1; // We dont't use [[UIScreen mainScreen] scale] as we don't want the native pixel, we want pixels for UIFont - it does the retina scaling for us
+    float pixelPerInch; // aka dpi
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//        pixelPerInch = 132 * scale;
+//    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        pixelPerInch = 163 * scale;
+//    } else {
+//        pixelPerInch = 160 * scale;
+//    }
+
+    pointsPerInch += 22.5;
+    CGFloat result = px * pointsPerInch / pixelPerInch;
+    return result;
 }
 
 @end
