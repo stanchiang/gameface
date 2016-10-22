@@ -10,36 +10,27 @@ import UIKit
 
 class CustomCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDelegate {
     
-//    var cardView:CardView
-    
+    let note = UITextView()
     override init(frame: CGRect) {
-//        cardView = CardView(frame: frame)
         super.init(frame: frame)
-//        self.contentView.addSubview(cardView)
-        
-//        let swipeLeft:UISwipeGestureRecognizer  = UISwipeGestureRecognizer(target: self, action: #selector(CustomCollectionViewCell.didSwipeLeft(_:)))
-//        swipeLeft.delegate = self
-//        swipeLeft.numberOfTouchesRequired = 1
-//        swipeLeft.direction = UISwipeGestureRecognizerDirection.Left
-        
-//        self.addGestureRecognizer(swipeLeft)
+        note.text = "🎉Coming Soon🎉 \n Moar Games! \n Moar Filters! \n \n send ideas, art, or just say hi \n stanchiang23@gmail.com"
+        note.editable = false
+        note.dataDetectorTypes = UIDataDetectorTypes.All
+        note.textAlignment = .Center
+        note.backgroundColor = UIColor.cyanColor()
+        note.font = UIFont(name: note.font!.fontName, size: 20)
+        note.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(note)
     }
     
-//    func didSwipeLeft(gesture:UIGestureRecognizer){
-//        NSLog("Swipe left")
-//    }
-    
-    
-
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    func setCardText(text:String){
-//        self.cardView.label.text = text
-//    }
-    
     override func layoutSubviews() {
-//        self.cardView.frame = self.bounds
+        note.centerXAnchor.constraintEqualToAnchor(self.contentView.centerXAnchor).active = true
+        note.centerYAnchor.constraintEqualToAnchor(self.contentView.centerYAnchor).active = true
+        note.widthAnchor.constraintEqualToConstant(200).active = true
+        note.heightAnchor.constraintEqualToConstant(200).active = true
     }
 }

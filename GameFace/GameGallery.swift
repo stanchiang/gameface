@@ -47,6 +47,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     var mouth:[CGPoint]!
     
     var debugView:DebugView!
+    let debugMode = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -97,11 +98,15 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as! CustomCollectionViewCell
         
         if indexPath.row == 0 {
-            cell.contentView.addSubview(debugView)
-            
+            if debugMode {
+                cell.contentView.addSubview(debugView)
+            } else {
+                cell.note.alpha = 1
+            }
         }
         
         if indexPath.row == 1 {
+            cell.note.alpha = 0
             cell.contentView.addSubview(setupGameLayer())
             cell.contentView.addSubview(setupGameManager())
             
@@ -122,20 +127,17 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         resetGame()
-//        if (UIApplication.sharedApplication().delegate as! AppDelegate).gameState == .inPlay {
-//            scene.updatePauseHandler(to: .paused)
-//        }
     }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         if collectionView.visibleCells().count == 1 {
             for cell in collectionView.visibleCells() {
                 let cell = cell as! CustomCollectionViewCell
-                if collectionView.indexPathForCell(cell)!.row == 0 {
-                    cameraHandler.session.stopRunning()
-                } else {
-                    cameraHandler.session.startRunning()
-                }
+//                if collectionView.indexPathForCell(cell)!.row == 0 {
+//                    cameraHandler.session.stopRunning()
+//                } else {
+//                    cameraHandler.session.startRunning()
+//                }
                 (UIApplication.sharedApplication().delegate as! AppDelegate).currentCell = collectionView.indexPathForCell(cell)!.row
             }
         }

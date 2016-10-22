@@ -187,7 +187,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         polygon = SKShapeNode(path: pathToDraw)
         polygon.antialiased = true
         polygon.strokeColor = UIColor.cyanColor()//RandomColor()
-        polygon.fillColor = UIColor.cyanColor()//RandomColor()
+        polygon.fillColor = RandomColor()
         polygon.name = "mouthshape"
 
         let texture = view!.textureFromNode(polygon)
