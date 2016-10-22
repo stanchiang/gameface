@@ -136,14 +136,14 @@ class GameManager: SKScene, GameSceneDelegate {
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         // Loop over all the touches in this event
-        for touch: AnyObject in touches {
+//        for touch: AnyObject in touches {
             // Get the location of the touch in this scene
-            let location = touch.locationInNode(self)
+//            let location = touch.locationInNode(self)
             // Check if the location of the touch is within the button's bounds
-            if pauseButton.containsPoint(location) {
-                togglePause()
-            }
-        }
+//            if pauseButton.containsPoint(location) {
+//                togglePause()
+//            }
+//        }
     }
     
     func togglePause(){
