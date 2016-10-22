@@ -26,6 +26,8 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     lazy var flowLayout:UICollectionViewFlowLayout = {
         var flow = UICollectionViewFlowLayout()
         flow.scrollDirection = .Horizontal
+        flow.minimumInteritemSpacing = 0
+        flow.minimumLineSpacing = -0.92
         return flow
     }()
     
