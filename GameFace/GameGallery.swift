@@ -49,7 +49,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     var mouth:[CGPoint]!
     
     var debugView:DebugView!
-    let debugMode = false
+    let debugMode = true
     
     override func viewDidLoad() {
         super.viewDidLoad()

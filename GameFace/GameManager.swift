@@ -63,7 +63,7 @@ class GameManager: SKScene, GameSceneDelegate {
     func addInstructions(length:CGFloat){
         instructions = SKLabelNode(fontNamed: "San Francisco-Bold")
         instructions.position = CGPoint(x: self.view!.frame.width / 2, y: self.frame.height * 0.9)
-        instructions.text = "😮 To Start Game"
+        instructions.text = "Open Your Mouth 😮"
         instructions.fontColor = UIColor(netHex: 0x5C5854)
         addChild(instructions)
     }
