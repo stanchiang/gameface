@@ -122,7 +122,7 @@ class GameManager: SKScene, GameSceneDelegate {
     func updateTimerColor(xScale:CGFloat) -> UIColor {
         switch xScale {
         case  _ where xScale > 0.5 :
-            return UIColor(netHex:0x7ED321) //green
+            return UIColor.greenColor()//UIColor(netHex:0x7ED321) //green
         case  _ where xScale > 0.25 :
             return UIColor(netHex:0xF8E71C) //yellow
         default:

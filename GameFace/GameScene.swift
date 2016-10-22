@@ -21,6 +21,11 @@ protocol GameVarDelegate: class {
     func getOpenMouthDrainRate() -> Double
     func getClosedMouthDrainRate() -> Double
     func getGameScoreBonus() -> Double
+    func getAdjustedPPI() -> CGFloat
+    func getSpawnRate() -> Double
+    func getSpriteInitialSpeed() -> Double
+    func getSpriteSize() -> Double
+    func getSpriteEndRange() -> Double
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
@@ -58,30 +63,40 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     }
     
     func setupNew() {
+        guard gameVarDelegate != nil else {return}
+        guard gameVarDelegate?.getSpriteInitialSpeed() != nil else {return}
+        
         let start = CGPointMake(RandomCGFloat(0, max: self.frame.width), self.frame.height)
-        let end = CGPointMake(RandomCGFloat(self.frame.width * 1/3, max: self.frame.width * 2/3), 0)
-        print("start \(start) | end \(end)")
+        let end = CGPointMake(RandomCGFloat(self.frame.width * 1/CGFloat(gameVarDelegate!.getSpriteEndRange()),
+            max: self.frame.width * CGFloat(gameVarDelegate!.getSpriteEndRange() - 1)/CGFloat(gameVarDelegate!.getSpriteEndRange())), 0)
+        
         createNew(fromPoint: start, toPoint: end)
     }
     
     func createNew(fromPoint start : CGPoint, toPoint end: CGPoint) {
+        guard gameVarDelegate != nil else {return}
+        guard gameVarDelegate?.getSpriteInitialSpeed() != nil else {return}
+        guard gameVarDelegate?.getGameScoreBonus() != nil else {return}
+        guard gameVarDelegate?.getSpriteSize() != nil else {return}
+
         //1 is good 2 is bad
 //        let rand = RandomInt(1, max: 2)
         let rand = 1
         let sprite = SKSpriteNode(imageNamed: possibleEnemies[rand])
-        sprite.size = CGSizeMake(50, 50)
+        sprite.size = CGSize(width: gameVarDelegate!.getSpriteSize(), height: gameVarDelegate!.getSpriteSize())
         let path = arcBetweenPoints(fromPoint: start, toPoint: end)
-        let followArc = SKAction.followPath(path, asOffset: false, orientToPath: true, duration: 1)
+        let followArc = SKAction.followPath(path, asOffset: false, orientToPath: true, duration: gameVarDelegate!.getSpriteInitialSpeed())
         
         sprite.position = start
         sprite.physicsBody = SKPhysicsBody(texture: sprite.texture!, size: sprite.size)
         sprite.physicsBody?.categoryBitMask = UInt32(rand)
         
         self.addChild(sprite)
-        sprite.runAction(followArc) {
+        sprite.runAction(followArc) { [unowned self] in
             sprite.removeFromParent()
             print("object missed")
             self.objectMissedCount += 1
+            self.sceneDelegate?.updateTimer(self.gameVarDelegate!.getGameScoreBonus() / -10.0)
         }
     }
     
@@ -144,7 +159,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     }
     
     func triggerGameStart(mouth:[CGPoint]) -> Bool {
-        guard ((gameVarDelegate?.getGameStartMouthDist()) != nil) else {
+        guard (UIApplication.sharedApplication().delegate as! AppDelegate).currentCell != nil else {
+            return false
+        }
+        guard (gameVarDelegate?.getGameStartMouthDist() != nil) else {
             return false
         }
         if (UIApplication.sharedApplication().delegate as! AppDelegate).currentCell == 1 && checkMouth(mouth, dist: (gameVarDelegate?.getGameStartMouthDist())!) {
@@ -158,7 +176,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             let p1 = mouth[2]
             let p2 = mouth[6]
             let distance = hypotf(Float(p1.x) - Float(p2.x), Float(p1.y) - Float(p2.y));
-//            print(distance)
             if distance > dist {
                 return true
             }
@@ -187,7 +204,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         polygon = SKShapeNode(path: pathToDraw)
         polygon.antialiased = true
         polygon.strokeColor = UIColor.cyanColor()//RandomColor()
-        polygon.fillColor = RandomColor()
+//        polygon.fillColor = RandomColor()
         polygon.name = "mouthshape"
 
         let texture = view!.textureFromNode(polygon)
@@ -252,6 +269,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     }
     
     func addGameTimer(){
-        gameTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
+        guard gameVarDelegate?.getSpawnRate() != nil else {
+            return
+        }
+        gameTimer = NSTimer.scheduledTimerWithTimeInterval((gameVarDelegate?.getSpawnRate())!, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
     }
 }

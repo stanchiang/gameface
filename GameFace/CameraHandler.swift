@@ -72,4 +72,8 @@ class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AV
     func imageProcessor(imageProcessor: CVFImageProcessor!, didCreateImage image: UIImage!) {
         ((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController as! GameGallery).cameraImage.image = image
     }
+    
+    func adjustPPI() -> CGFloat {
+        return (appDelegate.window?.rootViewController as! GameGallery).debugView.getAdjustedPPI()
+    }
 }

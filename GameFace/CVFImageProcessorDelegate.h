@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Jera Design LLC. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @class CVFImageProcessor;
 
@@ -14,5 +14,5 @@
 
 -(void)imageProcessor:(CVFImageProcessor*)imageProcessor didCreateImage:(UIImage*)image;
 -(void)mouthVerticePositions:(NSMutableArray *)vertices;
-
+-(CGFloat)adjustPPI;
 @end

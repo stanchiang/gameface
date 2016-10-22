@@ -94,41 +94,89 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate, MFMessageComposeV
     }
     
     func getGameStartMouthDist() -> Float {
-        for view in subviews {
-            if view is UIStepper && view.tag == 0 {
-                return Float((view as! UIStepper).value)
-            }
+        if let value = checkStepperWithTagId(0) {
+            return Float(value)
+        } else {
+            return 25.0
         }
-        return 25.0
     }
     
     func getOpenMouthDrainRate() -> Double {
-        for view in subviews {
-            if view is UIStepper && view.tag == 1 {
-                return (view as! UIStepper).value
-            }
+        if let value = checkStepperWithTagId(1) {
+            return value
+        } else {
+            return 4.0
         }
-        return 4.0
     }
     
     
     func getClosedMouthDrainRate() -> Double {
-        for view in subviews {
-            if view is UIStepper && view.tag == 2 {
-                return (view as! UIStepper).value
-            }
+        if let value = checkStepperWithTagId(2) {
+            return value
+        } else {
+            return 1.0
         }
-        return 1.0
     }
     
     func getGameScoreBonus() -> Double {
+        if let value = checkStepperWithTagId(3) {
+            return value
+        } else {
+            return 2.0
+        }
+    }
+    
+    func getAdjustedPPI() -> CGFloat {
+        if let value = checkStepperWithTagId(4) {
+            return CGFloat(value)
+        } else {
+            return 22.5
+        }
+    }
+    
+    func getSpawnRate() -> Double {
+        if let value = checkStepperWithTagId(5) {
+            return value
+        } else {
+            return 0.5
+        }
+    }
+
+    func getSpriteInitialSpeed() -> Double {
+        if let value = checkStepperWithTagId(6) {
+            return value
+        } else {
+            return 1
+        }
+    }
+    
+    func getSpriteSize() -> Double {
+        if let value = checkStepperWithTagId(7) {
+            return value
+        } else {
+            return 50
+        }
+    }
+    
+    func getSpriteEndRange() -> Double {
+        if let value = checkStepperWithTagId(8) {
+            if value == 0 {
+                return value + 0.01
+            }else {
+                return value
+            }
+        } else {
+            return 3
+        }
+    }
+    
+    func checkStepperWithTagId(tag:Int) -> Double? {
         for view in subviews {
-            if view is UIStepper && view.tag == 3 {
+            if view is UIStepper && view.tag == tag {
                 return (view as! UIStepper).value
             }
         }
-        return 2.0
-
+        return nil
     }
     
     func setDelegate(scene:GameScene) {
@@ -166,6 +214,11 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate, MFMessageComposeV
         dict.updateValue(["tag":1,"value":4,"min":0,"max":20,"step":1], forKey: "open mouth drain rate")
         dict.updateValue(["tag":2,"value":1,"min":0,"max":20,"step":1], forKey: "closed mouth drain rate")
         dict.updateValue(["tag":3,"value":2,"min":0,"max":10,"step":1], forKey: "game score bonus")
+        dict.updateValue(["tag":4,"value":21.5,"min":0,"max":30,"step":1], forKey: "adjustedPPI")
+        dict.updateValue(["tag":5,"value":0.5,"min":0,"max":3,"step":0.1], forKey: "object spawn rate")
+        dict.updateValue(["tag":6,"value":1,"min":0,"max":3,"step":0.1], forKey: "sprite initial speed")
+        dict.updateValue(["tag":7,"value":50,"min":0,"max":200,"step":10], forKey: "sprite size")
+        dict.updateValue(["tag":8,"value":3,"min":0,"max":10,"step":0.5], forKey: "sprite end range")
     }
     
     required init?(coder aDecoder: NSCoder) {
