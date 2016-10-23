@@ -33,20 +33,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     weak var sceneDelegate:GameSceneDelegate?
     weak var gameVarDelegate:GameVarDelegate?
     
-    let colorArray = [UIColor.greenColor(), UIColor.blackColor(), UIColor.blueColor(), UIColor.redColor(), UIColor.orangeColor(), UIColor.cyanColor(), UIColor.magentaColor(), UIColor.purpleColor(), UIColor.yellowColor()]
-    var chosenColor = 0
     var polygonNode:SKSpriteNode!
     var polygon:SKShapeNode!
-
-    var pauseButton:SKSpriteNode!
 
     var possibleEnemies = ["ball", "candy", "hammer"]
     var gameTimer: NSTimer!
     
     var objectMissedCount = 0;
-    
-    var backImg:UIImage!
-    var frontImg:UIImage!
     
     var lastState:GameState = .postGame
     
@@ -93,6 +86,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         
         self.addChild(sprite)
         sprite.runAction(followArc) { [unowned self] in
+            let emitterNode = SKEmitterNode(fileNamed: "explosion.sks")
+            emitterNode!.particlePosition = sprite.position
+            self.addChild(emitterNode!)
+            self.runAction(SKAction.waitForDuration(2), completion: {
+                emitterNode!.removeFromParent()
+            })
+
             sprite.removeFromParent()
             print("object missed")
             self.objectMissedCount += 1
@@ -114,6 +114,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         if object.categoryBitMask == 1 {
             if let thing = object.node {
                 object.categoryBitMask = 4
+                
+                let emitterNode = SKEmitterNode(fileNamed: "candyEater.sks")
+                emitterNode!.particlePosition = thing.position
+                self.addChild(emitterNode!)
+                self.runAction(SKAction.waitForDuration(2), completion: {
+                    emitterNode!.removeFromParent()
+                })
                 thing.removeFromParent()
                 sceneDelegate?.updateTimer((gameVarDelegate?.getGameScoreBonus())! / 10.0)
             }
