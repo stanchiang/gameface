@@ -114,40 +114,10 @@ dlib::shape_predictor sp;
 
 - (CGFloat)pixelToPoints:(CGFloat)px {
     CGFloat pointsPerInch = 72.0; // see: http://en.wikipedia.org/wiki/Point%5Fsize#Current%5FDTP%5Fpoint%5Fsystem
-    CGFloat scale = 1; // We dont't use [[UIScreen mainScreen] scale] as we don't want the native pixel, we want pixels for UIFont - it does the retina scaling for us
-    float pixelPerInch; // aka dpi
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-//        pixelPerInch = 132 * scale;
-//        
-//        CGSize result = [[UIScreen mainScreen] bounds].size;
-//        pointsPerInch += 10;
-//        printf("result = (%f, %f)",result.width, result.height);
-    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        pixelPerInch = 163 * scale;
-        
-        pointsPerInch += [self.delegate adjustPPI];
-        
-//        CGSize result = [[UIScreen mainScreen] bounds].size;
-//        if(result.height == 480){
-//            // iPhone Classic
-//        }
-//        else if(result.height == 568){
-//            // iPhone 5
-//            pointsPerInch += 3;
-//        }
-//        else if(result.height == 667){
-//            // iPhone 6
-//            
-//        }
-//        else if(result.height == 736){
-//            // iPhone 6 Plus
-//            pointsPerInch += 22.5;
-//        }
-    } else {
-//        pixelPerInch = 160 * scale;
-    }
-
     
+    float pixelPerInch = 163; // aka dpi
+    
+    pointsPerInch += [self.delegate adjustPPI];
     CGFloat result = px * pointsPerInch / pixelPerInch;
     return result;
 }

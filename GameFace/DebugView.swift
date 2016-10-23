@@ -127,11 +127,26 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate, MFMessageComposeV
     }
     
     func getAdjustedPPI() -> CGFloat {
+
+//        switch UIScreen.mainScreen().bounds.height {
+//        case 480:
+//            return 0
+//        case 568.0:
+//            return 1.0
+//        case 667.0:
+//            return 10.0
+//        case 736.0:
+//            return 21.5
+//        default:
+//            return 21.5
+//        }
+        
         if let value = checkStepperWithTagId(4) {
             return CGFloat(value)
         } else {
-            return 22.5
+            return 21.5
         }
+
     }
     
     func getSpawnRate() -> Double {
@@ -214,7 +229,7 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate, MFMessageComposeV
         dict.updateValue(["tag":1,"value":4,"min":0,"max":20,"step":1], forKey: "open mouth drain rate")
         dict.updateValue(["tag":2,"value":1,"min":0,"max":20,"step":1], forKey: "closed mouth drain rate")
         dict.updateValue(["tag":3,"value":2,"min":0,"max":10,"step":1], forKey: "game score bonus")
-        dict.updateValue(["tag":4,"value":21.5,"min":0,"max":30,"step":1], forKey: "adjustedPPI")
+        dict.updateValue(["tag":4,"value":21.5,"min":-30,"max":30,"step":0.5], forKey: "adjustedPPI")
         dict.updateValue(["tag":5,"value":0.5,"min":0,"max":3,"step":0.1], forKey: "object spawn rate")
         dict.updateValue(["tag":6,"value":1,"min":0,"max":3,"step":0.1], forKey: "sprite initial speed")
         dict.updateValue(["tag":7,"value":50,"min":0,"max":200,"step":10], forKey: "sprite size")
