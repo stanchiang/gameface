@@ -12,7 +12,8 @@
 
 @protocol CVFImageProcessorDelegate <NSObject>
 
--(void)imageProcessor:(CVFImageProcessor*)imageProcessor didCreateImage:(UIImage*)image;
--(void)mouthVerticePositions:(NSMutableArray *)vertices;
--(CGFloat)adjustPPI;
+-(void) imageProcessor:(CVFImageProcessor*)imageProcessor didCreateImage:(UIImage*)image;
+-(void) mouthVerticePositions:(NSMutableArray *)vertices;
+-(CGFloat) adjustPPI;
+-(NSMutableArray *) getDelaunayEdges;
 @end

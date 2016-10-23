@@ -57,6 +57,13 @@ dlib::shape_predictor sp;
         modelFileNameCString = [modelFileName UTF8String];
         dlib::deserialize(modelFileNameCString) >> sp;
         
+        for (int i = 0; i < [self.delegate getDelaunayEdges].count; i++) {
+            NSMutableArray *m = [self.delegate getDelaunayEdges][i];
+            for (int j = 0; j < m.count; j++) {
+                NSLog( @"%@", m[j]);
+            }
+        }
+        
         _inited = true;
     }
 
@@ -77,7 +84,6 @@ dlib::shape_predictor sp;
                              |CV_HAAR_SCALE_IMAGE
                              ,
                              cv::Size(75, 75) );
-    
     
     for( vector<cv::Rect>::const_iterator r = faces.begin(); r != faces.end(); r++, i++ ) {
         dlib::cv_image<dlib::bgr_pixel> dlibMat(mat);
@@ -102,7 +108,7 @@ dlib::shape_predictor sp;
         [self.delegate mouthVerticePositions:m];
         
     }
-    
+
     [self matReady:mat];
 }
 

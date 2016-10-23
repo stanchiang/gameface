@@ -12,16 +12,17 @@ class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AV
     var session = AVCaptureSession()
     let layer = AVSampleBufferDisplayLayer()
     let sampleQueue = dispatch_queue_create("com.stan.gameface.sampleQueue", DISPATCH_QUEUE_SERIAL)
-
-//    let wrapper = DlibWrapper()
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
 
     var faceDetect = CVFFaceDetect()
     
+    var delaunay:NSMutableArray = NSMutableArray()
+    
     override init() {
         super.init()
-//        wrapper.delegate = self
         faceDetect.delegate = self
+        delaunay.addObject([1,2])
+        delaunay.addObject([3,4])
     }
     
     func openSession() {
@@ -50,8 +51,6 @@ class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AV
         let settings: [NSObject : AnyObject] = [kCVPixelBufferPixelFormatTypeKey: Int(kCVPixelFormatType_32BGRA)]
         output.videoSettings = settings
         
-//        wrapper.prepare()
-        
         session.startRunning()
     }
     
@@ -75,5 +74,10 @@ class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AV
     
     func adjustPPI() -> CGFloat {
         return (appDelegate.window?.rootViewController as! GameGallery).debugView.getAdjustedPPI()
+    }
+    
+    func getDelaunayEdges() -> NSMutableArray! {
+        
+        return delaunay
     }
 }
