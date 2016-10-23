@@ -127,26 +127,18 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate, MFMessageComposeV
     }
     
     func getAdjustedPPI() -> CGFloat {
-
-//        switch UIScreen.mainScreen().bounds.height {
-//        case 480:
-//            return 0
-//        case 568.0:
-//            return 1.0
-//        case 667.0:
-//            return 10.0
-//        case 736.0:
-//            return 21.5
-//        default:
-//            return 21.5
-//        }
-        
-        if let value = checkStepperWithTagId(4) {
-            return CGFloat(value)
-        } else {
+        switch UIScreen.mainScreen().bounds.height {
+        case 480:
+            return 0
+        case 568.0:
+            return 1.0
+        case 667.0:
+            return 12.5
+        case 736.0:
+            return 21.5
+        default:
             return 21.5
         }
-
     }
     
     func getSpawnRate() -> Double {
