@@ -56,6 +56,8 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     
     var isWritingToVideo = false
     
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideKeyboardWhenTappedAround()
@@ -81,7 +83,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     override func viewDidLayoutSubviews() {
         collectionView.layoutIfNeeded()
         collectionView.scrollToItemAtIndexPath(NSIndexPath(forItem: 1, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.None, animated: false)
-        (UIApplication.sharedApplication().delegate as! AppDelegate).currentCell = 1
+        appDelegate.currentCell = 1
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize{
@@ -122,7 +124,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
             manager.managerDelegate = scene
             manager.uikitDelegate = self
             
-            (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .preGame
+            appDelegate.gameState = .preGame
         }
         
         return cell
@@ -145,7 +147,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
 //                } else {
 //                    cameraHandler.session.startRunning()
 //                }
-                (UIApplication.sharedApplication().delegate as! AppDelegate).currentCell = collectionView.indexPathForCell(cell)!.row
+                appDelegate.currentCell = collectionView.indexPathForCell(cell)!.row
             }
         }
     }
@@ -193,8 +195,8 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     }
     
     func resetGame() {
-        (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .postGame
-        (UIApplication.sharedApplication().delegate as! AppDelegate).mouth = []
+        appDelegate.gameState = .postGame
+        appDelegate.mouth = []
         self.scene.removeAllChildren()
         
         self.cameraHandler.session.stopRunning()
@@ -209,14 +211,14 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         setupGameLayer()
         setupGameManager()
         
-        (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .preGame
+        appDelegate.gameState = .preGame
         self.manager.timer.xScale = 1.0
         self.cameraHandler.session.startRunning()
     }
     
     func startRecording() {
         //start basketball drops and mouth sprite updates
-        (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .inPlay
+        appDelegate.gameState = .inPlay
         self.scene.alreadyStarting = false
         self.scene.addGameTimer()
     }

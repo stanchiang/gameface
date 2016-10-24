@@ -45,6 +45,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     
     var alreadyStarting = false
     
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    
     override func didMoveToView(view: SKView) {
         setupInterface()
     }
@@ -133,24 +135,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             return
         }
         
-        if lastState != (UIApplication.sharedApplication().delegate as! AppDelegate).gameState {
-            lastState = (UIApplication.sharedApplication().delegate as! AppDelegate).gameState
+        if lastState != appDelegate.gameState {
+            lastState = appDelegate.gameState
             print(lastState)
         }
         
-        if (UIApplication.sharedApplication().delegate as! AppDelegate).gameState == .inPlay && sceneDelegate?.getTimer() <= 0 {
+        if appDelegate.gameState == .inPlay && sceneDelegate?.getTimer() <= 0 {
+            appDelegate.gameState = .postGame
             sceneDelegate?.loadPostGame()
         }
         
-        let mouth = (UIApplication.sharedApplication().delegate as! AppDelegate).mouth
-        if (UIApplication.sharedApplication().delegate as! AppDelegate).gameState == .preGame {
+        let mouth = appDelegate.mouth
+        if appDelegate.gameState == .preGame {
             if triggerGameStart(mouth) {
                 sceneDelegate?.swapInstructionsWithScore()
                 sceneDelegate?.startRecordingGamePlay()
             }
         }
         
-        if (UIApplication.sharedApplication().delegate as! AppDelegate).gameState == .inPlay {
+        if appDelegate.gameState == .inPlay {
             //        if we have data to work with
             if !mouth.isEmpty && mouth.first!.x != 0 && mouth.first!.y != 0 {
                 //        create player position and draw shape based on mouth array
@@ -163,22 +166,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                 }
             }
             
-            if ((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController as! GameGallery).gamePlayArray.count >= 150 {
-                ((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController as! GameGallery).gamePlayArray.removeFirst()
+            if (appDelegate.window?.rootViewController as! GameGallery).gamePlayArray.count >= 150 {
+                (appDelegate.window?.rootViewController as! GameGallery).gamePlayArray.removeFirst()
             }
             
-            ((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController as! GameGallery).takeScreenShot()
+            (appDelegate.window?.rootViewController as! GameGallery).takeScreenShot()
         }
     }
     
     func triggerGameStart(mouth:[CGPoint]) -> Bool {
-        guard (UIApplication.sharedApplication().delegate as! AppDelegate).currentCell != nil else {
+        guard appDelegate.currentCell != nil else {
             return false
         }
         guard (gameVarDelegate?.getGameStartMouthDist() != nil) else {
             return false
         }
-        if (UIApplication.sharedApplication().delegate as! AppDelegate).currentCell == 1 && checkMouth(mouth, dist: (gameVarDelegate?.getGameStartMouthDist())!) {
+        if appDelegate.currentCell == 1 && checkMouth(mouth, dist: (gameVarDelegate?.getGameStartMouthDist())!) {
             return true
         }
         return false
@@ -269,12 +272,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     
     func updatePauseHandler(to state:GameState) {
         if state == .paused {
-            (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .paused
+            appDelegate.gameState = .paused
             scene?.view?.paused = true
             print("pause game")
             gameTimer.invalidate()
         } else {
-            (UIApplication.sharedApplication().delegate as! AppDelegate).gameState = .inPlay
+            appDelegate.gameState = .inPlay
             scene?.view?.paused = false
             print("resume game")
             addGameTimer()
