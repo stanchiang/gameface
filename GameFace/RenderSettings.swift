@@ -12,8 +12,8 @@ import AVFoundation
 
 struct RenderSettings {
     
-    var width: CGFloat = 720
-    var height: CGFloat = 1280
+    var width: CGFloat = 720.0 * 0.25
+    var height: CGFloat = 1280.0 * 0.25
     var fps: Int32 = 30
     var avCodecKey = AVVideoCodecH264
     var videoFilename = "render"
