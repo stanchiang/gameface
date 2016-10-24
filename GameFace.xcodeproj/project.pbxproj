@@ -19,7 +19,6 @@
 		F6339D921D590573006C4231 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6339D911D590573006C4231 /* GameScene.swift */; };
 		F6339D941D590587006C4231 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6339D931D590587006C4231 /* Helper.swift */; };
 		F6339DA71D5905C5006C4231 /* candyEater.sks in Resources */ = {isa = PBXBuildFile; fileRef = F6339D9B1D5905C5006C4231 /* candyEater.sks */; };
-		F6339DB21D590FCD006C4231 /* Notes in Resources */ = {isa = PBXBuildFile; fileRef = F6339DB11D590FCD006C4231 /* Notes */; };
 		F64C2F391DADCFA7006E1021 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64C2F381DADCFA7006E1021 /* opencv2.framework */; };
 		F66290F81DA9C4CF0030C11C /* head_pose_estimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F66290F71DA9C4CF0030C11C /* head_pose_estimation.cpp */; };
 		F669C0391DB15C3D001161E1 /* GameGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = F669C0381DB15C3D001161E1 /* GameGallery.swift */; };
@@ -53,7 +52,6 @@
 		F6339D911D590573006C4231 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		F6339D931D590587006C4231 /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		F6339D9B1D5905C5006C4231 /* candyEater.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = candyEater.sks; sourceTree = "<group>"; };
-		F6339DB11D590FCD006C4231 /* Notes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Notes; sourceTree = "<group>"; };
 		F6339DB41D5914EE006C4231 /* DlibWrapperDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DlibWrapperDelegate.h; sourceTree = "<group>"; };
 		F64C2F381DADCFA7006E1021 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
 		F66290F61DA9C4CF0030C11C /* head_pose_estimation.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = head_pose_estimation.hpp; sourceTree = "<group>"; };
@@ -117,7 +115,6 @@
 				A56695F61CE8B34B00BD7EAF /* Assets.xcassets */,
 				F679543C1DBE7AB00075870B /* Image To Video */,
 				A56695F81CE8B34B00BD7EAF /* LaunchScreen.storyboard */,
-				F6339DB11D590FCD006C4231 /* Notes */,
 				A56695FB1CE8B34B00BD7EAF /* Info.plist */,
 				A5A1B2CF1CEA317B00626AC5 /* gameface-Bridging-Header.h */,
 				F67EA2721DB3DFE0006DE24B /* haarcascade_frontalface_alt.xml */,
@@ -263,7 +260,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F6339DB21D590FCD006C4231 /* Notes in Resources */,
 				A56695FA1CE8B34B00BD7EAF /* LaunchScreen.storyboard in Resources */,
 				F6339DA71D5905C5006C4231 /* candyEater.sks in Resources */,
 				A56695F71CE8B34B00BD7EAF /* Assets.xcassets in Resources */,

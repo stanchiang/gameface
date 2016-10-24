@@ -214,6 +214,8 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         appDelegate.gameState = .preGame
         self.manager.timer.xScale = 1.0
         self.cameraHandler.session.startRunning()
+        
+        gamePlayArray = []
     }
     
     func startRecording() {

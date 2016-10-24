@@ -26,6 +26,8 @@ protocol GameVarDelegate: class {
     func getSpriteInitialSpeed() -> Double
     func getSpriteSize() -> Double
     func getSpriteEndRange() -> Double
+    func getVideoLength() -> Double
+    func getWillRecordGame() -> Bool
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
@@ -130,6 +132,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     }
     
     override func update(currentTime: CFTimeInterval) {
+        guard gameVarDelegate != nil else { return }
+        guard gameVarDelegate?.getWillRecordGame() != nil else { return }
+        guard gameVarDelegate?.getVideoLength() != nil else { return }
         
         if alreadyStarting {
             return
@@ -142,7 +147,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         
         if appDelegate.gameState == .inPlay && sceneDelegate?.getTimer() <= 0 {
             appDelegate.gameState = .postGame
-            sceneDelegate?.loadPostGame()
+            if gameVarDelegate!.getWillRecordGame() {
+                sceneDelegate?.loadPostGame()
+            } else {
+                (appDelegate.window?.rootViewController as! GameGallery).resetGame()
+            }
+            
         }
         
         let mouth = appDelegate.mouth
@@ -166,11 +176,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                 }
             }
             
-            if (appDelegate.window?.rootViewController as! GameGallery).gamePlayArray.count >= 150 {
-                (appDelegate.window?.rootViewController as! GameGallery).gamePlayArray.removeFirst()
+            if gameVarDelegate!.getWillRecordGame() {
+                if (appDelegate.window?.rootViewController as! GameGallery).gamePlayArray.count >= Int( 30 * gameVarDelegate!.getVideoLength() ) {
+                    (appDelegate.window?.rootViewController as! GameGallery).gamePlayArray.removeFirst()
+                }
+                (appDelegate.window?.rootViewController as! GameGallery).takeScreenShot()
             }
-            
-            (appDelegate.window?.rootViewController as! GameGallery).takeScreenShot()
         }
     }
     

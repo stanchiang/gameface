@@ -177,6 +177,26 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate, MFMessageComposeV
         }
     }
     
+    func getWillRecordGame() -> Bool {
+        if let value = checkStepperWithTagId(9) {
+            if value > 0 {
+                return true
+            } else {
+                return false
+            }
+        } else {
+            return false
+        }
+    }
+    
+    func getVideoLength() -> Double {
+        if let value = checkStepperWithTagId(10) {
+            return value
+        } else {
+            return 5
+        }
+    }
+    
     func checkStepperWithTagId(tag:Int) -> Double? {
         for view in subviews {
             if view is UIStepper && view.tag == tag {
@@ -226,6 +246,8 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate, MFMessageComposeV
         dict.updateValue(["tag":6,"value":1,"min":0,"max":3,"step":0.1], forKey: "sprite initial speed")
         dict.updateValue(["tag":7,"value":50,"min":0,"max":200,"step":10], forKey: "sprite size")
         dict.updateValue(["tag":8,"value":3,"min":0,"max":10,"step":0.5], forKey: "sprite end range")
+        dict.updateValue(["tag":9,"value":0,"min":0,"max":1,"step":1], forKey: "record game")
+        dict.updateValue(["tag":10,"value":5,"min":1,"max":10,"step":1], forKey: "video length")
     }
     
     required init?(coder aDecoder: NSCoder) {
