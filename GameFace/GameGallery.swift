@@ -51,6 +51,11 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     var debugView:DebugView!
     let debugMode = true
     
+    var gamePlayArray = [UIImage]()
+    var screenShot = UIImage()
+    
+    var isWritingToVideo = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideKeyboardWhenTappedAround()
@@ -219,7 +224,29 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     //MARK: custom UIKitDelegate
     func loadPostGameModal() {
         print("load post game modal")
-        self.resetGame()
+        if !isWritingToVideo {
+            isWritingToVideo = true
+            gamePlayToVideo()
+        }
     }
-
+    
+    func takeScreenShot(){
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        self.view?.drawViewHierarchyInRect(self.view.frame, afterScreenUpdates: true)
+        var screenShot = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        gamePlayArray.append(screenShot!)
+        screenShot = nil
+        print("screenshot # \(gamePlayArray.count)")
+    }
+    
+    func gamePlayToVideo(){
+        let settings = RenderSettings()
+        let imageAnimator = ImageAnimator(renderSettings: settings, imageArray: gamePlayArray)
+        imageAnimator.render() { [unowned self] in
+            print("done! check camera roll")
+            self.resetGame()
+        }
+    }
+    
 }

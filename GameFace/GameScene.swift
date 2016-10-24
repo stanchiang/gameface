@@ -162,6 +162,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                     sceneDelegate?.updateTimer((gameVarDelegate?.getClosedMouthDrainRate())! * -1.0 / 1000)
                 }
             }
+            
+            if ((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController as! GameGallery).gamePlayArray.count >= 150 {
+                ((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController as! GameGallery).gamePlayArray.removeFirst()
+            }
+            
+            ((UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController as! GameGallery).takeScreenShot()
         }
     }
     

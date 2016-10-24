@@ -26,6 +26,9 @@
 		F669C03C1DB1698D001161E1 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F669C03A1DB1698D001161E1 /* CardView.swift */; };
 		F669C03D1DB1698D001161E1 /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F669C03B1DB1698D001161E1 /* CustomCollectionViewCell.swift */; };
 		F6772BC01DB207AC00328961 /* DebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6772BBF1DB207AC00328961 /* DebugView.swift */; };
+		F67954391DBE7AAA0075870B /* ImageAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67954361DBE7AAA0075870B /* ImageAnimator.swift */; };
+		F679543A1DBE7AAA0075870B /* RenderSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67954371DBE7AAA0075870B /* RenderSettings.swift */; };
+		F679543B1DBE7AAA0075870B /* VideoWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67954381DBE7AAA0075870B /* VideoWriter.swift */; };
 		F67EA26E1DB3DEE7006DE24B /* CVFImageProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = F67EA26C1DB3DEE7006DE24B /* CVFImageProcessor.mm */; };
 		F67EA2711DB3DF39006DE24B /* CVFFaceDetect.mm in Sources */ = {isa = PBXBuildFile; fileRef = F67EA2701DB3DF39006DE24B /* CVFFaceDetect.mm */; };
 		F67EA2731DB3DFE0006DE24B /* haarcascade_frontalface_alt.xml in Resources */ = {isa = PBXBuildFile; fileRef = F67EA2721DB3DFE0006DE24B /* haarcascade_frontalface_alt.xml */; };
@@ -59,6 +62,9 @@
 		F669C03A1DB1698D001161E1 /* CardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		F669C03B1DB1698D001161E1 /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
 		F6772BBF1DB207AC00328961 /* DebugView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugView.swift; sourceTree = "<group>"; };
+		F67954361DBE7AAA0075870B /* ImageAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAnimator.swift; sourceTree = "<group>"; };
+		F67954371DBE7AAA0075870B /* RenderSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderSettings.swift; sourceTree = "<group>"; };
+		F67954381DBE7AAA0075870B /* VideoWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoWriter.swift; sourceTree = "<group>"; };
 		F67EA26B1DB3DEE7006DE24B /* CVFImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVFImageProcessor.h; sourceTree = "<group>"; };
 		F67EA26C1DB3DEE7006DE24B /* CVFImageProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CVFImageProcessor.mm; sourceTree = "<group>"; };
 		F67EA26D1DB3DEE7006DE24B /* CVFImageProcessorDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVFImageProcessorDelegate.h; sourceTree = "<group>"; };
@@ -109,6 +115,7 @@
 				F669C03E1DB16994001161E1 /* collectionView */,
 				F6339D951D5905A0006C4231 /* Game Code */,
 				A56695F61CE8B34B00BD7EAF /* Assets.xcassets */,
+				F679543C1DBE7AB00075870B /* Image To Video */,
 				A56695F81CE8B34B00BD7EAF /* LaunchScreen.storyboard */,
 				F6339DB11D590FCD006C4231 /* Notes */,
 				A56695FB1CE8B34B00BD7EAF /* Info.plist */,
@@ -158,6 +165,16 @@
 				F669C0381DB15C3D001161E1 /* GameGallery.swift */,
 			);
 			name = collectionView;
+			sourceTree = "<group>";
+		};
+		F679543C1DBE7AB00075870B /* Image To Video */ = {
+			isa = PBXGroup;
+			children = (
+				F67954361DBE7AAA0075870B /* ImageAnimator.swift */,
+				F67954371DBE7AAA0075870B /* RenderSettings.swift */,
+				F67954381DBE7AAA0075870B /* VideoWriter.swift */,
+			);
+			name = "Image To Video";
 			sourceTree = "<group>";
 		};
 		F67EA2651DB3DDDF006DE24B /* dlib */ = {
@@ -263,16 +280,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F679543A1DBE7AAA0075870B /* RenderSettings.swift in Sources */,
 				F67EA2711DB3DF39006DE24B /* CVFFaceDetect.mm in Sources */,
 				F6772BC01DB207AC00328961 /* DebugView.swift in Sources */,
 				F6339D921D590573006C4231 /* GameScene.swift in Sources */,
 				A5A1B2D21CEA317B00626AC5 /* DlibWrapper.mm in Sources */,
 				F6B90FC81D6270FE00EC0338 /* GameManager.swift in Sources */,
+				F679543B1DBE7AAA0075870B /* VideoWriter.swift in Sources */,
 				A566961E1CE8B4A100BD7EAF /* CameraHandler.swift in Sources */,
 				F614CDD41DAFFDAA0061F7FA /* Enum.swift in Sources */,
 				F66290F81DA9C4CF0030C11C /* head_pose_estimation.cpp in Sources */,
 				F669C03D1DB1698D001161E1 /* CustomCollectionViewCell.swift in Sources */,
 				F67EA26E1DB3DEE7006DE24B /* CVFImageProcessor.mm in Sources */,
+				F67954391DBE7AAA0075870B /* ImageAnimator.swift in Sources */,
 				A56695F01CE8B34B00BD7EAF /* AppDelegate.swift in Sources */,
 				F669C0391DB15C3D001161E1 /* GameGallery.swift in Sources */,
 				F669C03C1DB1698D001161E1 /* CardView.swift in Sources */,
