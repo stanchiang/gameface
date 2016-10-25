@@ -29,26 +29,26 @@ class PostGameView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.backgroundColor = UIColor.orangeColor()
+        self.backgroundColor = UIColor.clearColor()
         
         restartButton.translatesAutoresizingMaskIntoConstraints = false
-        restartButton.setTitle("Play Again", forState: .Normal)
+        restartButton.setTitle("Reset", forState: .Normal)
         restartButton.addTarget(self, action: #selector(restartAction(_:)), forControlEvents: .TouchUpInside)
         restartButton.backgroundColor = UIColor.blueColor()
-        restartButton.layer.borderColor = UIColor.redColor().CGColor
-        restartButton.layer.borderWidth = 1.0
+//        restartButton.layer.borderColor = UIColor.redColor().CGColor
+//        restartButton.layer.borderWidth = 1.0
         addSubview(restartButton)
         
         shareButton.translatesAutoresizingMaskIntoConstraints = false
         shareButton.setTitle("Share", forState: .Normal)
         shareButton.addTarget(self, action: #selector(shareAction(_:)), forControlEvents: .TouchUpInside)
         shareButton.backgroundColor = UIColor.greenColor()
-        shareButton.layer.borderColor = UIColor.blackColor().CGColor
-        shareButton.layer.borderWidth = 1.0
+//        shareButton.layer.borderColor = UIColor.blackColor().CGColor
+//        shareButton.layer.borderWidth = 1.0
         addSubview(shareButton)
         
         previewView.translatesAutoresizingMaskIntoConstraints = false
-        previewView.backgroundColor = UIColor.lightGrayColor()
+        previewView.backgroundColor = UIColor.clearColor()
         addSubview(previewView)
     }
 
