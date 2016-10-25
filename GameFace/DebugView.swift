@@ -74,7 +74,7 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate, MFMessageComposeV
         messageVC.messageComposeDelegate = self;
         
         (window?.rootViewController as! GameGallery).presentViewController(messageVC, animated: true, completion: nil)
-
+        
     }
     
     func messageComposeViewController(controller: MFMessageComposeViewController, didFinishWithResult result: MessageComposeResult) {

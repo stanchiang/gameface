@@ -22,6 +22,7 @@ class PostGameView: UIView {
     let shareButton = UIButton()
     let previewView = UIView()
     
+    var videoURL:NSURL!
     var player:AVPlayer!
     var playerLayer:AVPlayerLayer!
     
@@ -52,7 +53,8 @@ class PostGameView: UIView {
     }
 
     func loadVideo(previewURL: NSURL){
-        player = AVPlayer(URL: previewURL)
+        videoURL = previewURL
+        player = AVPlayer(URL: videoURL)
         playerLayer = AVPlayerLayer(player: player)
         playerLayer.frame = self.previewView.frame
         self.previewView.layer.addSublayer(playerLayer)
@@ -93,6 +95,9 @@ class PostGameView: UIView {
     
     func shareAction(sender: UIButton) {
         print("share game")
+        
+        let activityViewController = UIActivityViewController(activityItems: [videoURL], applicationActivities: nil)
+        (window?.rootViewController as! GameGallery).presentViewController(activityViewController, animated: true, completion: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
