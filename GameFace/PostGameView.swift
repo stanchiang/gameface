@@ -9,7 +9,7 @@
 import UIKit
 
 protocol PostGameViewDelegate:class {
-    
+    func initNewGame()
 }
 
 class PostGameView: UIView {
@@ -19,6 +19,8 @@ class PostGameView: UIView {
     let restartButton = UIButton()
     let shareButton = UIButton()
     let previewView = UIView()
+    
+    var previewURL:NSURL!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -65,10 +67,11 @@ class PostGameView: UIView {
     
     func restartAction(sender: UIButton) {
         print("restart game")
+        delegate?.initNewGame()
     }
     
     func shareAction(sender: UIButton) {
-        print("share game")
+        print("share game at = \(previewURL.absoluteString!)")
     }
     
     required init?(coder aDecoder: NSCoder) {

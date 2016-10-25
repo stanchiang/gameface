@@ -9,7 +9,7 @@
 import UIKit
 import SpriteKit
 
-class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate, UIKitDelegate {
+class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate, UIKitDelegate, PostGameViewDelegate {
     lazy var collectionView:UICollectionView = {
         var cv = UICollectionView(frame: self.view.bounds, collectionViewLayout: self.flowLayout)
         cv.delegate = self
@@ -56,7 +56,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     var isWritingToVideo = false
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-    var postGameModal:UIView!
+    var postGameModal:PostGameView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -223,6 +223,9 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     func initNewGame(){
         appDelegate.mouth = []
         gamePlayArray = []
+        if postGameModal != nil {
+            postGameModal.removeFromSuperview()
+        }
         postGameModal = nil
         isWritingToVideo = false
         
@@ -250,6 +253,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         //load post game modal
         print("load post game ")
         postGameModal = PostGameView()
+        postGameModal.delegate = self
         view.addSubview(postGameModal)
         
         //create video
@@ -272,13 +276,11 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     func gamePlayToVideo(){
         let settings = RenderSettings()
         let imageAnimator = ImageAnimator(renderSettings: settings, imageArray: gamePlayArray)
-        imageAnimator.render() { [unowned self] in
-            print("done! check camera roll")
-            
-            //init new game on button action from post game modal
-//            self.initNewGame()
+        imageAnimator.render { [unowned self] videoURL in
+            if self.postGameModal != nil {
+                self.postGameModal.previewURL = videoURL
+            }
         }
-        
     }
     
 }

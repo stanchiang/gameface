@@ -52,17 +52,20 @@ class ImageAnimator {
         images = imageArray
     }
     
-    func render(completion: ()->Void) {
+    func render(completion: (videoURL:NSURL)->Void) {
         
         // The VideoWriter will fail if a file exists at the URL, so clear it out first.
         ImageAnimator.removeFileAtURL(settings.outputURL)
         
         videoWriter.start()
-        videoWriter.render(appendPixelBuffers) {
-            ImageAnimator.saveToLibrary(self.settings.outputURL)
-            completion()
+//        videoWriter.render(appendPixelBuffers) {
+//            ImageAnimator.saveToLibrary(self.settings.outputURL)
+//            completion()
+//        }
+
+        videoWriter.render(appendPixelBuffers) { 
+            completion(videoURL: self.settings.outputURL)
         }
-        
     }
     
     // Replace this logic with your own.
