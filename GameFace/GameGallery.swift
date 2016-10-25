@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import AVKit
+import AVFoundation
 import SpriteKit
 
 class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate, UIKitDelegate, PostGameViewDelegate {
@@ -225,6 +227,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         gamePlayArray = []
         if postGameModal != nil {
             postGameModal.removeFromSuperview()
+            NSNotificationCenter.defaultCenter().removeObserver(self, name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
         }
         postGameModal = nil
         isWritingToVideo = false
@@ -278,7 +281,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         let imageAnimator = ImageAnimator(renderSettings: settings, imageArray: gamePlayArray)
         imageAnimator.render { [unowned self] videoURL in
             if self.postGameModal != nil {
-                self.postGameModal.previewURL = videoURL
+                self.postGameModal.loadVideo(videoURL)
             }
         }
     }

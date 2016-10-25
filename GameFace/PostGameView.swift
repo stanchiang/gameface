@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import AVKit
+import AVFoundation
 
 protocol PostGameViewDelegate:class {
     func initNewGame()
@@ -20,7 +22,8 @@ class PostGameView: UIView {
     let shareButton = UIButton()
     let previewView = UIView()
     
-    var previewURL:NSURL!
+    var player:AVPlayer!
+    var playerLayer:AVPlayerLayer!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -47,6 +50,24 @@ class PostGameView: UIView {
         previewView.backgroundColor = UIColor.lightGrayColor()
         addSubview(previewView)
     }
+
+    func loadVideo(previewURL: NSURL){
+        player = AVPlayer(URL: previewURL)
+        playerLayer = AVPlayerLayer(player: player)
+        playerLayer.frame = self.previewView.frame
+        self.previewView.layer.addSublayer(playerLayer)
+        player.play()
+        NSNotificationCenter.defaultCenter().addObserver(self,
+                                                         selector: #selector(playerItemDidReachEnd(_:)),
+                                                         name: AVPlayerItemDidPlayToEndTimeNotification,
+                                                         object: self.player.currentItem)
+        
+    }
+    
+    func playerItemDidReachEnd(notification: NSNotification) {
+        self.player.seekToTime(kCMTimeZero)
+        self.player.play()
+    }
     
     override func layoutSubviews() {
         restartButton.leadingAnchor.constraintEqualToAnchor(self.centerXAnchor).active = true
@@ -71,7 +92,7 @@ class PostGameView: UIView {
     }
     
     func shareAction(sender: UIButton) {
-        print("share game at = \(previewURL.absoluteString!)")
+        print("share game")
     }
     
     required init?(coder aDecoder: NSCoder) {
