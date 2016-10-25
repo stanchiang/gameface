@@ -123,10 +123,28 @@
 				A56695F81CE8B34B00BD7EAF /* LaunchScreen.storyboard */,
 				A56695FB1CE8B34B00BD7EAF /* Info.plist */,
 				A5A1B2CF1CEA317B00626AC5 /* gameface-Bridging-Header.h */,
-				F67EA2721DB3DFE0006DE24B /* haarcascade_frontalface_alt.xml */,
 				F6339DB01D5905CE006C4231 /* Content */,
 			);
 			path = GameFace;
+			sourceTree = "<group>";
+		};
+		F60507361DBFE2A900D1A8EA /* Datasets */ = {
+			isa = PBXGroup;
+			children = (
+				A5A1B2D71CEA431600626AC5 /* shape_predictor_68_face_landmarks.dat */,
+				F67EA2721DB3DFE0006DE24B /* haarcascade_frontalface_alt.xml */,
+			);
+			name = Datasets;
+			sourceTree = "<group>";
+		};
+		F60507371DBFE2B200D1A8EA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A5A1B2D31CEA35B300626AC5 /* libdlib.a */,
+				F64C2F381DADCFA7006E1021 /* opencv2.framework */,
+				A5A1B2D51CEA41E200626AC5 /* Accelerate.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		F6339D951D5905A0006C4231 /* Game Code */ = {
@@ -151,9 +169,9 @@
 		F6339DB31D5914C8006C4231 /* facialRec */ = {
 			isa = PBXGroup;
 			children = (
-				A5A1B2D71CEA431600626AC5 /* shape_predictor_68_face_landmarks.dat */,
-				A5A1B2D51CEA41E200626AC5 /* Accelerate.framework */,
-				F67EA2661DB3DDF2006DE24B /* opencv */,
+				F60507361DBFE2A900D1A8EA /* Datasets */,
+				F60507371DBFE2B200D1A8EA /* Frameworks */,
+				F67EA2661DB3DDF2006DE24B /* engine */,
 				F67EA2651DB3DDDF006DE24B /* dlib */,
 			);
 			name = facialRec;
@@ -183,7 +201,6 @@
 		F67EA2651DB3DDDF006DE24B /* dlib */ = {
 			isa = PBXGroup;
 			children = (
-				A5A1B2D31CEA35B300626AC5 /* libdlib.a */,
 				A5A1B2D01CEA317B00626AC5 /* DlibWrapper.h */,
 				A5A1B2D11CEA317B00626AC5 /* DlibWrapper.mm */,
 				F6339DB41D5914EE006C4231 /* DlibWrapperDelegate.h */,
@@ -191,10 +208,9 @@
 			name = dlib;
 			sourceTree = "<group>";
 		};
-		F67EA2661DB3DDF2006DE24B /* opencv */ = {
+		F67EA2661DB3DDF2006DE24B /* engine */ = {
 			isa = PBXGroup;
 			children = (
-				F64C2F381DADCFA7006E1021 /* opencv2.framework */,
 				F66290F61DA9C4CF0030C11C /* head_pose_estimation.hpp */,
 				F66290F71DA9C4CF0030C11C /* head_pose_estimation.cpp */,
 				F67EA26B1DB3DEE7006DE24B /* CVFImageProcessor.h */,
@@ -203,7 +219,7 @@
 				F67EA26F1DB3DF39006DE24B /* CVFFaceDetect.h */,
 				F67EA2701DB3DF39006DE24B /* CVFFaceDetect.mm */,
 			);
-			name = opencv;
+			name = engine;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

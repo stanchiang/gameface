@@ -108,8 +108,14 @@ dlib::shape_predictor sp;
         [self.delegate mouthVerticePositions:m];
         
     }
+    
+    cv::Mat edges;
+    cvtColor(mat, edges, CV_BGR2GRAY);
+    GaussianBlur(edges, edges, cv::Size(7, 7), 1.5, 1.5);
+//    Canny(edges, edges, 0, 30, 3);
+    Canny(edges, edges, 10, 100, 3);
 
-    [self matReady:mat];
+    [self matReady:edges];
 }
 
 - (CGFloat)pixelToPoints:(CGFloat)px {
