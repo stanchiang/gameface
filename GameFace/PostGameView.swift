@@ -30,6 +30,7 @@ class PostGameView: UIView {
         super.init(frame: frame)
         self.translatesAutoresizingMaskIntoConstraints = false
         self.backgroundColor = UIColor.clearColor()
+        self.blurView()
         
         restartButton.translatesAutoresizingMaskIntoConstraints = false
         restartButton.setTitle("Reset", forState: .Normal)
@@ -104,3 +105,4 @@ class PostGameView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 }
+

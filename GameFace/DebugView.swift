@@ -254,15 +254,3 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate, MFMessageComposeV
         fatalError("init(coder:) has not been implemented")
     }
 }
-
-extension UIViewController {
-    func hideKeyboardWhenTappedAround() {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
-        view.addGestureRecognizer(tap)
-    }
-    
-    func dismissKeyboard() {
-        view.endEditing(true)
-    }
-}
-

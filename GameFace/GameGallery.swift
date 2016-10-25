@@ -241,10 +241,9 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         self.cameraHandler.session.startRunning()
     }
     
-    func startRecording() {
+    func startPlaying() {
         //start basketball drops and mouth sprite updates
         appDelegate.gameState = .inPlay
-        self.scene.alreadyStarting = false
         self.scene.addGameTimer()
     }
     

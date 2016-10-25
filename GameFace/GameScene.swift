@@ -13,7 +13,7 @@ protocol GameSceneDelegate: class {
     func getTimer() -> Double
     func swapInstructionsWithScore()
     func loadPostGame()
-    func startRecordingGamePlay()
+    func startGamePlay()
 }
 
 protocol GameVarDelegate: class {
@@ -44,8 +44,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     var objectMissedCount = 0;
     
     var lastState:GameState = .postGame
-    
-    var alreadyStarting = false
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
@@ -136,10 +134,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         guard gameVarDelegate?.getWillRecordGame() != nil else { return }
         guard gameVarDelegate?.getVideoLength() != nil else { return }
         
-        if alreadyStarting {
-            return
-        }
-        
         if lastState != appDelegate.gameState {
             lastState = appDelegate.gameState
             print(lastState)
@@ -159,7 +153,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         if appDelegate.gameState == .preGame {
             if triggerGameStart(mouth) {
                 sceneDelegate?.swapInstructionsWithScore()
-                sceneDelegate?.startRecordingGamePlay()
+                sceneDelegate?.startGamePlay()
             }
         }
         
