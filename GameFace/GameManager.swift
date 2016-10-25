@@ -13,7 +13,7 @@ protocol GameManagerDelegate: class {
 }
 
 protocol UIKitDelegate: class {
-    func loadPostGameModal()
+    func loadPostGame()
     func startRecording()
 }
 
@@ -169,7 +169,7 @@ class GameManager: SKScene, GameSceneDelegate {
     }
     
     func loadPostGame() {
-        uikitDelegate?.loadPostGameModal()
+        uikitDelegate?.loadPostGame()
     }
     
     func startRecordingGamePlay() {

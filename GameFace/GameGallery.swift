@@ -45,7 +45,6 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     var scene:GameScene!
     var manager:GameManager!
     
-    var shape: CAShapeLayer!
     var mouth:[CGPoint]!
     
     var debugView:DebugView!
@@ -57,6 +56,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     var isWritingToVideo = false
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    var postGameModal:UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,6 +84,14 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         collectionView.layoutIfNeeded()
         collectionView.scrollToItemAtIndexPath(NSIndexPath(forItem: 1, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.None, animated: false)
         appDelegate.currentCell = 1
+        
+        if postGameModal != nil {
+            postGameModal.leadingAnchor.constraintEqualToAnchor(self.view.leadingAnchor).active = true
+            postGameModal.trailingAnchor.constraintEqualToAnchor(self.view.trailingAnchor).active = true
+            postGameModal.topAnchor.constraintEqualToAnchor(topLayoutGuide.bottomAnchor).active = true
+            postGameModal.bottomAnchor.constraintEqualToAnchor(bottomLayoutGuide.topAnchor).active = true
+
+        }
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize{
@@ -195,8 +203,11 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     }
     
     func resetGame() {
-        appDelegate.gameState = .postGame
-        appDelegate.mouth = []
+        destroyGame()
+        initNewGame()
+    }
+    
+    func destroyGame(){
         self.scene.removeAllChildren()
         
         self.cameraHandler.session.stopRunning()
@@ -206,6 +217,14 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         
         managerView.removeFromSuperview()
         gameView.removeFromSuperview()
+
+    }
+    
+    func initNewGame(){
+        appDelegate.mouth = []
+        gamePlayArray = []
+        postGameModal = nil
+        isWritingToVideo = false
         
         self.collectionView.reloadData()
         setupGameLayer()
@@ -214,8 +233,6 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         appDelegate.gameState = .preGame
         self.manager.timer.xScale = 1.0
         self.cameraHandler.session.startRunning()
-        
-        gamePlayArray = []
     }
     
     func startRecording() {
@@ -226,8 +243,16 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     }
     
     //MARK: custom UIKitDelegate
-    func loadPostGameModal() {
-        print("load post game modal")
+    func loadPostGame() {
+        //destroy current game
+        destroyGame()
+        
+        //load post game modal
+        print("load post game ")
+        postGameModal = PostGameView()
+        view.addSubview(postGameModal)
+        
+        //create video
         if !isWritingToVideo {
             isWritingToVideo = true
             gamePlayToVideo()
@@ -249,8 +274,11 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         let imageAnimator = ImageAnimator(renderSettings: settings, imageArray: gamePlayArray)
         imageAnimator.render() { [unowned self] in
             print("done! check camera roll")
-            self.resetGame()
+            
+            //init new game on button action from post game modal
+//            self.initNewGame()
         }
+        
     }
     
 }

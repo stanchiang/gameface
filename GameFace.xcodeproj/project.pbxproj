@@ -19,6 +19,7 @@
 		F6339D921D590573006C4231 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6339D911D590573006C4231 /* GameScene.swift */; };
 		F6339D941D590587006C4231 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6339D931D590587006C4231 /* Helper.swift */; };
 		F6339DA71D5905C5006C4231 /* candyEater.sks in Resources */ = {isa = PBXBuildFile; fileRef = F6339D9B1D5905C5006C4231 /* candyEater.sks */; };
+		F63CE9411DBED65700582F22 /* PostGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63CE9401DBED65700582F22 /* PostGameView.swift */; };
 		F64C2F391DADCFA7006E1021 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64C2F381DADCFA7006E1021 /* opencv2.framework */; };
 		F66290F81DA9C4CF0030C11C /* head_pose_estimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F66290F71DA9C4CF0030C11C /* head_pose_estimation.cpp */; };
 		F669C0391DB15C3D001161E1 /* GameGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = F669C0381DB15C3D001161E1 /* GameGallery.swift */; };
@@ -53,6 +54,7 @@
 		F6339D931D590587006C4231 /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		F6339D9B1D5905C5006C4231 /* candyEater.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = candyEater.sks; sourceTree = "<group>"; };
 		F6339DB41D5914EE006C4231 /* DlibWrapperDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DlibWrapperDelegate.h; sourceTree = "<group>"; };
+		F63CE9401DBED65700582F22 /* PostGameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostGameView.swift; sourceTree = "<group>"; };
 		F64C2F381DADCFA7006E1021 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
 		F66290F61DA9C4CF0030C11C /* head_pose_estimation.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = head_pose_estimation.hpp; sourceTree = "<group>"; };
 		F66290F71DA9C4CF0030C11C /* head_pose_estimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = head_pose_estimation.cpp; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 				F669C03A1DB1698D001161E1 /* CardView.swift */,
 				F669C03B1DB1698D001161E1 /* CustomCollectionViewCell.swift */,
 				F669C0381DB15C3D001161E1 /* GameGallery.swift */,
+				F63CE9401DBED65700582F22 /* PostGameView.swift */,
 			);
 			name = collectionView;
 			sourceTree = "<group>";
@@ -282,6 +285,7 @@
 				F6339D921D590573006C4231 /* GameScene.swift in Sources */,
 				A5A1B2D21CEA317B00626AC5 /* DlibWrapper.mm in Sources */,
 				F6B90FC81D6270FE00EC0338 /* GameManager.swift in Sources */,
+				F63CE9411DBED65700582F22 /* PostGameView.swift in Sources */,
 				F679543B1DBE7AAA0075870B /* VideoWriter.swift in Sources */,
 				A566961E1CE8B4A100BD7EAF /* CameraHandler.swift in Sources */,
 				F614CDD41DAFFDAA0061F7FA /* Enum.swift in Sources */,
