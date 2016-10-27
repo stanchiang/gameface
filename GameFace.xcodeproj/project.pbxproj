@@ -11,7 +11,6 @@
 		A56695F71CE8B34B00BD7EAF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A56695F61CE8B34B00BD7EAF /* Assets.xcassets */; };
 		A56695FA1CE8B34B00BD7EAF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A56695F81CE8B34B00BD7EAF /* LaunchScreen.storyboard */; };
 		A566961E1CE8B4A100BD7EAF /* CameraHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A566961D1CE8B4A100BD7EAF /* CameraHandler.swift */; };
-		A5A1B2D21CEA317B00626AC5 /* DlibWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5A1B2D11CEA317B00626AC5 /* DlibWrapper.mm */; };
 		A5A1B2D41CEA35B300626AC5 /* libdlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A5A1B2D31CEA35B300626AC5 /* libdlib.a */; };
 		A5A1B2D61CEA41E200626AC5 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5A1B2D51CEA41E200626AC5 /* Accelerate.framework */; };
 		A5A1B2D81CEA431600626AC5 /* shape_predictor_68_face_landmarks.dat in Resources */ = {isa = PBXBuildFile; fileRef = A5A1B2D71CEA431600626AC5 /* shape_predictor_68_face_landmarks.dat */; };
@@ -47,8 +46,6 @@
 		A56695FB1CE8B34B00BD7EAF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A566961D1CE8B4A100BD7EAF /* CameraHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraHandler.swift; sourceTree = "<group>"; };
 		A5A1B2CF1CEA317B00626AC5 /* gameface-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "gameface-Bridging-Header.h"; sourceTree = "<group>"; };
-		A5A1B2D01CEA317B00626AC5 /* DlibWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DlibWrapper.h; sourceTree = "<group>"; };
-		A5A1B2D11CEA317B00626AC5 /* DlibWrapper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DlibWrapper.mm; sourceTree = "<group>"; };
 		A5A1B2D31CEA35B300626AC5 /* libdlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libdlib.a; path = lib/libdlib.a; sourceTree = "<group>"; };
 		A5A1B2D51CEA41E200626AC5 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		A5A1B2D71CEA431600626AC5 /* shape_predictor_68_face_landmarks.dat */ = {isa = PBXFileReference; lastKnownFileType = file; name = shape_predictor_68_face_landmarks.dat; path = lib/shape_predictor_68_face_landmarks.dat; sourceTree = "<group>"; };
@@ -56,7 +53,6 @@
 		F6339D911D590573006C4231 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		F6339D931D590587006C4231 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		F6339D9B1D5905C5006C4231 /* candyEater.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = candyEater.sks; sourceTree = "<group>"; };
-		F6339DB41D5914EE006C4231 /* DlibWrapperDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DlibWrapperDelegate.h; sourceTree = "<group>"; };
 		F63847B21DBFD27600C86015 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		F63CE9401DBED65700582F22 /* PostGameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostGameView.swift; sourceTree = "<group>"; };
 		F64C2F381DADCFA7006E1021 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
@@ -117,9 +113,7 @@
 				F6339DB31D5914C8006C4231 /* facialRec */,
 				A56695EF1CE8B34B00BD7EAF /* AppDelegate.swift */,
 				A566961D1CE8B4A100BD7EAF /* CameraHandler.swift */,
-				F614CDD31DAFFDAA0061F7FA /* Enums.swift */,
-				F63847B21DBFD27600C86015 /* Extensions.swift */,
-				F6339D931D590587006C4231 /* Helpers.swift */,
+				F67D513B1DC187330018501C /* Helpers */,
 				F669C03E1DB16994001161E1 /* collectionView */,
 				F6339D951D5905A0006C4231 /* Game Code */,
 				A56695F61CE8B34B00BD7EAF /* Assets.xcassets */,
@@ -176,7 +170,6 @@
 				F60507361DBFE2A900D1A8EA /* Datasets */,
 				F60507371DBFE2B200D1A8EA /* Frameworks */,
 				F67EA2661DB3DDF2006DE24B /* engine */,
-				F67EA2651DB3DDDF006DE24B /* dlib */,
 			);
 			name = facialRec;
 			sourceTree = "<group>";
@@ -204,14 +197,14 @@
 			name = "Image To Video";
 			sourceTree = "<group>";
 		};
-		F67EA2651DB3DDDF006DE24B /* dlib */ = {
+		F67D513B1DC187330018501C /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				A5A1B2D01CEA317B00626AC5 /* DlibWrapper.h */,
-				A5A1B2D11CEA317B00626AC5 /* DlibWrapper.mm */,
-				F6339DB41D5914EE006C4231 /* DlibWrapperDelegate.h */,
+				F614CDD31DAFFDAA0061F7FA /* Enums.swift */,
+				F63847B21DBFD27600C86015 /* Extensions.swift */,
+				F6339D931D590587006C4231 /* Helpers.swift */,
 			);
-			name = dlib;
+			name = Helpers;
 			sourceTree = "<group>";
 		};
 		F67EA2661DB3DDF2006DE24B /* engine */ = {
@@ -309,7 +302,6 @@
 				F67EA2711DB3DF39006DE24B /* CVFFaceDetect.mm in Sources */,
 				F6772BC01DB207AC00328961 /* DebugView.swift in Sources */,
 				F6339D921D590573006C4231 /* GameScene.swift in Sources */,
-				A5A1B2D21CEA317B00626AC5 /* DlibWrapper.mm in Sources */,
 				F6B90FC81D6270FE00EC0338 /* GameManager.swift in Sources */,
 				F63CE9411DBED65700582F22 /* PostGameView.swift in Sources */,
 				F63847B31DBFD27600C86015 /* Extensions.swift in Sources */,
