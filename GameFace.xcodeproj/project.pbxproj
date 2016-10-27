@@ -30,6 +30,8 @@
 		F67954391DBE7AAA0075870B /* ImageAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67954361DBE7AAA0075870B /* ImageAnimator.swift */; };
 		F679543A1DBE7AAA0075870B /* RenderSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67954371DBE7AAA0075870B /* RenderSettings.swift */; };
 		F679543B1DBE7AAA0075870B /* VideoWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67954381DBE7AAA0075870B /* VideoWriter.swift */; };
+		F67D51391DC183110018501C /* CollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67D51371DC183110018501C /* CollectionTableViewCell.swift */; };
+		F67D513A1DC183110018501C /* CollectionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67D51381DC183110018501C /* CollectionTableViewController.swift */; };
 		F67EA26E1DB3DEE7006DE24B /* CVFImageProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = F67EA26C1DB3DEE7006DE24B /* CVFImageProcessor.mm */; };
 		F67EA2711DB3DF39006DE24B /* CVFFaceDetect.mm in Sources */ = {isa = PBXBuildFile; fileRef = F67EA2701DB3DF39006DE24B /* CVFFaceDetect.mm */; };
 		F67EA2731DB3DFE0006DE24B /* haarcascade_frontalface_alt.xml in Resources */ = {isa = PBXBuildFile; fileRef = F67EA2721DB3DFE0006DE24B /* haarcascade_frontalface_alt.xml */; };
@@ -67,6 +69,8 @@
 		F67954361DBE7AAA0075870B /* ImageAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAnimator.swift; sourceTree = "<group>"; };
 		F67954371DBE7AAA0075870B /* RenderSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderSettings.swift; sourceTree = "<group>"; };
 		F67954381DBE7AAA0075870B /* VideoWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoWriter.swift; sourceTree = "<group>"; };
+		F67D51371DC183110018501C /* CollectionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTableViewCell.swift; sourceTree = "<group>"; };
+		F67D51381DC183110018501C /* CollectionTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTableViewController.swift; sourceTree = "<group>"; };
 		F67EA26B1DB3DEE7006DE24B /* CVFImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVFImageProcessor.h; sourceTree = "<group>"; };
 		F67EA26C1DB3DEE7006DE24B /* CVFImageProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CVFImageProcessor.mm; sourceTree = "<group>"; };
 		F67EA26D1DB3DEE7006DE24B /* CVFImageProcessorDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVFImageProcessorDelegate.h; sourceTree = "<group>"; };
@@ -184,6 +188,8 @@
 				F669C03B1DB1698D001161E1 /* CustomCollectionViewCell.swift */,
 				F669C0381DB15C3D001161E1 /* GameGallery.swift */,
 				F63CE9401DBED65700582F22 /* PostGameView.swift */,
+				F67D51371DC183110018501C /* CollectionTableViewCell.swift */,
+				F67D51381DC183110018501C /* CollectionTableViewController.swift */,
 			);
 			name = collectionView;
 			sourceTree = "<group>";
@@ -298,6 +304,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F67D513A1DC183110018501C /* CollectionTableViewController.swift in Sources */,
 				F679543A1DBE7AAA0075870B /* RenderSettings.swift in Sources */,
 				F67EA2711DB3DF39006DE24B /* CVFFaceDetect.mm in Sources */,
 				F6772BC01DB207AC00328961 /* DebugView.swift in Sources */,
@@ -311,6 +318,7 @@
 				F614CDD41DAFFDAA0061F7FA /* Enums.swift in Sources */,
 				F66290F81DA9C4CF0030C11C /* head_pose_estimation.cpp in Sources */,
 				F669C03D1DB1698D001161E1 /* CustomCollectionViewCell.swift in Sources */,
+				F67D51391DC183110018501C /* CollectionTableViewCell.swift in Sources */,
 				F67EA26E1DB3DEE7006DE24B /* CVFImageProcessor.mm in Sources */,
 				F67954391DBE7AAA0075870B /* ImageAnimator.swift in Sources */,
 				A56695F01CE8B34B00BD7EAF /* AppDelegate.swift in Sources */,
