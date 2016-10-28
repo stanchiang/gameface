@@ -28,6 +28,7 @@ protocol GameVarDelegate: class {
     func getSpriteEndRange() -> Double
     func getVideoLength() -> Double
     func getWillRecordGame() -> Bool
+    func getWillAddBombs() -> Bool
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
@@ -38,7 +39,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     var polygonNode:SKSpriteNode!
     var polygon:SKShapeNode!
 
-    var possibleEnemies = ["candy", "ball"]
+    var possibleObjects = ["candy", "bomb"]
     var gameTimer: NSTimer!
     
     var objectMissedCount = 0;
@@ -73,10 +74,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         guard gameVarDelegate?.getSpriteInitialSpeed() != nil else {return}
         guard gameVarDelegate?.getGameScoreBonus() != nil else {return}
         guard gameVarDelegate?.getSpriteSize() != nil else {return}
-
+        guard gameVarDelegate?.getWillAddBombs() != nil else {return}
+        
         //1 is good 2 is bad
-        let rand = RandomInt(1, max: 2)
-        let sprite = SKSpriteNode(imageNamed: possibleEnemies[rand - 1])
+        var rand = 1
+        if gameVarDelegate!.getWillAddBombs() {
+            rand = RandomInt(1, max: 2)
+        }
+        
+        let sprite = SKSpriteNode(imageNamed: possibleObjects[rand - 1])
         sprite.size = CGSize(width: gameVarDelegate!.getSpriteSize(), height: gameVarDelegate!.getSpriteSize())
         let path = arcBetweenPoints(fromPoint: start, toPoint: end)
         let followArc = SKAction.followPath(path, asOffset: false, orientToPath: true, duration: gameVarDelegate!.getSpriteInitialSpeed())

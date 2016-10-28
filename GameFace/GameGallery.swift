@@ -29,7 +29,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         var flow = UICollectionViewFlowLayout()
         flow.scrollDirection = .Horizontal
         flow.minimumInteritemSpacing = 0
-        flow.minimumLineSpacing = -0.92
+        flow.minimumLineSpacing = 0
         return flow
     }()
     
