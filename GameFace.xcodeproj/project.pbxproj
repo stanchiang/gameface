@@ -111,17 +111,12 @@
 			isa = PBXGroup;
 			children = (
 				F6339DB31D5914C8006C4231 /* facialRec */,
-				A56695EF1CE8B34B00BD7EAF /* AppDelegate.swift */,
 				A566961D1CE8B4A100BD7EAF /* CameraHandler.swift */,
 				F67D513B1DC187330018501C /* Helpers */,
 				F669C03E1DB16994001161E1 /* collectionView */,
 				F6339D951D5905A0006C4231 /* Game Code */,
-				A56695F61CE8B34B00BD7EAF /* Assets.xcassets */,
 				F679543C1DBE7AB00075870B /* Image To Video */,
-				A56695F81CE8B34B00BD7EAF /* LaunchScreen.storyboard */,
-				A56695FB1CE8B34B00BD7EAF /* Info.plist */,
-				A5A1B2CF1CEA317B00626AC5 /* gameface-Bridging-Header.h */,
-				F6339DB01D5905CE006C4231 /* Content */,
+				F67D513C1DC18FE90018501C /* Supporting Files */,
 			);
 			path = GameFace;
 			sourceTree = "<group>";
@@ -155,13 +150,13 @@
 			name = "Game Code";
 			sourceTree = "<group>";
 		};
-		F6339DB01D5905CE006C4231 /* Content */ = {
+		F6339DB01D5905CE006C4231 /* Animation */ = {
 			isa = PBXGroup;
 			children = (
 				F6ADFFAA1DBC667F001C7A06 /* explosion.sks */,
 				F6339D9B1D5905C5006C4231 /* candyEater.sks */,
 			);
-			name = Content;
+			name = Animation;
 			sourceTree = "<group>";
 		};
 		F6339DB31D5914C8006C4231 /* facialRec */ = {
@@ -205,6 +200,19 @@
 				F6339D931D590587006C4231 /* Helpers.swift */,
 			);
 			name = Helpers;
+			sourceTree = "<group>";
+		};
+		F67D513C1DC18FE90018501C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				A56695EF1CE8B34B00BD7EAF /* AppDelegate.swift */,
+				A56695F81CE8B34B00BD7EAF /* LaunchScreen.storyboard */,
+				A56695F61CE8B34B00BD7EAF /* Assets.xcassets */,
+				A56695FB1CE8B34B00BD7EAF /* Info.plist */,
+				A5A1B2CF1CEA317B00626AC5 /* gameface-Bridging-Header.h */,
+				F6339DB01D5905CE006C4231 /* Animation */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		F67EA2661DB3DDF2006DE24B /* engine */ = {

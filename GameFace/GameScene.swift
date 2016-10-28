@@ -38,7 +38,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     var polygonNode:SKSpriteNode!
     var polygon:SKShapeNode!
 
-    var possibleEnemies = ["ball", "candy", "hammer"]
+    var possibleEnemies = ["candy", "ball"]
     var gameTimer: NSTimer!
     
     var objectMissedCount = 0;
@@ -75,9 +75,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         guard gameVarDelegate?.getSpriteSize() != nil else {return}
 
         //1 is good 2 is bad
-//        let rand = RandomInt(1, max: 2)
-        let rand = 1
-        let sprite = SKSpriteNode(imageNamed: possibleEnemies[rand])
+        let rand = RandomInt(1, max: 2)
+        let sprite = SKSpriteNode(imageNamed: possibleEnemies[rand - 1])
         sprite.size = CGSize(width: gameVarDelegate!.getSpriteSize(), height: gameVarDelegate!.getSpriteSize())
         let path = arcBetweenPoints(fromPoint: start, toPoint: end)
         let followArc = SKAction.followPath(path, asOffset: false, orientToPath: true, duration: gameVarDelegate!.getSpriteInitialSpeed())
@@ -88,17 +87,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         
         self.addChild(sprite)
         sprite.runAction(followArc) { [unowned self] in
-            let emitterNode = SKEmitterNode(fileNamed: "explosion.sks")
-            emitterNode!.particlePosition = sprite.position
-            self.addChild(emitterNode!)
-            self.runAction(SKAction.waitForDuration(2), completion: {
-                emitterNode!.removeFromParent()
-            })
-
-            sprite.removeFromParent()
-            print("object missed")
-            self.objectMissedCount += 1
-            self.sceneDelegate?.updateTimer(self.gameVarDelegate!.getGameScoreBonus() / -10.0)
+            
+            if sprite.physicsBody?.categoryBitMask == 1 {
+                let emitterNode = SKEmitterNode(fileNamed: "explosion.sks")
+                emitterNode!.particlePosition = sprite.position
+                self.addChild(emitterNode!)
+                self.runAction(SKAction.waitForDuration(2), completion: {
+                    emitterNode!.removeFromParent()
+                })
+                
+                sprite.removeFromParent()
+                print("candy missed")
+                self.objectMissedCount += 1
+                self.sceneDelegate?.updateTimer(self.gameVarDelegate!.getGameScoreBonus() / -10.0)
+            }
+            
+            if sprite.physicsBody?.categoryBitMask == 2 {
+                sprite.removeFromParent()
+                print("bomb dodged")
+                self.sceneDelegate?.updateTimer(self.gameVarDelegate!.getGameScoreBonus() / 10.0)
+            }
         }
     }
     
@@ -125,6 +133,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                 })
                 thing.removeFromParent()
                 sceneDelegate?.updateTimer((gameVarDelegate?.getGameScoreBonus())! / 10.0)
+            }
+        }
+        
+        if object.categoryBitMask == 2 {
+            if let thing = object.node {
+                object.categoryBitMask = 4
+                
+                let emitterNode = SKEmitterNode(fileNamed: "explosion.sks")
+                emitterNode!.particlePosition = thing.position
+                self.addChild(emitterNode!)
+                self.runAction(SKAction.waitForDuration(2), completion: {
+                    emitterNode!.removeFromParent()
+                })
+                thing.removeFromParent()
+                sceneDelegate?.updateTimer((gameVarDelegate?.getGameScoreBonus())! / -10.0)
             }
         }
     }
