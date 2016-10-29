@@ -201,7 +201,7 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate, MFMessageComposeV
     func getWillAddBombs() -> Bool {
         print(appDelegate.currentScore)
         if let value = checkStepperWithTagId(11) {
-            if value > 0 && appDelegate.currentScore > 7 {
+            if value > 0 && appDelegate.currentScore > 6 {
                 return true
             } else {
                 return false
@@ -213,7 +213,7 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate, MFMessageComposeV
     
     func getWillShowFaceDetect() -> Bool {
         if let value = checkStepperWithTagId(12) {
-            if value > 0 {
+            if value > 0 && appDelegate.gameState != .inPlay {
                 return true
             } else {
                 return false
@@ -268,8 +268,8 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate, MFMessageComposeV
         dict.updateValue(["tag":2,"value":1,"min":0,"max":20,"step":1], forKey: "closed mouth drain rate")
         dict.updateValue(["tag":3,"value":2,"min":0,"max":10,"step":1], forKey: "game score bonus")
         dict.updateValue(["tag":4,"value":21.5,"min":-30,"max":30,"step":0.5], forKey: "adjustedPPI")
-        dict.updateValue(["tag":5,"value":0.6,"min":0,"max":3,"step":0.1], forKey: "object spawn rate")
-        dict.updateValue(["tag":6,"value":1.2,"min":0,"max":3,"step":0.1], forKey: "sprite initial speed")
+        dict.updateValue(["tag":5,"value":0.5,"min":0,"max":3,"step":0.1], forKey: "object spawn rate")
+        dict.updateValue(["tag":6,"value":1.3,"min":0,"max":3,"step":0.1], forKey: "sprite initial speed")
         dict.updateValue(["tag":7,"value":50,"min":0,"max":200,"step":10], forKey: "sprite size")
         dict.updateValue(["tag":8,"value":3,"min":0,"max":10,"step":0.5], forKey: "sprite end range")
         dict.updateValue(["tag":9,"value":1,"min":0,"max":1,"step":1], forKey: "record game")
