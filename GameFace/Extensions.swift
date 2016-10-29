@@ -59,3 +59,22 @@ extension UIImage {
         return newImage
     }
 }
+
+extension NSTimeInterval {
+    func parseTime() -> (UInt8, UInt8, UInt8) {
+        //calculate the minutes in elapsed time.
+        var elapsedTime = self
+        
+        let minutes = UInt8(elapsedTime / 60.0)
+        elapsedTime -= (NSTimeInterval(minutes) * 60)
+        
+        //calculate the seconds in elapsed time.
+        let seconds = UInt8(elapsedTime)
+        elapsedTime -= NSTimeInterval(seconds)
+        
+        //find out the fraction of milliseconds to be displayed.
+        let fraction = UInt8(elapsedTime * 100) 
+        
+        return (minutes,seconds,fraction)
+    }
+}

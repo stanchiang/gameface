@@ -21,33 +21,33 @@ class GameManager: SKScene, GameSceneDelegate {
     weak var managerDelegate:GameManagerDelegate?
     weak var uikitDelegate:UIKitDelegate?
     var instructions:SKLabelNode!
-    var scoreLabel: SKLabelNode!
-    var scoreShadow: SKLabelNode!
     var pauseButton:SKSpriteNode!
     
     let length:CGFloat = 50
     var timer:SKSpriteNode!
     var scoreTitle:SKLabelNode!
     var scoreValue:SKLabelNode!
+    var highScoreOnStart:SKLabelNode!
     
     var startTime = NSTimeInterval()
 
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
-    var hasHighScore = false
+    var hasNewHighScore = false
     
     override func didMoveToView(view: SKView) {
         setupInterface()
     }
     
     func setupInterface() {
-        addTimer(length)
-        addInstructions(length)
+        addTimer()
+        addInstructions()
+        addHighScoreOnStartLabel()
     }
     
-    func addScoreValue(length:CGFloat) {
+    func addScoreValue() {
         scoreValue = SKLabelNode()
-        scoreValue.position = CGPoint(x: self.view!.frame.width / 2, y: self.frame.height * 0.9)
+        scoreValue.position = CGPoint(x: self.view!.frame.width / 2, y: self.frame.height * 0.925)
         scoreValue.text = "00.00.00"
         scoreValue.fontColor = UIColor(netHex: 0x5C5854)
         scoreValue.fontName = "San Francisco-Bold"
@@ -55,21 +55,36 @@ class GameManager: SKScene, GameSceneDelegate {
         addChild(scoreValue)
     }
     
-    func addScoreTitle(length:CGFloat){
+    func addScoreTitle(){
         scoreTitle = SKLabelNode()
-        scoreTitle.position = CGPoint(x: self.view!.frame.width / 2, y: self.frame.height * 0.85)
+        scoreTitle.position = CGPoint(x: self.view!.frame.width / 2, y: self.frame.height * 0.8755)
         scoreTitle.text = "score"
         scoreTitle.fontName = "San Francisco-Medium"
         scoreTitle.fontColor = UIColor(netHex: 0x5C5854)
         addChild(scoreTitle)
     }
     
-    func addInstructions(length:CGFloat){
+    func addInstructions(){
         instructions = SKLabelNode(fontNamed: "San Francisco-Bold")
         instructions.position = CGPoint(x: self.view!.frame.width / 2, y: self.frame.height * 0.9)
         instructions.text = "Open Your Mouth 😮"
         instructions.fontColor = UIColor(netHex: 0x5C5854)
         addChild(instructions)
+    }
+    
+    func addHighScoreOnStartLabel(){
+        highScoreOnStart = SKLabelNode(fontNamed: "San Francisco")
+        highScoreOnStart.position = CGPoint(x: self.view!.frame.width / 2, y: self.frame.height * 0.825)
+        
+        let parsedTime = NSTimeInterval(appDelegate.highScore).parseTime()
+        let strMinutes = String(format: "%02d", parsedTime.0)
+        let strSeconds = String(format: "%02d", parsedTime.1)
+        let strFraction = String(format: "%02d", parsedTime.2)
+
+        highScoreOnStart.text = "highscore: \(strMinutes).\(strSeconds).\(strFraction)"
+        highScoreOnStart.fontColor = UIColor(netHex: 0x5C5854)
+        highScoreOnStart.fontSize = 20
+        addChild(highScoreOnStart)
     }
     
     func addPause(length:CGFloat){
@@ -79,7 +94,7 @@ class GameManager: SKScene, GameSceneDelegate {
         addChild(pauseButton)
     }
     
-    func addTimer(length:CGFloat){
+    func addTimer(){
         timer = SKSpriteNode(color: UIColor.greenColor(), size: CGSize(width: UIScreen.mainScreen().bounds.width, height: self.frame.height * 0.40))
         timer.alpha = 0.5
         timer.anchorPoint.x = 0
@@ -92,9 +107,13 @@ class GameManager: SKScene, GameSceneDelegate {
         let currentTime = NSDate.timeIntervalSinceReferenceDate()
         
         //Find the difference between current time and start time.
-        var elapsedTime: NSTimeInterval = currentTime - startTime
+        let elapsedTime: NSTimeInterval = currentTime - startTime
         appDelegate.currentScore = elapsedTime
+//        print(appDelegate.currentScore)
         
+        let parsedTime = elapsedTime.parseTime()
+
+        /*
         //calculate the minutes in elapsed time.
         let minutes = UInt8(elapsedTime / 60.0)
         elapsedTime -= (NSTimeInterval(minutes) * 60)
@@ -105,18 +124,23 @@ class GameManager: SKScene, GameSceneDelegate {
         
         //find out the fraction of milliseconds to be displayed.
         let fraction = UInt8(elapsedTime * 100)
-        
+ 
         //add the leading zero for minutes, seconds and millseconds and store them as string constants
         
         let strMinutes = String(format: "%02d", minutes)
         let strSeconds = String(format: "%02d", seconds)
         let strFraction = String(format: "%02d", fraction)
+        */
         
-        if !hasHighScore && appDelegate.currentScore > appDelegate.highScore {
-            hasHighScore = true
+        let strMinutes = String(format: "%02d", parsedTime.0)
+        let strSeconds = String(format: "%02d", parsedTime.1)
+        let strFraction = String(format: "%02d", parsedTime.2)
+        
+        if !hasNewHighScore && appDelegate.currentScore > appDelegate.highScore {
+            hasNewHighScore = true
         }
         
-        if hasHighScore {
+        if hasNewHighScore {
             scoreValue.text = "🎉🎉\(strMinutes).\(strSeconds).\(strFraction)🎉🎉"
         } else {
             scoreValue.text = "\(strMinutes).\(strSeconds).\(strFraction)"
@@ -176,8 +200,8 @@ class GameManager: SKScene, GameSceneDelegate {
     func swapInstructionsWithScore() {
         instructions.removeFromParent()
         
-        addScoreTitle(length)
-        addScoreValue(length)
+        addScoreTitle()
+        addScoreValue()
         startTime = NSDate.timeIntervalSinceReferenceDate()
     }
     

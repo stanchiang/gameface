@@ -263,7 +263,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     func loadPostGame() {
         
         //update highscore if needed
-        if manager.hasHighScore {
+        if manager.hasNewHighScore {
             appDelegate.userDefaults.setDouble(appDelegate.currentScore, forKey: "highScore")
             print("updated high score \(appDelegate.currentScore)")
         }
@@ -291,7 +291,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         UIGraphicsEndImageContext()
         gamePlayArray.append(screenShot!)
         screenShot = nil
-        print("screenshot # \(gamePlayArray.count)")
+//        print("screenshot # \(gamePlayArray.count)")
     }
     
     func gamePlayToVideo(inputArray:[UIImage]){
