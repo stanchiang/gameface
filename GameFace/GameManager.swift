@@ -32,6 +32,8 @@ class GameManager: SKScene, GameSceneDelegate {
     
     var startTime = NSTimeInterval()
 
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    
     override func didMoveToView(view: SKView) {
         setupInterface()
     }
@@ -89,7 +91,7 @@ class GameManager: SKScene, GameSceneDelegate {
         
         //Find the difference between current time and start time.
         var elapsedTime: NSTimeInterval = currentTime - startTime
-        
+        appDelegate.currentScore = elapsedTime
         //calculate the minutes in elapsed time.
         let minutes = UInt8(elapsedTime / 60.0)
         elapsedTime -= (NSTimeInterval(minutes) * 60)
@@ -147,7 +149,7 @@ class GameManager: SKScene, GameSceneDelegate {
     }
     
     func togglePause(){
-        if ((UIApplication.sharedApplication().delegate as! AppDelegate).gameState == .paused) {
+        if (appDelegate.gameState == .paused) {
             managerDelegate?.updatePauseHandler(to: .inPlay)
         }else {
             managerDelegate?.updatePauseHandler(to: .paused)
