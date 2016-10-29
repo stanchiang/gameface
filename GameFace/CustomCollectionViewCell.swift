@@ -13,7 +13,7 @@ class CustomCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDelegat
     let note = UITextView()
     override init(frame: CGRect) {
         super.init(frame: frame)
-        note.text = "🎉Coming Soon🎉 \n Moar Games! \n Moar Filters! \n \n send ideas, art, or just say hi \n stanchiang23@gmail.com"
+        note.text = "🎉Coming Soon🎉 \n New Games & Filters! \n \n find me at \n stanchiang23@gmail.com"
         note.editable = false
         note.dataDetectorTypes = UIDataDetectorTypes.All
         note.textAlignment = .Center

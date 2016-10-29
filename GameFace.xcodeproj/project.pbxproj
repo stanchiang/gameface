@@ -23,7 +23,6 @@
 		F64C2F391DADCFA7006E1021 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64C2F381DADCFA7006E1021 /* opencv2.framework */; };
 		F66290F81DA9C4CF0030C11C /* head_pose_estimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F66290F71DA9C4CF0030C11C /* head_pose_estimation.cpp */; };
 		F669C0391DB15C3D001161E1 /* GameGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = F669C0381DB15C3D001161E1 /* GameGallery.swift */; };
-		F669C03C1DB1698D001161E1 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F669C03A1DB1698D001161E1 /* CardView.swift */; };
 		F669C03D1DB1698D001161E1 /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F669C03B1DB1698D001161E1 /* CustomCollectionViewCell.swift */; };
 		F6772BC01DB207AC00328961 /* DebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6772BBF1DB207AC00328961 /* DebugView.swift */; };
 		F67954391DBE7AAA0075870B /* ImageAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67954361DBE7AAA0075870B /* ImageAnimator.swift */; };
@@ -60,7 +59,6 @@
 		F66290F61DA9C4CF0030C11C /* head_pose_estimation.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = head_pose_estimation.hpp; sourceTree = "<group>"; };
 		F66290F71DA9C4CF0030C11C /* head_pose_estimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = head_pose_estimation.cpp; sourceTree = "<group>"; };
 		F669C0381DB15C3D001161E1 /* GameGallery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameGallery.swift; sourceTree = "<group>"; };
-		F669C03A1DB1698D001161E1 /* CardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		F669C03B1DB1698D001161E1 /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
 		F6772BBF1DB207AC00328961 /* DebugView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugView.swift; sourceTree = "<group>"; };
 		F67954361DBE7AAA0075870B /* ImageAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAnimator.swift; sourceTree = "<group>"; };
@@ -174,7 +172,6 @@
 		F669C03E1DB16994001161E1 /* collectionView */ = {
 			isa = PBXGroup;
 			children = (
-				F669C03A1DB1698D001161E1 /* CardView.swift */,
 				F669C03B1DB1698D001161E1 /* CustomCollectionViewCell.swift */,
 				F669C0381DB15C3D001161E1 /* GameGallery.swift */,
 				F63CE9401DBED65700582F22 /* PostGameView.swift */,
@@ -327,7 +324,6 @@
 				F67954391DBE7AAA0075870B /* ImageAnimator.swift in Sources */,
 				A56695F01CE8B34B00BD7EAF /* AppDelegate.swift in Sources */,
 				F669C0391DB15C3D001161E1 /* GameGallery.swift in Sources */,
-				F669C03C1DB1698D001161E1 /* CardView.swift in Sources */,
 				F6339D941D590587006C4231 /* Randomizer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

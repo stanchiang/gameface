@@ -50,7 +50,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     var mouth:[CGPoint]!
     
     var debugView:DebugView!
-    let debugMode = true
+    let debugMode = false
     
     var gamePlayArray = [UIImage]()
     var screenShot = UIImage()
