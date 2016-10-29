@@ -201,6 +201,16 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         manager.scaleMode = .AspectFill
         manager.backgroundColor = UIColor.clearColor()
         skView.presentScene(manager)
+        
+        
+        if let score:Double = appDelegate.userDefaults.doubleForKey("highScore") {
+            print("load high score \(score)")
+            appDelegate.highScore = score
+        } else {
+            print("init high score")
+            appDelegate.userDefaults.setDouble(0, forKey: "highScore")
+        }
+        
         return managerView
     }
     
@@ -223,8 +233,10 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     }
     
     func initNewGame(){
+        appDelegate.currentScore = 0
         appDelegate.mouth = []
         gamePlayArray = []
+        
         if postGameModal != nil {
             postGameModal.removeFromSuperview()
             NSNotificationCenter.defaultCenter().removeObserver(self, name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
@@ -249,6 +261,13 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     
     //MARK: custom UIKitDelegate
     func loadPostGame() {
+        
+        //update highscore if needed
+        if manager.hasHighScore {
+            appDelegate.userDefaults.setDouble(appDelegate.currentScore, forKey: "highScore")
+            print("updated high score \(appDelegate.currentScore)")
+        }
+        
         //destroy current game
         destroyGame()
         

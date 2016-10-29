@@ -34,6 +34,8 @@ class GameManager: SKScene, GameSceneDelegate {
 
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
+    var hasHighScore = false
+    
     override func didMoveToView(view: SKView) {
         setupInterface()
     }
@@ -92,6 +94,7 @@ class GameManager: SKScene, GameSceneDelegate {
         //Find the difference between current time and start time.
         var elapsedTime: NSTimeInterval = currentTime - startTime
         appDelegate.currentScore = elapsedTime
+        
         //calculate the minutes in elapsed time.
         let minutes = UInt8(elapsedTime / 60.0)
         elapsedTime -= (NSTimeInterval(minutes) * 60)
@@ -109,8 +112,16 @@ class GameManager: SKScene, GameSceneDelegate {
         let strSeconds = String(format: "%02d", seconds)
         let strFraction = String(format: "%02d", fraction)
         
-        //concatenate minuets, seconds and milliseconds as assign it to the UILabel
-        scoreValue.text = "\(strMinutes).\(strSeconds).\(strFraction)"
+        if !hasHighScore && appDelegate.currentScore > appDelegate.highScore {
+            hasHighScore = true
+        }
+        
+        if hasHighScore {
+            scoreValue.text = "🎉🎉\(strMinutes).\(strSeconds).\(strFraction)🎉🎉"
+        } else {
+            scoreValue.text = "\(strMinutes).\(strSeconds).\(strFraction)"
+        }
+        
     }
     
     func updateTimer(rate: Double) {

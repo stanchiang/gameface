@@ -18,6 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var currentCell:Int!
     var gameState = GameState.preGame
     var currentScore:Double = 0
+    var highScore:Double = 0
+    
+    var userDefaults = NSUserDefaults.standardUserDefaults()
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         window = UIWindow(frame: UIScreen.mainScreen().bounds)

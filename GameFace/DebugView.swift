@@ -199,7 +199,6 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate, MFMessageComposeV
     }
     
     func getWillAddBombs() -> Bool {
-        print(appDelegate.currentScore)
         if let value = checkStepperWithTagId(11) {
             if value > 0 && appDelegate.currentScore > 6 {
                 return true
