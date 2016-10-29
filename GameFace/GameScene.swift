@@ -37,8 +37,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     weak var sceneDelegate:GameSceneDelegate?
     weak var gameVarDelegate:GameVarDelegate?
     
-    var polygonNode:SKSpriteNode!
-    var polygon:SKShapeNode!
+    var mouthSprite:SKSpriteNode!
+    var mouthShape:SKShapeNode!
 
     var possibleObjects = ["candy", "bomb"]
     var gameTimer: NSTimer!
@@ -188,12 +188,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         }
         
         if appDelegate.gameState == .inPlay {
+            if mouthSprite != nil { mouthSprite.removeFromParent() }
+
             //        if we have data to work with
             if !mouth.isEmpty && mouth.first!.x != 0 && mouth.first!.y != 0 {
                 //        create player position and draw shape based on mouth array
-                if polygonNode != nil { polygonNode.removeFromParent() }
                 if checkMouth(mouth, dist: 5){
                     addMouth(mouth)
+                    
+//use when we get boost fps - it will stop showing sprite if face is not detected, but then sprites give off strobe effect
+//                    appDelegate.mouth = []
                     sceneDelegate?.updateTimer((gameVarDelegate?.getOpenMouthDrainRate())! * -1.0 / 1000)
                 }else {
                     sceneDelegate?.updateTimer((gameVarDelegate?.getClosedMouthDrainRate())! * -1.0 / 1000)
@@ -252,22 +256,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         }
         
         CGPathAddLineToPoint(pathToDraw, nil, anchorPoint.x, anchorPoint.y)
-        polygon = SKShapeNode(path: pathToDraw)
-        polygon.antialiased = true
-        polygon.strokeColor = UIColor.cyanColor()//RandomColor()
+        mouthShape = SKShapeNode(path: pathToDraw)
+        mouthShape.antialiased = true
+        mouthShape.strokeColor = UIColor.cyanColor()//RandomColor()
 //        polygon.fillColor = RandomColor()
-        polygon.name = "mouthshape"
+        mouthShape.name = "mouthshape"
 
-        let texture = view!.textureFromNode(polygon)
-        polygonNode = SKSpriteNode(texture: texture, size: polygon.calculateAccumulatedFrame().size)
-        polygonNode.physicsBody = SKPhysicsBody(texture: polygonNode.texture!, size: polygonNode.calculateAccumulatedFrame().size)
+        let texture = view!.textureFromNode(mouthShape)
+        mouthSprite = SKSpriteNode(texture: texture, size: mouthShape.calculateAccumulatedFrame().size)
+        mouthSprite.physicsBody = SKPhysicsBody(texture: mouthSprite.texture!, size: mouthSprite.calculateAccumulatedFrame().size)
         
-        polygonNode.name = "mouthnode"
-        polygonNode.position = center
+        mouthSprite.name = "mouthnode"
+        mouthSprite.position = center
         
-        polygonNode.physicsBody!.contactTestBitMask = 1 | 2
-        polygonNode.physicsBody!.categoryBitMask = 0
-        self.addChild(polygonNode)
+        mouthSprite.physicsBody!.contactTestBitMask = 1 | 2
+        mouthSprite.physicsBody!.categoryBitMask = 0
+        self.addChild(mouthSprite)
 
     }
     
