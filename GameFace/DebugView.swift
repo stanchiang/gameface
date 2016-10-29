@@ -89,7 +89,7 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate, MFMessageComposeV
     
     func textFieldDidEndEditing(textField: UITextField) {
         let indexOfStepper = subviews.indexOf(textField)! + 1
-        print(Double(textField.text!)!)
+        //print(Double(textField.text!)!)
         let stepper = (subviews[indexOfStepper] as! UIStepper)
         stepper.value = Double(textField.text!)!
     }

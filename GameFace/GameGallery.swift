@@ -141,7 +141,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        print(indexPath)
+        //print(indexPath)
     }
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
@@ -204,10 +204,10 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         
         
         if let score:Double = appDelegate.userDefaults.doubleForKey("highScore") {
-            print("load high score \(score)")
+            //print("load high score \(score)")
             appDelegate.highScore = score
         } else {
-            print("init high score")
+            //print("init high score")
             appDelegate.userDefaults.setDouble(0, forKey: "highScore")
         }
         
@@ -265,14 +265,14 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         //update highscore if needed
         if manager.hasNewHighScore {
             appDelegate.userDefaults.setDouble(appDelegate.currentScore, forKey: "highScore")
-            print("updated high score \(appDelegate.currentScore)")
+            //print("updated high score \(appDelegate.currentScore)")
         }
         
         //destroy current game
         destroyGame()
         
         //load post game modal
-        print("load post game")
+        //print("load post game")
         postGameModal = PostGameView()
         postGameModal.delegate = self
         view.addSubview(postGameModal)

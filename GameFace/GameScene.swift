@@ -104,14 +104,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                 })
                 
                 sprite.removeFromParent()
-                print("candy missed")
+                //print("candy missed")
                 self.objectMissedCount += 1
                 self.sceneDelegate?.updateTimer(self.gameVarDelegate!.getGameScoreBonus() / -10.0)
             }
             
             if sprite.physicsBody?.categoryBitMask == 2 {
                 sprite.removeFromParent()
-                print("bomb dodged")
+                //print("bomb dodged")
 //                self.sceneDelegate?.updateTimer(self.gameVarDelegate!.getGameScoreBonus() / 10.0)
             }
         }
@@ -166,7 +166,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         
         if lastState != appDelegate.gameState {
             lastState = appDelegate.gameState
-            print(lastState)
+            //print(lastState)
         }
         
         if appDelegate.gameState == .inPlay && sceneDelegate?.getTimer() <= 0 {
@@ -313,12 +313,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         if state == .paused {
             appDelegate.gameState = .paused
             scene?.view?.paused = true
-            print("pause game")
+            //print("pause game")
             gameTimer.invalidate()
         } else {
             appDelegate.gameState = .inPlay
             scene?.view?.paused = false
-            print("resume game")
+            //print("resume game")
             addGameTimer()
         }
     }

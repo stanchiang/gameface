@@ -93,12 +93,12 @@ class PostGameView: UIView {
     }
     
     func restartAction(sender: UIButton) {
-        print("restart game")
+        //print("restart game")
         delegate?.initNewGame()
     }
     
     func shareAction(sender: UIButton) {
-        print("share game")
+        //print("share game")
         var activityItems = [AnyObject]()
         if videoURL != nil {
             activityItems.append(videoURL)

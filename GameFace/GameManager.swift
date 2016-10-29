@@ -194,7 +194,7 @@ class GameManager: SKScene, GameSceneDelegate {
     }
     
     func toggleOptionsMenu() {
-        print("toggle options menu")
+        //print("toggle options menu")
     }
     
     func swapInstructionsWithScore() {
