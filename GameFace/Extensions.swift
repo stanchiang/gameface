@@ -47,3 +47,15 @@ extension UIView{
     
 }
 
+extension UIImage {
+    func overlay(watermark: UIImage) -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(self.size, false, 0.0)
+        self.drawInRect(CGRectMake(0, 0, self.size.width, self.size.height))
+        watermark.drawInRect(CGRectMake(self.size.width * 7 / 10, self.size.height - self.size.width * 3 / 10, self.size.width * 1 / 5, self.size.width * 1 / 5))
+        
+        let newImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        
+        return newImage
+    }
+}

@@ -36,6 +36,7 @@
 		F67EA2731DB3DFE0006DE24B /* haarcascade_frontalface_alt.xml in Resources */ = {isa = PBXBuildFile; fileRef = F67EA2721DB3DFE0006DE24B /* haarcascade_frontalface_alt.xml */; };
 		F6ADFFAB1DBC667F001C7A06 /* explosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = F6ADFFAA1DBC667F001C7A06 /* explosion.sks */; };
 		F6B90FC81D6270FE00EC0338 /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B90FC71D6270FE00EC0338 /* GameManager.swift */; };
+		F6CA25E91DC4344E00A88584 /* WatermarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CA25E81DC4344E00A88584 /* WatermarkManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,6 +76,7 @@
 		F67EA2721DB3DFE0006DE24B /* haarcascade_frontalface_alt.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haarcascade_frontalface_alt.xml; sourceTree = "<group>"; };
 		F6ADFFAA1DBC667F001C7A06 /* explosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = explosion.sks; sourceTree = "<group>"; };
 		F6B90FC71D6270FE00EC0338 /* GameManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
+		F6CA25E81DC4344E00A88584 /* WatermarkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatermarkManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,6 +190,7 @@
 				F67954361DBE7AAA0075870B /* ImageAnimator.swift */,
 				F67954371DBE7AAA0075870B /* RenderSettings.swift */,
 				F67954381DBE7AAA0075870B /* VideoWriter.swift */,
+				F6CA25E81DC4344E00A88584 /* WatermarkManager.swift */,
 			);
 			name = "Image To Video";
 			sourceTree = "<group>";
@@ -305,6 +308,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6CA25E91DC4344E00A88584 /* WatermarkManager.swift in Sources */,
 				F67D513A1DC183110018501C /* CollectionTableViewController.swift in Sources */,
 				F679543A1DBE7AAA0075870B /* RenderSettings.swift in Sources */,
 				F67EA2711DB3DF39006DE24B /* CVFFaceDetect.mm in Sources */,

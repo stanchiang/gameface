@@ -253,7 +253,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         destroyGame()
         
         //load post game modal
-        print("load post game ")
+        print("load post game")
         postGameModal = PostGameView()
         postGameModal.delegate = self
         view.addSubview(postGameModal)
@@ -261,7 +261,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         //create video
         if !isWritingToVideo {
             isWritingToVideo = true
-            gamePlayToVideo()
+            gamePlayToVideo(gamePlayArray)
         }
     }
     
@@ -275,14 +275,13 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         print("screenshot # \(gamePlayArray.count)")
     }
     
-    func gamePlayToVideo(){
+    func gamePlayToVideo(inputArray:[UIImage]){
         let settings = RenderSettings()
-        let imageAnimator = ImageAnimator(renderSettings: settings, imageArray: gamePlayArray)
+        let imageAnimator = ImageAnimator(renderSettings: settings, imageArray: inputArray)
         imageAnimator.render { [unowned self] videoURL in
             if self.postGameModal != nil {
-                self.postGameModal.loadVideo(videoURL)
+                self.postGameModal.loadVideo(videoURL)                
             }
         }
     }
-    
 }

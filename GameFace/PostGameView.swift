@@ -99,8 +99,12 @@ class PostGameView: UIView {
     
     func shareAction(sender: UIButton) {
         print("share game")
+        var activityItems = [AnyObject]()
+        if videoURL != nil {
+            activityItems.append(videoURL)
+        }
         
-        let activityViewController = UIActivityViewController(activityItems: [videoURL], applicationActivities: nil)
+        let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         (window?.rootViewController as! GameGallery).presentViewController(activityViewController, animated: true, completion: nil)
     }
     
