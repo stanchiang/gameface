@@ -93,12 +93,17 @@ dlib::shape_predictor sp;
 //        static dlib::rectangle openCVRectToDlib(cv::Rect r){return dlib::rectangle((long)r.tl().x, (long)r.tl().y, (long)r.br().x - 1, (long)r.br().y - 1);}
         
         dlib::rectangle dlibRect((long)r->tl().x, (long)r->tl().y, (long)r->br().x - 1, (long)r->br().y - 1);
-//        dlib::draw_rectangle(dlibMat, dlibRect, dlib::rgb_pixel(0, 255, 255));
+        if ([self.delegate showFaceDetect]) {
+            dlib::draw_rectangle(dlibMat, dlibRect, dlib::rgb_pixel(0, 255, 255));
+        }
         
         dlib::full_object_detection shape = sp(dlibMat, dlibRect);
         NSMutableArray *m = [NSMutableArray new];
         for (unsigned long k = 0; k < shape.num_parts(); k++) {
-//            draw_solid_circle(dlibMat, shape.part(k), 3, dlib::rgb_pixel(0, 255, 255));
+            if ([self.delegate showFaceDetect]) {
+                draw_solid_circle(dlibMat, shape.part(k), 3, dlib::rgb_pixel(0, 255, 255));
+            }
+            
             if (k >= 60) {
                 [m addObject: [NSValue valueWithCGPoint:CGPointMake( [self pixelToPoints:shape.part(k).x()], [self pixelToPoints:shape.part(k).y()]) ]];
             }

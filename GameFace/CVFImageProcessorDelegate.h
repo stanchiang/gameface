@@ -15,5 +15,6 @@
 -(void) imageProcessor:(CVFImageProcessor*)imageProcessor didCreateImage:(UIImage*)image;
 -(void) mouthVerticePositions:(NSMutableArray *)vertices;
 -(CGFloat) adjustPPI;
+-(bool) showFaceDetect;
 -(NSMutableArray *) getDelaunayEdges;
 @end

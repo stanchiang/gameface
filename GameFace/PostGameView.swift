@@ -19,9 +19,11 @@ class PostGameView: UIView {
     weak var delegate:PostGameViewDelegate?
     
     let restartButton = UIButton()
+    let resetIcon = UIImage(named: "redo")
     let shareButton = UIButton()
+    let shareIcon = UIImage(named: "share")
     let previewView = UIView()
-    
+    let inset:CGFloat = 25
     var videoURL:NSURL!
     var player:AVPlayer!
     var playerLayer:AVPlayerLayer!
@@ -33,19 +35,20 @@ class PostGameView: UIView {
         self.blurView()
         
         restartButton.translatesAutoresizingMaskIntoConstraints = false
-        restartButton.setTitle("Reset", forState: .Normal)
+        restartButton.contentMode = .ScaleAspectFit
+        
+        restartButton.setImage(resetIcon, forState: .Normal)
+        restartButton.imageEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset)
         restartButton.addTarget(self, action: #selector(restartAction(_:)), forControlEvents: .TouchUpInside)
-        restartButton.backgroundColor = UIColor.blueColor()
-//        restartButton.layer.borderColor = UIColor.redColor().CGColor
-//        restartButton.layer.borderWidth = 1.0
+        restartButton.backgroundColor = UIColor.clearColor()
         addSubview(restartButton)
         
         shareButton.translatesAutoresizingMaskIntoConstraints = false
-        shareButton.setTitle("Share", forState: .Normal)
+        shareButton.contentMode = .ScaleAspectFit
+        shareButton.setImage(shareIcon, forState: .Normal)
+        shareButton.imageEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset)
         shareButton.addTarget(self, action: #selector(shareAction(_:)), forControlEvents: .TouchUpInside)
-        shareButton.backgroundColor = UIColor.greenColor()
-//        shareButton.layer.borderColor = UIColor.blackColor().CGColor
-//        shareButton.layer.borderWidth = 1.0
+        shareButton.backgroundColor = UIColor.clearColor()
         addSubview(shareButton)
         
         previewView.translatesAutoresizingMaskIntoConstraints = false
@@ -73,20 +76,20 @@ class PostGameView: UIView {
     }
     
     override func layoutSubviews() {
-        restartButton.leadingAnchor.constraintEqualToAnchor(self.centerXAnchor).active = true
-        restartButton.trailingAnchor.constraintEqualToAnchor(self.trailingAnchor).active = true
-        restartButton.heightAnchor.constraintEqualToConstant(self.frame.height * 0.2).active = true
-        restartButton.bottomAnchor.constraintEqualToAnchor(self.bottomAnchor).active = true
+        restartButton.trailingAnchor.constraintEqualToAnchor(self.trailingAnchor, constant: self.frame.width * -1/5).active = true
+        restartButton.widthAnchor.constraintEqualToConstant(self.frame.width * 1/5).active = true
+        restartButton.heightAnchor.constraintEqualToAnchor(restartButton.widthAnchor).active = true
+        restartButton.bottomAnchor.constraintEqualToAnchor(self.bottomAnchor, constant: self.frame.width * -1/20).active = true
         
-        shareButton.leadingAnchor.constraintEqualToAnchor(self.leadingAnchor).active = true
-        shareButton.trailingAnchor.constraintEqualToAnchor(self.centerXAnchor).active = true
-        shareButton.heightAnchor.constraintEqualToConstant(self.frame.height * 0.2).active = true
-        shareButton.bottomAnchor.constraintEqualToAnchor(self.bottomAnchor).active = true
+        shareButton.leadingAnchor.constraintEqualToAnchor(self.leadingAnchor, constant: self.frame.width * 1/5).active = true
+        shareButton.widthAnchor.constraintEqualToConstant(self.frame.width * 1/5).active = true
+        shareButton.heightAnchor.constraintEqualToAnchor(shareButton.widthAnchor).active = true
+        shareButton.bottomAnchor.constraintEqualToAnchor(self.bottomAnchor, constant: self.frame.width * -1/20).active = true
         
         previewView.leadingAnchor.constraintEqualToAnchor(self.leadingAnchor).active = true
         previewView.trailingAnchor.constraintEqualToAnchor(self.trailingAnchor).active = true
         previewView.topAnchor.constraintEqualToAnchor(self.topAnchor).active = true
-        previewView.bottomAnchor.constraintEqualToAnchor(restartButton.topAnchor).active = true
+        previewView.bottomAnchor.constraintEqualToAnchor(restartButton.topAnchor, constant: self.frame.width * -1/20).active = true
     }
     
     func restartAction(sender: UIButton) {

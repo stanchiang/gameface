@@ -29,6 +29,7 @@ protocol GameVarDelegate: class {
     func getVideoLength() -> Double
     func getWillRecordGame() -> Bool
     func getWillAddBombs() -> Bool
+    func getWillShowFaceDetect() -> Bool
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {

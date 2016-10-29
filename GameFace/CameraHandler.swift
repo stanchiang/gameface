@@ -76,8 +76,11 @@ class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AV
         return (appDelegate.window?.rootViewController as! GameGallery).debugView.getAdjustedPPI()
     }
     
+    func showFaceDetect() -> Bool {
+        return (appDelegate.window?.rootViewController as! GameGallery).debugView.getWillShowFaceDetect()
+    }
+    
     func getDelaunayEdges() -> NSMutableArray! {
-        
         return delaunay
     }
 }
