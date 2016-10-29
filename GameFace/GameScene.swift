@@ -112,7 +112,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             if sprite.physicsBody?.categoryBitMask == 2 {
                 sprite.removeFromParent()
                 print("bomb dodged")
-                self.sceneDelegate?.updateTimer(self.gameVarDelegate!.getGameScoreBonus() / 10.0)
+//                self.sceneDelegate?.updateTimer(self.gameVarDelegate!.getGameScoreBonus() / 10.0)
             }
         }
     }
