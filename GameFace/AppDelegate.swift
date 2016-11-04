@@ -43,13 +43,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        let viewController = CollectionTableViewController(source: source)
 //        window?.rootViewController = viewController
         
-        
         window?.makeKeyAndVisible()
+        loginRequest()
         return true
 
     }
     
     func applicationWillResignActive(application: UIApplication) {
-//        (window?.rootViewController as! GameGallery).resetGame()
+        (window?.rootViewController as! GameGallery).resetGame()
+    }
+    
+    func loginRequest() {
+        let loginRequest:LoginWithCustomIDRequest = LoginWithCustomIDRequest()
+        loginRequest.CustomId = UIDevice.currentDevice().identifierForVendor?.UUIDString
+        loginRequest.CreateAccount = true
+        
+        print("loginRequest.CustomId = \(loginRequest.CustomId)")
+        
+        PlayFabClientAPI.GetInstance().LoginWithCustomID(loginRequest,
+            success: { (result:LoginResult!, userData:NSObject!) in
+                print("success: \n \(result.InfoResultPayload) \n \(userData)")
+            }, failure: { (error:PlayFabError!, userData:NSObject!) in
+                print("error: \n \(error.errorCode) \(error.errorMessage) \n \(error.errorDetails) \n \(userData)")
+            }, withUserData: nil)
     }
 }

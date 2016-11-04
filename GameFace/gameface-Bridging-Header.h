@@ -6,3 +6,5 @@
 #import "CVFImageProcessorDelegate.h"
 
 #import "CVFFaceDetect.h"
+
+#import "PlayFabClientAPI.h"
