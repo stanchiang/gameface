@@ -48,7 +48,7 @@ class ImageAnimator {
     init(renderSettings: RenderSettings, imageArray:[UIImage]) {
         settings = renderSettings
         videoWriter = VideoWriter(renderSettings: settings)
-        //print("imageArray.count \(imageArray.count)")
+//        print("imageArray.count \(imageArray.count)")
         images = imageArray
     }
     

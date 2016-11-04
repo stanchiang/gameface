@@ -112,25 +112,6 @@ class GameManager: SKScene, GameSceneDelegate {
 //        print(appDelegate.currentScore)
         
         let parsedTime = elapsedTime.parseTime()
-
-        /*
-        //calculate the minutes in elapsed time.
-        let minutes = UInt8(elapsedTime / 60.0)
-        elapsedTime -= (NSTimeInterval(minutes) * 60)
-        
-        //calculate the seconds in elapsed time.
-        let seconds = UInt8(elapsedTime)
-        elapsedTime -= NSTimeInterval(seconds)
-        
-        //find out the fraction of milliseconds to be displayed.
-        let fraction = UInt8(elapsedTime * 100)
- 
-        //add the leading zero for minutes, seconds and millseconds and store them as string constants
-        
-        let strMinutes = String(format: "%02d", minutes)
-        let strSeconds = String(format: "%02d", seconds)
-        let strFraction = String(format: "%02d", fraction)
-        */
         
         let strMinutes = String(format: "%02d", parsedTime.0)
         let strSeconds = String(format: "%02d", parsedTime.1)
@@ -194,7 +175,7 @@ class GameManager: SKScene, GameSceneDelegate {
     }
     
     func toggleOptionsMenu() {
-        //print("toggle options menu")
+        print("toggle options menu")
     }
     
     func swapInstructionsWithScore() {
