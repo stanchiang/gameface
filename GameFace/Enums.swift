@@ -14,3 +14,19 @@ enum GameState:String {
     case paused
     case postGame
 }
+
+enum PlayerAttribute:String {
+    case id
+    case username
+    case email
+    case phone
+    case highscore
+}
+
+enum PlayerEvent:String {
+    case player_started_playing //isFirstTimePlaying, isfrompostgamemodal
+    case player_finished_game
+    case player_reset_game //isWhileInGame
+    case player_exited_app //isWhileInGame
+    case player_tapped_share
+}

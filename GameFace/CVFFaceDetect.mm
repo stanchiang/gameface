@@ -99,6 +99,21 @@ dlib::shape_predictor sp;
         
         dlib::full_object_detection shape = sp(dlibMat, dlibRect);
         NSMutableArray *m = [NSMutableArray new];
+        
+        /////
+        // Draws the contours of the face and face features onto the image
+        
+        // Define colors for drawing.
+        Scalar delaunay_color(255,255,255), points_color(0, 0, 255);
+        
+        // Rectangle to be used with Subdiv2D
+        cv::Size size = mat.size();
+        cv::Rect rect(0, 0, size.width, size.height);
+        
+        // Create an instance of Subdiv2D
+        Subdiv2D subdiv(rect);
+        /////
+        
         for (unsigned long k = 0; k < shape.num_parts(); k++) {
             if ([self.delegate showFaceDetect]) {
                 draw_solid_circle(dlibMat, shape.part(k), 3, dlib::rgb_pixel(0, 255, 0));
@@ -107,10 +122,12 @@ dlib::shape_predictor sp;
             if (k >= 60) {
                 [m addObject: [NSValue valueWithCGPoint:CGPointMake( [self pixelToPoints:shape.part(k).x()], [self pixelToPoints:shape.part(k).y()]) ]];
             }
+            
+            subdiv.insert([self toCv:shape.part(k)]);
         }
-        if ([self.delegate showFaceDetect]) {
-            [self drawDelaunayMask:dlibMat shape:shape];
-        }
+//        if ([self.delegate showFaceDetect]) {
+            [self draw_delaunay:mat subdiv:subdiv delaunay:delaunay_color];
+//        }
         [self.delegate mouthVerticePositions:m];
         
     }
@@ -136,156 +153,34 @@ dlib::shape_predictor sp;
     return result;
 }
 
-- (void) drawDelaunayMask: (dlib::cv_image<dlib::bgr_pixel>) dlibMat shape:(dlib::full_object_detection) shape {
-    dlib::draw_line(dlibMat,shape.part(0),shape.part(1),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(0),shape.part(17),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(0),shape.part(36),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(1),shape.part(2),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(1),shape.part(36),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(1),shape.part(41),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(2),shape.part(3),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(2),shape.part(31),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(2),shape.part(41),dlib::rgb_pixel(0,255,0));
-    
-    dlib::draw_line(dlibMat,shape.part(17),shape.part(18),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(17),shape.part(36),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(18),shape.part(19),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(18),shape.part(36),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(18),shape.part(37),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(19),shape.part(20),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(19),shape.part(37),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(20),shape.part(21),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(20),shape.part(37),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(20),shape.part(38),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(20),shape.part(23),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(21),shape.part(23),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(21),shape.part(22),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(21),shape.part(27),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(21),shape.part(38),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(21),shape.part(39),dlib::rgb_pixel(0,255,0));
-    
-    dlib::draw_line(dlibMat,shape.part(36),shape.part(37),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(36),shape.part(41),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(37),shape.part(38),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(37),shape.part(40),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(37),shape.part(41),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(38),shape.part(39),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(38),shape.part(40),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(39),shape.part(27),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(39),shape.part(28),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(39),shape.part(29),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(39),shape.part(40),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(40),shape.part(29),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(40),shape.part(31),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(40),shape.part(41),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(41),shape.part(31),dlib::rgb_pixel(0,255,0));
-    
-    dlib::draw_line(dlibMat,shape.part(22),shape.part(23),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(22),shape.part(27),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(22),shape.part(47),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(22),shape.part(42),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(22),shape.part(43),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(23),shape.part(24),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(23),shape.part(43),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(24),shape.part(25),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(24),shape.part(43),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(24),shape.part(44),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(25),shape.part(26),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(25),shape.part(44),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(25),shape.part(45),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(26),shape.part(16),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(26),shape.part(45),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(16),shape.part(45),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(16),shape.part(15),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(15),shape.part(14),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(15),shape.part(45),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(27),shape.part(28),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(27),shape.part(42),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(42),shape.part(28),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(42),shape.part(29),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(42),shape.part(43),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(42),shape.part(47),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(42),shape.part(35),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(43),shape.part(44),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(43),shape.part(47),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(44),shape.part(45),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(44),shape.part(46),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(44),shape.part(47),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(45),shape.part(46),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(46),shape.part(47),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(46),shape.part(35),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(47),shape.part(35),dlib::rgb_pixel(0,255,0));
+-(Point2f) toCv: (dlib::point&) p {
+    return cv::Point2f(p.x(), p.y());
+}
 
-    dlib::draw_line(dlibMat,shape.part(28),shape.part(29),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(29),shape.part(30),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(29),shape.part(31),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(29),shape.part(35),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(30),shape.part(31),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(30),shape.part(32),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(30),shape.part(33),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(30),shape.part(34),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(30),shape.part(35),dlib::rgb_pixel(0,255,0));
+// Draw delaunay triangles
+-(void) draw_delaunay: (Mat&) img subdiv: (Subdiv2D&) subdiv delaunay: (Scalar) delaunay_color {
     
-    dlib::draw_line(dlibMat,shape.part(31),shape.part(32),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(32),shape.part(33),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(33),shape.part(34),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(34),shape.part(35),dlib::rgb_pixel(0,255,0));
-
-    dlib::draw_line(dlibMat,shape.part(3),shape.part(4),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(4),shape.part(5),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(5),shape.part(6),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(6),shape.part(7),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(7),shape.part(8),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(8),shape.part(9),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(9),shape.part(10),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(10),shape.part(11),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(11),shape.part(12),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(12),shape.part(13),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(13),shape.part(14),dlib::rgb_pixel(0,255,0));
-
-    dlib::draw_line(dlibMat,shape.part(48),shape.part(49),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(49),shape.part(50),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(50),shape.part(51),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(51),shape.part(52),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(52),shape.part(53),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(53),shape.part(54),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(54),shape.part(55),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(55),shape.part(56),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(56),shape.part(57),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(57),shape.part(58),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(58),shape.part(59),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(59),shape.part(48),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(60),shape.part(61),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(61),shape.part(62),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(62),shape.part(63),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(63),shape.part(64),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(64),shape.part(65),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(65),shape.part(66),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(66),shape.part(67),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(67),shape.part(60),dlib::rgb_pixel(0,255,0));
+    std::vector<Vec6f> triangleList;
+    subdiv.getTriangleList(triangleList);
+    std::vector<cv::Point> pt(3);
+    cv::Size size = img.size();
+    cv::Rect rect(0,0, size.width, size.height);
     
-    dlib::draw_line(dlibMat,shape.part(48),shape.part(31),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(48),shape.part(3),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(48),shape.part(4),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(48),shape.part(5),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(59),shape.part(5),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(59),shape.part(6),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(58),shape.part(6),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(58),shape.part(7),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(57),shape.part(7),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(57),shape.part(8),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(56),shape.part(8),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(56),shape.part(9),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(55),shape.part(9),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(55),shape.part(10),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(54),shape.part(10),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(54),shape.part(11),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(54),shape.part(11),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(54),shape.part(12),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(54),shape.part(13),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(54),shape.part(14),dlib::rgb_pixel(0,255,0));
-    dlib::draw_line(dlibMat,shape.part(54),shape.part(46),dlib::rgb_pixel(0,255,0));
-    
+    for( size_t i = 0; i < triangleList.size(); i++ )
+    {
+        Vec6f t = triangleList[i];
+        pt[0] = cv::Point(cvRound(t[0]), cvRound(t[1]));
+        pt[1] = cv::Point(cvRound(t[2]), cvRound(t[3]));
+        pt[2] = cv::Point(cvRound(t[4]), cvRound(t[5]));
+        
+        // Draw rectangles completely inside the image.
+        if ( rect.contains(pt[0]) && rect.contains(pt[1]) && rect.contains(pt[2]))
+        {
+            cv::line(img, pt[0], pt[1], delaunay_color, 1, CV_AA, 0);
+            cv::line(img, pt[1], pt[2], delaunay_color, 1, CV_AA, 0);
+            cv::line(img, pt[2], pt[0], delaunay_color, 1, CV_AA, 0);
+        }
+    }
 }
 
 @end

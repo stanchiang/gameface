@@ -15,7 +15,6 @@
 		A5A1B2D61CEA41E200626AC5 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5A1B2D51CEA41E200626AC5 /* Accelerate.framework */; };
 		A5A1B2D81CEA431600626AC5 /* shape_predictor_68_face_landmarks.dat in Resources */ = {isa = PBXBuildFile; fileRef = A5A1B2D71CEA431600626AC5 /* shape_predictor_68_face_landmarks.dat */; };
 		F614CDD41DAFFDAA0061F7FA /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = F614CDD31DAFFDAA0061F7FA /* Enums.swift */; };
-		F6223B941DCD3E2F007892C5 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6223B931DCD3E2F007892C5 /* Tracker.swift */; };
 		F6339D921D590573006C4231 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6339D911D590573006C4231 /* GameScene.swift */; };
 		F6339D941D590587006C4231 /* Randomizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6339D931D590587006C4231 /* Randomizer.swift */; };
 		F6339DA71D5905C5006C4231 /* candyEater.sks in Resources */ = {isa = PBXBuildFile; fileRef = F6339D9B1D5905C5006C4231 /* candyEater.sks */; };
@@ -26,6 +25,7 @@
 		F669C0391DB15C3D001161E1 /* GameGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = F669C0381DB15C3D001161E1 /* GameGallery.swift */; };
 		F669C03D1DB1698D001161E1 /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F669C03B1DB1698D001161E1 /* CustomCollectionViewCell.swift */; };
 		F6772BC01DB207AC00328961 /* DebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6772BBF1DB207AC00328961 /* DebugView.swift */; };
+		F677E6381DCE8C2000D3A966 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F677E6371DCE8C2000D3A966 /* Tracker.swift */; };
 		F67954391DBE7AAA0075870B /* ImageAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67954361DBE7AAA0075870B /* ImageAnimator.swift */; };
 		F679543A1DBE7AAA0075870B /* RenderSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67954371DBE7AAA0075870B /* RenderSettings.swift */; };
 		F679543B1DBE7AAA0075870B /* VideoWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67954381DBE7AAA0075870B /* VideoWriter.swift */; };
@@ -62,7 +62,6 @@
 		A5A1B2D51CEA41E200626AC5 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		A5A1B2D71CEA431600626AC5 /* shape_predictor_68_face_landmarks.dat */ = {isa = PBXFileReference; lastKnownFileType = file; name = shape_predictor_68_face_landmarks.dat; path = lib/shape_predictor_68_face_landmarks.dat; sourceTree = "<group>"; };
 		F614CDD31DAFFDAA0061F7FA /* Enums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
-		F6223B931DCD3E2F007892C5 /* Tracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Tracker.swift; path = ../Tracker.swift; sourceTree = "<group>"; };
 		F6339D911D590573006C4231 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		F6339D931D590587006C4231 /* Randomizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Randomizer.swift; sourceTree = "<group>"; };
 		F6339D9B1D5905C5006C4231 /* candyEater.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = candyEater.sks; sourceTree = "<group>"; };
@@ -74,6 +73,7 @@
 		F669C0381DB15C3D001161E1 /* GameGallery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameGallery.swift; sourceTree = "<group>"; };
 		F669C03B1DB1698D001161E1 /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
 		F6772BBF1DB207AC00328961 /* DebugView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugView.swift; sourceTree = "<group>"; };
+		F677E6371DCE8C2000D3A966 /* Tracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		F67954361DBE7AAA0075870B /* ImageAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAnimator.swift; sourceTree = "<group>"; };
 		F67954371DBE7AAA0075870B /* RenderSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderSettings.swift; sourceTree = "<group>"; };
 		F67954381DBE7AAA0075870B /* VideoWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoWriter.swift; sourceTree = "<group>"; };
@@ -180,7 +180,7 @@
 		F6223B951DCD3E45007892C5 /* Trackers */ = {
 			isa = PBXGroup;
 			children = (
-				F6223B931DCD3E2F007892C5 /* Tracker.swift */,
+				F677E6371DCE8C2000D3A966 /* Tracker.swift */,
 				F68975CD1DCD168900D9B542 /* PlayFabSDK */,
 			);
 			name = Trackers;
@@ -403,13 +403,13 @@
 				F63CE9411DBED65700582F22 /* PostGameView.swift in Sources */,
 				F63847B31DBFD27600C86015 /* Extensions.swift in Sources */,
 				F68975EE1DCD168900D9B542 /* PlayFabSDK.m in Sources */,
-				F6223B941DCD3E2F007892C5 /* Tracker.swift in Sources */,
 				F679543B1DBE7AAA0075870B /* VideoWriter.swift in Sources */,
 				A566961E1CE8B4A100BD7EAF /* CameraHandler.swift in Sources */,
 				F614CDD41DAFFDAA0061F7FA /* Enums.swift in Sources */,
 				F66290F81DA9C4CF0030C11C /* head_pose_estimation.cpp in Sources */,
 				F669C03D1DB1698D001161E1 /* CustomCollectionViewCell.swift in Sources */,
 				F67D51391DC183110018501C /* CollectionTableViewCell.swift in Sources */,
+				F677E6381DCE8C2000D3A966 /* Tracker.swift in Sources */,
 				F68975ED1DCD168900D9B542 /* PlayFabError.m in Sources */,
 				F68975EB1DCD168900D9B542 /* PlayFabClientDataModels.m in Sources */,
 				F67EA26E1DB3DEE7006DE24B /* CVFImageProcessor.mm in Sources */,
