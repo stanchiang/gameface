@@ -63,9 +63,6 @@ class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AV
     func mouthVerticePositions(vertices: NSMutableArray!) {
         //parse new mouth location and shape from nsmutable array vertices
         appDelegate.mouth = vertices.map({$0.CGPointValue()})
-        
-        //testing coordinates from dlib before i pass to gamescene; should be the same as gamescene sprite but more laggy
-//        (appDelegate.window?.rootViewController as! GameGallery).useTemporaryLayer()
     }
     
     func imageProcessor(imageProcessor: CVFImageProcessor!, didCreateImage image: UIImage!) {
@@ -79,8 +76,8 @@ class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AV
     func showFaceDetect() -> Bool {
         return (appDelegate.window?.rootViewController as! GameGallery).debugView.getWillShowFaceDetect()
     }
-    
-    func getDelaunayEdges() -> NSMutableArray! {
-        return delaunay
+
+    func noseBridgePosition(position: CGPoint) {
+        appDelegate.noseBridge = position
     }
 }

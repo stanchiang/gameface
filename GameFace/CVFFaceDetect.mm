@@ -57,12 +57,12 @@ dlib::shape_predictor sp;
         modelFileNameCString = [modelFileName UTF8String];
         dlib::deserialize(modelFileNameCString) >> sp;
         
-        for (int i = 0; i < [self.delegate getDelaunayEdges].count; i++) {
-            NSMutableArray *m = [self.delegate getDelaunayEdges][i];
-            for (int j = 0; j < m.count; j++) {
-                NSLog( @"%@", m[j]);
-            }
-        }
+//        for (int i = 0; i < [self.delegate getDelaunayEdges].count; i++) {
+//            NSMutableArray *m = [self.delegate getDelaunayEdges][i];
+//            for (int j = 0; j < m.count; j++) {
+//                NSLog( @"%@", m[j]);
+//            }
+//        }
         
         _inited = true;
     }
@@ -79,8 +79,6 @@ dlib::shape_predictor sp;
     
     cascade.detectMultiScale( smallImg, faces,
                              1.2, 2, 0
-                             //|CV_HAAR_FIND_BIGGEST_OBJECT
-                             //|CV_HAAR_DO_ROUGH_SEARCH
                              |CV_HAAR_SCALE_IMAGE
                              ,
                              cv::Size(75, 75) );
@@ -123,17 +121,22 @@ dlib::shape_predictor sp;
                 [m addObject: [NSValue valueWithCGPoint:CGPointMake( [self pixelToPoints:shape.part(k).x()], [self pixelToPoints:shape.part(k).y()]) ]];
             }
             
+            if (k == 28) {
+                [self.delegate noseBridgePosition: CGPointMake( [self pixelToPoints:shape.part(k).x()], [self pixelToPoints:shape.part(k).y()]) ];
+            }
+            
             subdiv.insert([self toCv:shape.part(k)]);
         }
 //        if ([self.delegate showFaceDetect]) {
             [self draw_delaunay:mat subdiv:subdiv delaunay:delaunay_color];
+        
 //        }
         [self.delegate mouthVerticePositions:m];
         
     }
 
     [self matReady:mat];
-    
+
 //    cv::Mat edges;
 //    cvtColor(mat, edges, CV_BGR2GRAY);
 //    GaussianBlur(edges, edges, cv::Size(7, 7), 1.5, 1.5);
@@ -183,4 +186,176 @@ dlib::shape_predictor sp;
     }
 }
 
+-(void) warpTriangle: (Mat &) img1 img2: (Mat &) img2 tri1: (vector<Point2f>) tri1 tri2: (vector<Point2f>) tri2 {
+    // Find bounding rectangle for each triangle
+    cv::Rect r1 = boundingRect(tri1);
+    cv::Rect r2 = boundingRect(tri2);
+    
+    // Offset points by left top corner of the respective rectangles
+    vector<Point2f> tri1Cropped, tri2Cropped;
+    vector<cv::Point> tri2CroppedInt;
+    for(int i = 0; i < 3; i++) {
+        tri1Cropped.push_back( Point2f( tri1[i].x - r1.x, tri1[i].y -  r1.y) );
+        tri2Cropped.push_back( Point2f( tri2[i].x - r2.x, tri2[i].y - r2.y) );
+        
+        // fillConvexPoly needs a vector of Point and not Point2f
+        tri2CroppedInt.push_back( cv::Point((int)(tri2[i].x - r2.x), (int)(tri2[i].y - r2.y)) );
+        
+    }
+    
+    // Apply warpImage to small rectangular patches
+    Mat img1Cropped;
+    img1(r1).copyTo(img1Cropped);
+    
+    // Given a pair of triangles, find the affine transform.
+    Mat warpMat = getAffineTransform( tri1Cropped, tri2Cropped );
+    
+    // Apply the Affine Transform just found to the src image
+    Mat img2Cropped = Mat::zeros(r2.height, r2.width, img1Cropped.type());
+    warpAffine( img1Cropped, img2Cropped, warpMat, img2Cropped.size(), INTER_LINEAR, BORDER_REFLECT_101);
+    
+    // Get mask by filling triangle
+    Mat mask = Mat::zeros(r2.height, r2.width, CV_32FC3);
+    fillConvexPoly(mask, tri2CroppedInt, Scalar(1.0, 1.0, 1.0), 16, 0);
+    
+    // Copy triangular region of the rectangular patch to the output image
+    multiply(img2Cropped,mask, img2Cropped);
+    multiply(img2(r2), Scalar(1.0,1.0,1.0) - mask, img2(r2));
+    img2(r2) = img2(r2) + img2Cropped;
+    
+}
+
 @end
+
+
+
+
+//int main( int argc, char** argv) {
+//    Point2f topLeft = Point2f(215,355);
+//    Point2f topRight = Point2f(320,355);
+//    Point2f bottomLeft = Point2f(215,400);
+//    Point2f bottomRight = Point2f(320,400);
+//    
+//    Point2f center = Point2f(290,373);
+//    Point2f newCenter = Point2f(260,373);
+//    
+//    // Input triangle
+//    vector <Point2f> triIn; //left
+//    triIn.push_back(topLeft);
+//    triIn.push_back(bottomLeft);
+//    triIn.push_back(center);
+//    
+//    // input tri 2
+//    vector <Point2f> triIn2; //bottom
+//    triIn2.push_back(bottomLeft);
+//    triIn2.push_back(bottomRight);
+//    triIn2.push_back(center);
+//    
+//    // input tri 3
+//    vector <Point2f> triIn3; //top
+//    triIn3.push_back(topRight);
+//    triIn3.push_back(topLeft);
+//    triIn3.push_back(center);
+//    
+//    // input tri 4
+//    vector <Point2f> triIn4; //right
+//    triIn4.push_back(bottomRight);
+//    triIn4.push_back(topRight);
+//    triIn4.push_back(center);
+//    
+//    
+//    // Output triangle
+//    vector <Point2f> triOut;
+//    triOut.push_back(topLeft);
+//    triOut.push_back(bottomLeft);
+//    triOut.push_back(newCenter);
+//    
+//    //output tri 2
+//    vector <Point2f> triOut2;
+//    triOut2.push_back(bottomLeft);
+//    triOut2.push_back(bottomRight);
+//    triOut2.push_back(newCenter);
+//    
+//    //output tri 3
+//    vector <Point2f> triOut3;
+//    triOut3.push_back(topRight);
+//    triOut3.push_back(topLeft);
+//    triOut3.push_back(newCenter);
+//    
+//    //output tri 4
+//    vector <Point2f> triOut4;
+//    triOut4.push_back(bottomRight);
+//    triOut4.push_back(topRight);
+//    triOut4.push_back(newCenter);
+//    
+//    // Read input image and convert to float
+//    Mat imgIn = imread("face.jpg");
+//    imgIn.convertTo(imgIn, CV_32FC3, 1/255.0);
+//    
+//    // Output image is set to white
+//    // Mat imgOut = Mat::ones(imgIn.size(), imgIn.type());
+//    // imgOut = Scalar(1.0,1.0,1.0);
+//    Mat imgOut = imread("face.jpg");
+//    imgOut.convertTo(imgOut, CV_32FC3, 1/255.0);
+//    
+//    // Warp all pixels inside input triangle to output triangle
+//    warpTriangle(imgIn, imgIn, triIn, triOut);
+//    warpTriangle(imgIn, imgIn, triIn2, triOut2);
+//    warpTriangle(imgIn, imgIn, triIn3, triOut3);
+//    warpTriangle(imgIn, imgIn, triIn4, triOut4);
+//    // Draw triangle on the input and output image.
+//    
+//    // Convert back to uint because OpenCV antialiasing
+//    // does not work on image of type CV_32FC3
+//    
+//    imgIn.convertTo(imgIn, CV_8UC3, 255.0);
+//    imgOut.convertTo(imgOut, CV_8UC3, 255.0);
+//    
+//    // Draw triangle using this color
+//    Scalar black = Scalar(0, 0, 0);
+//    Scalar red = Scalar(0, 0, 255);
+//    Scalar blue = Scalar(255, 0, 0);
+//    Scalar green = Scalar(0, 255, 0);
+//    
+//    // cv::polylines needs vector of type Point and not Point2f
+//    vector <Point> triInInt, triOutInt;
+//    vector <Point> triInInt2, triOutInt2;
+//    vector <Point> triInInt3, triOutInt3;
+//    vector <Point> triInInt4, triOutInt4;
+//    
+//    for(int i=0; i < 3; i++) {
+//        triInInt.push_back(Point(triIn[i].x,triIn[i].y));
+//        triInInt2.push_back(Point(triIn2[i].x,triIn2[i].y));
+//        triInInt3.push_back(Point(triIn3[i].x,triIn3[i].y));
+//        triInInt4.push_back(Point(triIn4[i].x,triIn4[i].y));
+//        
+//        triOutInt.push_back(Point(triOut[i].x,triOut[i].y));
+//        triOutInt2.push_back(Point(triOut2[i].x,triOut2[i].y));
+//        triOutInt3.push_back(Point(triOut3[i].x,triOut3[i].y));
+//        triOutInt4.push_back(Point(triOut4[i].x,triOut4[i].y));
+//        
+//    }
+//    
+//    // Draw triangles in input and output images
+//    bool showLines = true;
+//    if (showLines) {
+//        polylines(imgIn, triInInt, true, black, 1, 16);
+//        polylines(imgIn, triInInt2, true, red, 1, 16);
+//        polylines(imgIn, triInInt3, true, blue, 1, 16);
+//        polylines(imgIn, triInInt4, true, green, 1, 16);
+//        
+//        polylines(imgOut, triOutInt, true, black, 1, 16);
+//        polylines(imgOut, triOutInt2, true, red, 1, 16);
+//        polylines(imgOut, triOutInt3, true, blue, 1, 16);
+//        polylines(imgOut, triOutInt4, true, green, 1, 16);
+//    }
+//    
+//    // Draw triangles in input and output images
+//    
+//    imshow("main", imgIn);
+//    imshow("orig", imgOut);
+//    waitKey(0);
+//    
+//    return 0;
+//}
+//

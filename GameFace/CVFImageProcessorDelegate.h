@@ -16,5 +16,5 @@
 -(void) mouthVerticePositions:(NSMutableArray *)vertices;
 -(CGFloat) adjustPPI;
 -(bool) showFaceDetect;
--(NSMutableArray *) getDelaunayEdges;
+-(void) noseBridgePosition: (CGPoint) position;
 @end

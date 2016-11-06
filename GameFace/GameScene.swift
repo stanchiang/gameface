@@ -40,6 +40,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     var mouthSprite:SKSpriteNode!
     var mouthShape:SKShapeNode!
 
+    var shadesSprite:SKSpriteNode!
+    
     var possibleObjects = ["candy", "bomb"]
     var gameTimer: NSTimer!
     
@@ -189,6 +191,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         
         if appDelegate.gameState == .inPlay {
             if mouthSprite != nil { mouthSprite.removeFromParent() }
+            if shadesSprite != nil { shadesSprite.removeFromParent() }
 
             //        if we have data to work with
             if !mouth.isEmpty && mouth.first!.x != 0 && mouth.first!.y != 0 {
@@ -202,6 +205,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                 }else {
                     sceneDelegate?.updateTimer((gameVarDelegate?.getClosedMouthDrainRate())! * -1.0 / 1000)
                 }
+            }
+            
+            if appDelegate.noseBridge != nil {
+                addShades(appDelegate.noseBridge)
             }
             
             if gameVarDelegate!.getWillRecordGame() {
@@ -273,6 +280,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         mouthSprite.physicsBody!.categoryBitMask = 0
         self.addChild(mouthSprite)
 
+    }
+    
+    func addShades(position:CGPoint){
+        shadesSprite = SKSpriteNode(imageNamed: "shades")
+        shadesSprite.aspectFillToSize(CGSize(width: 100, height: 100))
+        shadesSprite.position = self.view!.convertPoint(position, toScene: self)
+        shadesSprite.zPosition = -100
+        shadesSprite.physicsBody = SKPhysicsBody(texture: shadesSprite.texture!, size: shadesSprite.size)
+        shadesSprite.physicsBody?.categoryBitMask = UInt32(0)
+        shadesSprite.physicsBody?.contactTestBitMask = 0
+        shadesSprite.physicsBody?.collisionBitMask = 0
+        self.addChild(shadesSprite)
     }
     
     func arcBetweenPoints(fromPoint start : CGPoint, toPoint end: CGPoint) -> CGPath {

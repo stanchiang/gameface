@@ -15,6 +15,10 @@ enum GameState:String {
     case postGame
 }
 
+enum GameItem:String {
+    case glasses
+}
+
 enum PlayerAttribute:String {
     case id
     case username

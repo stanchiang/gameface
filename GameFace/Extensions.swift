@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import SpriteKit
 
 extension UIViewController {
     func hideKeyboardWhenTappedAround() {
@@ -77,4 +78,23 @@ extension NSTimeInterval {
         
         return (minutes,seconds,fraction)
     }
+}
+
+//http://stackoverflow.com/a/29028342/1079379
+extension SKSpriteNode {
+    
+    func aspectFillToSize(fillSize: CGSize) {
+        
+        if texture != nil {
+            self.size = texture!.size()
+            
+            let verticalRatio = fillSize.height / self.texture!.size().height
+            let horizontalRatio = fillSize.width /  self.texture!.size().width
+            
+            let scaleRatio = horizontalRatio > verticalRatio ? horizontalRatio : verticalRatio
+            
+            self.setScale(scaleRatio)
+        }
+    }
+    
 }

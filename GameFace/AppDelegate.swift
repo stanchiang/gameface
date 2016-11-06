@@ -14,7 +14,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var mouth = [CGPoint]()
-
+    var noseBridge:CGPoint!
+    
     var currentCell:Int!
     var gameState = GameState.preGame
     var currentScore:Double = 0

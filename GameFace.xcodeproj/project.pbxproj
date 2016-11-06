@@ -148,7 +148,6 @@
 			children = (
 				F6223B951DCD3E45007892C5 /* Trackers */,
 				F6339DB31D5914C8006C4231 /* facialRec */,
-				A566961D1CE8B4A100BD7EAF /* CameraHandler.swift */,
 				F67D513B1DC187330018501C /* Helpers */,
 				F669C03E1DB16994001161E1 /* collectionView */,
 				F6339D951D5905A0006C4231 /* Game Code */,
@@ -208,6 +207,7 @@
 		F6339DB31D5914C8006C4231 /* facialRec */ = {
 			isa = PBXGroup;
 			children = (
+				A566961D1CE8B4A100BD7EAF /* CameraHandler.swift */,
 				F60507361DBFE2A900D1A8EA /* Datasets */,
 				F60507371DBFE2B200D1A8EA /* Frameworks */,
 				F67EA2661DB3DDF2006DE24B /* engine */,
