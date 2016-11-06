@@ -21,10 +21,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var currentScore:Double = 0
     var highScore:Double = 0
     
-    var userDefaults = NSUserDefaults.standardUserDefaults()
+    var userDefaults = UserDefaults.standard
     
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        window = UIWindow(frame: UIScreen.mainScreen().bounds)
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = GameGallery()
         
 //        let numberOfTableViewRows: NSInteger = 3
@@ -50,7 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     }
     
-    func applicationWillResignActive(application: UIApplication) {
+    func applicationWillResignActive(_ application: UIApplication) {
         (window?.rootViewController as! GameGallery).resetGame()
     }
     

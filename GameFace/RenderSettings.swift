@@ -23,12 +23,12 @@ struct RenderSettings {
         return CGSize(width: width, height: height)
     }
     
-    var outputURL: NSURL {
+    var outputURL: URL {
         // Use the CachesDirectory so the rendered video file sticks around as long as we need it to.
         // Using the CachesDirectory ensures the file won't be included in a backup of the app.
-        let fileManager = NSFileManager.defaultManager()
-        if let tmpDirURL = try? fileManager.URLForDirectory(.CachesDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true) {
-            return tmpDirURL.URLByAppendingPathComponent(videoFilename)!.URLByAppendingPathExtension(videoFilenameExt)!
+        let fileManager = FileManager.default
+        if let tmpDirURL = try? fileManager.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true) {
+            return tmpDirURL.appendingPathComponent(videoFilename).appendingPathExtension(videoFilenameExt)
         }
         fatalError("URLForDirectory() failed")
     }

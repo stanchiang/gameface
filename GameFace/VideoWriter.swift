@@ -19,10 +19,10 @@ class VideoWriter {
     var pixelBufferAdaptor: AVAssetWriterInputPixelBufferAdaptor!
     
     var isReadyForData: Bool {
-        return videoWriterInput?.readyForMoreMediaData ?? false
+        return videoWriterInput?.isReadyForMoreMediaData ?? false
     }
     
-    class func pixelBufferFromImage(image: UIImage, pixelBufferPool: CVPixelBufferPool, size: CGSize) -> CVPixelBuffer {
+    class func pixelBufferFromImage(_ image: UIImage, pixelBufferPool: CVPixelBufferPool, size: CGSize) -> CVPixelBuffer {
         
         var pixelBufferOut: CVPixelBuffer?
         
@@ -37,10 +37,10 @@ class VideoWriter {
         
         let data = CVPixelBufferGetBaseAddress(pixelBuffer)
         let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
-        let context = CGBitmapContextCreate(data, Int(size.width), Int(size.height),
-                                            8, CVPixelBufferGetBytesPerRow(pixelBuffer), rgbColorSpace, CGImageAlphaInfo.PremultipliedFirst.rawValue)
+        let context = CGContext(data: data, width: Int(size.width), height: Int(size.height),
+                                            bitsPerComponent: 8, bytesPerRow: CVPixelBufferGetBytesPerRow(pixelBuffer), space: rgbColorSpace, bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue)
         
-        CGContextClearRect(context!, CGRectMake(0, 0, size.width, size.height))
+        context!.clear(CGRect(x: 0, y: 0, width: size.width, height: size.height))
         
         let horizontalRatio = size.width / image.size.width
         let verticalRatio = size.height / image.size.height
@@ -52,7 +52,7 @@ class VideoWriter {
         let x = newSize.width < size.width ? (size.width - newSize.width) / 2 : 0
         let y = newSize.height < size.height ? (size.height - newSize.height) / 2 : 0
         
-        CGContextDrawImage(context!, CGRectMake(x, y, newSize.width, newSize.height), image.CGImage!)
+        context!.draw(image.cgImage!, in: CGRect(x: x, y: y, width: newSize.width, height: newSize.height))
         CVPixelBufferUnlockBaseAddress(pixelBuffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)))
         
         return pixelBuffer
@@ -65,38 +65,38 @@ class VideoWriter {
     func start() {
         
         let avOutputSettings: [String: AnyObject] = [
-            AVVideoCodecKey: renderSettings.avCodecKey,
-            AVVideoWidthKey: NSNumber(float: Float(renderSettings.width)),
-            AVVideoHeightKey: NSNumber(float: Float(renderSettings.height))
+            AVVideoCodecKey: renderSettings.avCodecKey as AnyObject,
+            AVVideoWidthKey: NSNumber(value: Float(renderSettings.width) as Float),
+            AVVideoHeightKey: NSNumber(value: Float(renderSettings.height) as Float)
         ]
         
         func createPixelBufferAdaptor() {
             let sourcePixelBufferAttributesDictionary = [
-                kCVPixelBufferPixelFormatTypeKey as String: NSNumber(unsignedInt: kCVPixelFormatType_32ARGB),
-                kCVPixelBufferWidthKey as String: NSNumber(float: Float(renderSettings.width)),
-                kCVPixelBufferHeightKey as String: NSNumber(float: Float(renderSettings.height))
+                kCVPixelBufferPixelFormatTypeKey as String: NSNumber(value: kCVPixelFormatType_32ARGB as UInt32),
+                kCVPixelBufferWidthKey as String: NSNumber(value: Float(renderSettings.width) as Float),
+                kCVPixelBufferHeightKey as String: NSNumber(value: Float(renderSettings.height) as Float)
             ]
             pixelBufferAdaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: videoWriterInput,
                                                                       sourcePixelBufferAttributes: sourcePixelBufferAttributesDictionary)
         }
         
-        func createAssetWriter(outputURL: NSURL) -> AVAssetWriter {
-            guard let assetWriter = try? AVAssetWriter(URL: outputURL, fileType: AVFileTypeMPEG4) else {
+        func createAssetWriter(_ outputURL: URL) -> AVAssetWriter {
+            guard let assetWriter = try? AVAssetWriter(outputURL: outputURL, fileType: AVFileTypeMPEG4) else {
                 fatalError("AVAssetWriter() failed")
             }
             
-            guard assetWriter.canApplyOutputSettings(avOutputSettings, forMediaType: AVMediaTypeVideo) else {
+            guard assetWriter.canApply(outputSettings: avOutputSettings, forMediaType: AVMediaTypeVideo) else {
                 fatalError("canApplyOutputSettings() failed")
             }
             
             return assetWriter
         }
         
-        videoWriter = createAssetWriter(renderSettings.outputURL)
+        videoWriter = createAssetWriter(renderSettings.outputURL as URL)
         videoWriterInput = AVAssetWriterInput(mediaType: AVMediaTypeVideo, outputSettings: avOutputSettings)
         
-        if videoWriter.canAddInput(videoWriterInput) {
-            videoWriter.addInput(videoWriterInput)
+        if videoWriter.canAdd(videoWriterInput) {
+            videoWriter.add(videoWriterInput)
         }
         else {
             fatalError("canAddInput() returned false")
@@ -109,22 +109,22 @@ class VideoWriter {
             fatalError("startWriting() failed")
         }
         
-        videoWriter.startSessionAtSourceTime(kCMTimeZero)
+        videoWriter.startSession(atSourceTime: kCMTimeZero)
         
         precondition(pixelBufferAdaptor.pixelBufferPool != nil, "nil pixelBufferPool")
     }
     
-    func render(appendPixelBuffers: (VideoWriter)->Bool, completion: ()->Void) {
+    func render(_ appendPixelBuffers: @escaping (VideoWriter)->Bool, completion: @escaping ()->Void) {
         
         precondition(videoWriter != nil, "Call start() to initialze the writer")
         
-        let queue = dispatch_queue_create("mediaInputQueue", nil)
-        videoWriterInput.requestMediaDataWhenReadyOnQueue(queue) {
+        let queue = DispatchQueue(label: "mediaInputQueue", attributes: [])
+        videoWriterInput.requestMediaDataWhenReady(on: queue) {
             let isFinished = appendPixelBuffers(self)
             if isFinished {
                 self.videoWriterInput.markAsFinished()
-                self.videoWriter.finishWritingWithCompletionHandler() {
-                    dispatch_async(dispatch_get_main_queue()) {
+                self.videoWriter.finishWriting() {
+                    DispatchQueue.main.async {
                         completion()
                     }
                 }
@@ -135,12 +135,12 @@ class VideoWriter {
         }
     }
     
-    func addImage(image: UIImage, withPresentationTime presentationTime: CMTime) -> Bool {
+    func addImage(_ image: UIImage, withPresentationTime presentationTime: CMTime) -> Bool {
         
         precondition(pixelBufferAdaptor != nil, "Call start() to initialze the writer")
         
         let pixelBuffer = VideoWriter.pixelBufferFromImage(image, pixelBufferPool: pixelBufferAdaptor.pixelBufferPool!, size: renderSettings.size)
-        return pixelBufferAdaptor.appendPixelBuffer(pixelBuffer, withPresentationTime: presentationTime)
+        return pixelBufferAdaptor.append(pixelBuffer, withPresentationTime: presentationTime)
     }
     
 }

@@ -29,13 +29,13 @@ class GameManager: SKScene, GameSceneDelegate {
     var scoreValue:SKLabelNode!
     var highScoreOnStart:SKLabelNode!
     
-    var startTime = NSTimeInterval()
+    var startTime = TimeInterval()
 
-    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     var hasNewHighScore = false
     
-    override func didMoveToView(view: SKView) {
+    override func didMove(to view: SKView) {
         setupInterface()
     }
     
@@ -76,7 +76,7 @@ class GameManager: SKScene, GameSceneDelegate {
         highScoreOnStart = SKLabelNode(fontNamed: "San Francisco")
         highScoreOnStart.position = CGPoint(x: self.view!.frame.width / 2, y: self.frame.height * 0.825)
         
-        let parsedTime = NSTimeInterval(appDelegate.highScore).parseTime()
+        let parsedTime = TimeInterval(appDelegate.highScore).parseTime()
         let strMinutes = String(format: "%02d", parsedTime.0)
         let strSeconds = String(format: "%02d", parsedTime.1)
         let strFraction = String(format: "%02d", parsedTime.2)
@@ -87,15 +87,15 @@ class GameManager: SKScene, GameSceneDelegate {
         addChild(highScoreOnStart)
     }
     
-    func addPause(length:CGFloat){
+    func addPause(_ length:CGFloat){
         pauseButton = SKSpriteNode(imageNamed: "pause")
-        pauseButton.size = CGSizeMake(length, length)
+        pauseButton.size = CGSize(width: length, height: length)
         pauseButton.position = CGPoint(x: self.frame.width - length, y: self.frame.height - length)
         addChild(pauseButton)
     }
     
     func addTimer(){
-        timer = SKSpriteNode(color: UIColor.greenColor(), size: CGSize(width: UIScreen.mainScreen().bounds.width, height: self.frame.height * 0.40))
+        timer = SKSpriteNode(color: UIColor.green, size: CGSize(width: UIScreen.main.bounds.width, height: self.frame.height * 0.40))
         timer.alpha = 0.5
         timer.anchorPoint.x = 0
         timer.position = CGPoint(x: 0, y: self.frame.height)
@@ -104,10 +104,10 @@ class GameManager: SKScene, GameSceneDelegate {
     
     func updateScore() {
         
-        let currentTime = NSDate.timeIntervalSinceReferenceDate()
+        let currentTime = Date.timeIntervalSinceReferenceDate
         
         //Find the difference between current time and start time.
-        let elapsedTime: NSTimeInterval = currentTime - startTime
+        let elapsedTime: TimeInterval = currentTime - startTime
         appDelegate.currentScore = elapsedTime
 //        print(appDelegate.currentScore)
         
@@ -129,7 +129,7 @@ class GameManager: SKScene, GameSceneDelegate {
         
     }
     
-    func updateTimer(rate: Double) {
+    func updateTimer(_ rate: Double) {
         timer.xScale += CGFloat(rate)
         if timer.xScale > 1.0 { timer.xScale = 1.0 }
         timer.color = updateTimerColor(timer.xScale)
@@ -137,10 +137,10 @@ class GameManager: SKScene, GameSceneDelegate {
         updateScore()
     }
     
-    func updateTimerColor(xScale:CGFloat) -> UIColor {
+    func updateTimerColor(_ xScale:CGFloat) -> UIColor {
         switch xScale {
         case  _ where xScale > 0.5 :
-            return UIColor.greenColor()//UIColor(netHex:0x7ED321) //green
+            return UIColor.green//UIColor(netHex:0x7ED321) //green
         case  _ where xScale > 0.25 :
             return UIColor(netHex:0xF8E71C) //yellow
         default:
@@ -152,7 +152,7 @@ class GameManager: SKScene, GameSceneDelegate {
         return Double(timer.xScale)
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         // Loop over all the touches in this event
 //        for touch: AnyObject in touches {
             // Get the location of the touch in this scene
@@ -183,7 +183,7 @@ class GameManager: SKScene, GameSceneDelegate {
         
         addScoreTitle()
         addScoreValue()
-        startTime = NSDate.timeIntervalSinceReferenceDate()
+        startTime = Date.timeIntervalSinceReferenceDate
     }
     
     func loadPostGame() {

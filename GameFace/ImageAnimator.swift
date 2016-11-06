@@ -22,12 +22,12 @@ class ImageAnimator {
     
     var frameNum = 0
     
-    class func saveToLibrary(videoURL: NSURL) {
+    class func saveToLibrary(_ videoURL: URL) {
         PHPhotoLibrary.requestAuthorization { status in
-            guard status == .Authorized else { return }
+            guard status == .authorized else { return }
             
-            PHPhotoLibrary.sharedPhotoLibrary().performChanges({
-                PHAssetChangeRequest.creationRequestForAssetFromVideoAtFileURL(videoURL)
+            PHPhotoLibrary.shared().performChanges({
+                PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: videoURL)
             }) { success, error in
                 if !success {
                     print("Could not save video to photo library:", error)
@@ -36,9 +36,9 @@ class ImageAnimator {
         }
     }
     
-    class func removeFileAtURL(fileURL: NSURL) {
+    class func removeFileAtURL(_ fileURL: URL) {
         do {
-            try NSFileManager.defaultManager().removeItemAtPath(fileURL.path!)
+            try FileManager.default.removeItem(atPath: fileURL.path)
         }
         catch _ as NSError {
             // Assume file doesn't exist.
@@ -52,10 +52,10 @@ class ImageAnimator {
         images = imageArray
     }
     
-    func render(completion: (videoURL:NSURL)->Void) {
+    func render(_ completion: @escaping (_ videoURL:URL)->Void) {
         
         // The VideoWriter will fail if a file exists at the URL, so clear it out first.
-        ImageAnimator.removeFileAtURL(settings.outputURL)
+        ImageAnimator.removeFileAtURL(settings.outputURL as URL)
         
         videoWriter.start()
 //        videoWriter.render(appendPixelBuffers) {
@@ -64,7 +64,7 @@ class ImageAnimator {
 //        }
 
         videoWriter.render(appendPixelBuffers) { 
-            completion(videoURL: self.settings.outputURL)
+            completion(self.settings.outputURL)
         }
     }
     
@@ -79,7 +79,7 @@ class ImageAnimator {
     }
     
     // This is the callback function for VideoWriter.render()
-    func appendPixelBuffers(writer: VideoWriter) -> Bool {
+    func appendPixelBuffers(_ writer: VideoWriter) -> Bool {
         
         let frameDuration = CMTimeMake(Int64(ImageAnimator.kTimescale / settings.fps), ImageAnimator.kTimescale)
         

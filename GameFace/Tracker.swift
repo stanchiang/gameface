@@ -10,7 +10,7 @@ import Foundation
 
 class Tracker {
     static let sharedInstance = Tracker()
-    private init() {}
+    fileprivate init() {}
 
     func loginRequest() {
 //        recordPlayFabLogin()
@@ -34,42 +34,46 @@ class Tracker {
     
     func recordPlayFabLogin(){
         let loginRequest:LoginWithCustomIDRequest = LoginWithCustomIDRequest()
-        loginRequest.CustomId = UIDevice.currentDevice().identifierForVendor?.UUIDString
-        loginRequest.CreateAccount = true
+        loginRequest.customId = UIDevice.current.identifierForVendor?.uuidString
+        loginRequest.createAccount = true
         
-        PlayFabClientAPI.GetInstance().LoginWithCustomID(loginRequest,
-                                                         success: { (result:LoginResult!, userData:NSObject!) in
-                                                            print("success: \n \(result.PlayFabId) \n \(result.LastLoginTime) \n \(userData)")
-            }, failure: { (error:PlayFabError!, userData:NSObject!) in
+        PlayFabClientAPI.getInstance().login(withCustomID: loginRequest,
+             success: { (result:LoginResult!, userData:NSObject!) in
+                print("success: \n \(result.playFabId) \n \(result.lastLoginTime) \n \(userData)")
+            } as! LoginWithCustomIDCallback,
+             failure: { (error:PlayFabError!, userData:NSObject!) in
                 print("error: \n \(error.errorCode) \(error.errorMessage) \n \(error.errorDetails) \n \(userData)")
-            }, withUserData: nil
+            } as! ErrorCallback
+            , withUserData: nil
         )
     }
     
-    func recordPlayFabUserData(updatedData:[NSObject:AnyObject]!) {
+    func recordPlayFabUserData(_ updatedData:[AnyHashable: Any]!) {
         let userDataRequest = UpdateUserDataRequest()
-        userDataRequest.Data = updatedData
-        PlayFabClientAPI.GetInstance().UpdateUserData(userDataRequest,
+        userDataRequest.data = updatedData
+        PlayFabClientAPI.getInstance().updateUserData(userDataRequest,
             success: { (response:UpdateUserDataResult!, userData:NSObject!) in
                 print("player updated: \(userData)")
-            }, failure: { (error:PlayFabError!, userData:NSObject!) in
+            } as! UpdateUserDataCallback,
+            failure: { (error:PlayFabError!, userData:NSObject!) in
                 print("player failed to update: \(error.errorCode) \n \(error.errorDetails)")
-            }, withUserData: nil
+            } as! ErrorCallback,
+            withUserData: nil
         )
     }
     
-    func recordPlayFabPlayerEvent(event:PlayerEvent, eventData:[NSObject:AnyObject]!){
+    func recordPlayFabPlayerEvent(_ event:PlayerEvent, eventData:[AnyHashable: Any]!){
         let eventName = event.rawValue
         let eventRequest = WriteClientPlayerEventRequest()
-        eventRequest.EventName = eventName
-        eventRequest.Body = eventData
-        PlayFabClientAPI.GetInstance().WritePlayerEvent(eventRequest,
+        eventRequest.eventName = eventName
+        eventRequest.body = eventData
+        PlayFabClientAPI.getInstance().writePlayerEvent(eventRequest,
             success: { (response:WriteEventResponse!, userData:NSObject!) in
                 print("event recorded: \(eventName)")
-            },
-            failure: { (error:PlayFabError!, useData:NSObject!) in
+            } as! WritePlayerEventCallback,
+            failure: { (error:PlayFabError!, userData:NSObject!) in
                 print("event failed: \(eventName)")
-            },
+            } as! ErrorCallback,
             withUserData: nil
         )
     }

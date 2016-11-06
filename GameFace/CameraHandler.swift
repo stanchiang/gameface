@@ -11,8 +11,8 @@ import AVFoundation
 class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureMetadataOutputObjectsDelegate, CVFImageProcessorDelegate {
     var session = AVCaptureSession()
     let layer = AVSampleBufferDisplayLayer()
-    let sampleQueue = dispatch_queue_create("com.stan.gameface.sampleQueue", DISPATCH_QUEUE_SERIAL)
-    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    let sampleQueue = DispatchQueue(label: "com.stan.gameface.sampleQueue", attributes: [])
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
     var faceDetect = CVFFaceDetect()
     
@@ -21,14 +21,14 @@ class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AV
     override init() {
         super.init()
         faceDetect.delegate = self
-        delaunay.addObject([1,2])
-        delaunay.addObject([3,4])
+        delaunay.add([1,2])
+        delaunay.add([3,4])
     }
     
     func openSession() {
-        let device = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo)
+        let device = AVCaptureDevice.devices(withMediaType: AVMediaTypeVideo)
             .map { $0 as! AVCaptureDevice }
-            .filter { $0.position == .Front}
+            .filter { $0.position == .front}
             .first!
         
         let input = try! AVCaptureDeviceInput(device: device)
@@ -48,24 +48,24 @@ class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AV
         session.sessionPreset = AVCaptureSessionPresetHigh
         session.commitConfiguration()
         
-        let settings: [NSObject : AnyObject] = [kCVPixelBufferPixelFormatTypeKey: Int(kCVPixelFormatType_32BGRA)]
+        let settings: [AnyHashable: Any] = [kCVPixelBufferPixelFormatTypeKey as AnyHashable: Int(kCVPixelFormatType_32BGRA)]
         output.videoSettings = settings
         
         session.startRunning()
     }
     
     // MARK: AVCaptureVideoDataOutputSampleBufferDelegate
-    func captureOutput(captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
+    func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, from connection: AVCaptureConnection!) {
         let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
         faceDetect.processImageBuffer(pixelBuffer, withMirroring: false)
     }
     
-    func mouthVerticePositions(vertices: NSMutableArray!) {
+    func mouthVerticePositions(_ vertices: NSMutableArray!) {
         //parse new mouth location and shape from nsmutable array vertices
-        appDelegate.mouth = vertices.map({$0.CGPointValue()})
+        appDelegate.mouth = vertices.map({($0 as AnyObject).cgPointValue})
     }
     
-    func imageProcessor(imageProcessor: CVFImageProcessor!, didCreateImage image: UIImage!) {
+    func imageProcessor(_ imageProcessor: CVFImageProcessor!, didCreateImage image: UIImage!) {
         (appDelegate.window?.rootViewController as! GameGallery).cameraImage.image = image
     }
     
@@ -77,7 +77,7 @@ class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AV
         return (appDelegate.window?.rootViewController as! GameGallery).debugView.getWillShowFaceDetect()
     }
 
-    func noseBridgePosition(position: CGPoint) {
+    func noseBridgePosition(_ position: CGPoint) {
         appDelegate.noseBridge = position
     }
 }

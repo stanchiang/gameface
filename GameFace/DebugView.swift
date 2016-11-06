@@ -14,12 +14,12 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate, MFMessageComposeV
     var dict = [String:[String:Double]]()
     var prevView:UIView!
     let spacer:CGFloat = 15
-    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = UIColor.cyanColor()
+        backgroundColor = UIColor.cyan
         
         loadDict()
         
@@ -32,8 +32,8 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate, MFMessageComposeV
             let input = UITextField()
             input.translatesAutoresizingMaskIntoConstraints = false
             input.delegate = self
-            input.keyboardType = UIKeyboardType.DecimalPad
-            input.backgroundColor = UIColor.whiteColor()
+            input.keyboardType = UIKeyboardType.decimalPad
+            input.backgroundColor = UIColor.white
             input.text = "\(option.1["value"]!)"
             addSubview(input)
             
@@ -45,23 +45,23 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate, MFMessageComposeV
             stepper.maximumValue = option.1["max"]!
             stepper.stepValue = option.1["step"]!
             
-            stepper.continuous = true
+            stepper.isContinuous = true
             stepper.autorepeat = true
             stepper.wraps = true
             addSubview(stepper)
             
-            stepper.addTarget(self, action: #selector(stepperValueChanged(_:)), forControlEvents: .ValueChanged)
+            stepper.addTarget(self, action: #selector(stepperValueChanged(_:)), for: .valueChanged)
             
         }
         
-        let smsButton:UIButton = UIButton(frame: CGRectMake(0,500,300,100))
-        smsButton.addTarget(self, action: #selector(sendText(_:)), forControlEvents: .TouchUpInside)
-        smsButton.setTitle("report config", forState: .Normal)
+        let smsButton:UIButton = UIButton(frame: CGRect(x: 0,y: 500,width: 300,height: 100))
+        smsButton.addTarget(self, action: #selector(sendText(_:)), for: .touchUpInside)
+        smsButton.setTitle("report config", for: UIControlState())
         self.addSubview(smsButton)
         
     }
     
-    func sendText(sender:UIButton) {
+    func sendText(_ sender:UIButton) {
         var bodyText = "config: "
         for view in subviews {
             if view is UIStepper {
@@ -74,21 +74,21 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate, MFMessageComposeV
         messageVC.recipients = ["3143230873"]
         messageVC.messageComposeDelegate = self;
         
-        (window?.rootViewController as! GameGallery).presentViewController(messageVC, animated: true, completion: nil)
+        (window?.rootViewController as! GameGallery).present(messageVC, animated: true, completion: nil)
         
     }
     
-    func messageComposeViewController(controller: MFMessageComposeViewController, didFinishWithResult result: MessageComposeResult) {
-        controller.dismissViewControllerAnimated(true, completion: nil)
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        controller.dismiss(animated: true, completion: nil)
     }
     
-    func stepperValueChanged(sender:UIStepper!) {
-        let indexOfInput = subviews.indexOf(sender)! - 1
+    func stepperValueChanged(_ sender:UIStepper!) {
+        let indexOfInput = subviews.index(of: sender)! - 1
         (subviews[indexOfInput] as! UITextField).text = "\(sender.value)"
     }
     
-    func textFieldDidEndEditing(textField: UITextField) {
-        let indexOfStepper = subviews.indexOf(textField)! + 1
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        let indexOfStepper = subviews.index(of: textField)! + 1
         print(Double(textField.text!)!)
         let stepper = (subviews[indexOfStepper] as! UIStepper)
         stepper.value = Double(textField.text!)!
@@ -128,7 +128,7 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate, MFMessageComposeV
     }
     
     func getAdjustedPPI() -> CGFloat {
-        switch UIScreen.mainScreen().bounds.height {
+        switch UIScreen.main.bounds.height {
         case 480:
             return 0
         case 568.0:
@@ -222,7 +222,7 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate, MFMessageComposeV
         }
     }
     
-    func checkStepperWithTagId(tag:Int) -> Double? {
+    func checkStepperWithTagId(_ tag:Int) -> Double? {
         for view in subviews {
             if view is UIStepper && view.tag == tag {
                 return (view as! UIStepper).value
@@ -231,32 +231,32 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate, MFMessageComposeV
         return nil
     }
     
-    func setDelegate(scene:GameScene) {
+    func setDelegate(_ scene:GameScene) {
         scene.gameVarDelegate = self
     }
     
     override func layoutSubviews() {
-        for (index, view) in subviews.enumerate() {
+        for (index, view) in subviews.enumerated() {
             if view is UILabel {
-                view.leadingAnchor.constraintEqualToAnchor(self.leadingAnchor).active = true
+                view.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
                 if index == 0 {
-                    view.topAnchor.constraintEqualToAnchor(topAnchor, constant: spacer).active = true
+                    view.topAnchor.constraint(equalTo: topAnchor, constant: spacer).isActive = true
                 }else {
-                    view.topAnchor.constraintEqualToAnchor(prevView.bottomAnchor, constant: spacer).active = true
+                    view.topAnchor.constraint(equalTo: prevView.bottomAnchor, constant: spacer).isActive = true
                 }
                 prevView = view
             }
             
             if view is UITextField {
-                view.leadingAnchor.constraintEqualToAnchor(prevView.trailingAnchor, constant: spacer).active = true
-                view.centerYAnchor.constraintEqualToAnchor(prevView.centerYAnchor).active = true
+                view.leadingAnchor.constraint(equalTo: prevView.trailingAnchor, constant: spacer).isActive = true
+                view.centerYAnchor.constraint(equalTo: prevView.centerYAnchor).isActive = true
                 
                 prevView = view
             }
             
             if view is UIStepper {
-                view.leadingAnchor.constraintEqualToAnchor(prevView.trailingAnchor, constant: spacer).active = true
-                view.centerYAnchor.constraintEqualToAnchor(prevView.centerYAnchor).active = true
+                view.leadingAnchor.constraint(equalTo: prevView.trailingAnchor, constant: spacer).isActive = true
+                view.centerYAnchor.constraint(equalTo: prevView.centerYAnchor).isActive = true
             }
         }
     }

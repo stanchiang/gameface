@@ -38,21 +38,21 @@ extension UIColor {
 extension UIView{
     
     func blurView() {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Light)
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.frame = self.bounds
         
-        blurEffectView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight] // for supporting device rotation
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight] // for supporting device rotation
         self.addSubview(blurEffectView)
     }
     
 }
 
 extension UIImage {
-    func overlay(watermark: UIImage) -> UIImage {
+    func overlay(_ watermark: UIImage) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(self.size, false, 0.0)
-        self.drawInRect(CGRectMake(0, 0, self.size.width, self.size.height))
-        watermark.drawInRect(CGRectMake(self.size.width * 7 / 10, self.size.height - self.size.width * 3 / 10, self.size.width * 1 / 5, self.size.width * 1 / 5))
+        self.draw(in: CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height))
+        watermark.draw(in: CGRect(x: self.size.width * 7 / 10, y: self.size.height - self.size.width * 3 / 10, width: self.size.width * 1 / 5, height: self.size.width * 1 / 5))
         
         let newImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
@@ -61,17 +61,17 @@ extension UIImage {
     }
 }
 
-extension NSTimeInterval {
+extension TimeInterval {
     func parseTime() -> (UInt8, UInt8, UInt8) {
         //calculate the minutes in elapsed time.
         var elapsedTime = self
         
         let minutes = UInt8(elapsedTime / 60.0)
-        elapsedTime -= (NSTimeInterval(minutes) * 60)
+        elapsedTime -= (TimeInterval(minutes) * 60)
         
         //calculate the seconds in elapsed time.
         let seconds = UInt8(elapsedTime)
-        elapsedTime -= NSTimeInterval(seconds)
+        elapsedTime -= TimeInterval(seconds)
         
         //find out the fraction of milliseconds to be displayed.
         let fraction = UInt8(elapsedTime * 100) 
@@ -83,7 +83,7 @@ extension NSTimeInterval {
 //http://stackoverflow.com/a/29028342/1079379
 extension SKSpriteNode {
     
-    func aspectFillToSize(fillSize: CGSize) {
+    func aspectFillToSize(_ fillSize: CGSize) {
         
         if texture != nil {
             self.size = texture!.size()

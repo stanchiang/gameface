@@ -18,16 +18,16 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         cv.dataSource = self
         cv.bounces = true
         cv.alwaysBounceHorizontal = true
-        cv.autoresizingMask = [UIViewAutoresizing.FlexibleHeight, UIViewAutoresizing.FlexibleWidth]
-        cv.registerClass(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-        cv.backgroundColor = UIColor.clearColor()
-        cv.pagingEnabled = true
+        cv.autoresizingMask = [UIViewAutoresizing.flexibleHeight, UIViewAutoresizing.flexibleWidth]
+        cv.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        cv.backgroundColor = UIColor.clear
+        cv.isPagingEnabled = true
         return cv
     }()
     
     lazy var flowLayout:UICollectionViewFlowLayout = {
         var flow = UICollectionViewFlowLayout()
-        flow.scrollDirection = .Horizontal
+        flow.scrollDirection = .horizontal
         flow.minimumInteritemSpacing = 0
         flow.minimumLineSpacing = 0
         return flow
@@ -57,7 +57,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     
     var isWritingToVideo = false
     
-    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var postGameModal:PostGameView!
     
     override func viewDidLoad() {
@@ -68,8 +68,8 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         
         debugView = DebugView(frame: self.view.frame)
         
-        self.items.addObjectsFromArray(["Card #1"])
-        self.items.addObjectsFromArray(["Card #2"])
+        self.items.addObjects(from: ["Card #1"])
+        self.items.addObjects(from: ["Card #2"])
         self.view.addSubview(self.collectionView)
     }
     
@@ -77,44 +77,44 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         cameraImage = UIImageView()
         cameraImage.frame = self.view.frame
         self.view.addSubview(cameraImage)
-        cameraImage.transform = CGAffineTransformScale(self.cameraImage.transform, -1, 1)
+        cameraImage.transform = self.cameraImage.transform.scaledBy(x: -1, y: 1)
     }
     
     
     //MARK: Collection View Delegate
     override func viewDidLayoutSubviews() {
         collectionView.layoutIfNeeded()
-        collectionView.scrollToItemAtIndexPath(NSIndexPath(forItem: 1, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.None, animated: false)
+        collectionView.scrollToItem(at: IndexPath(item: 1, section: 0), at: UICollectionViewScrollPosition(), animated: false)
         appDelegate.currentCell = 1
         
         if postGameModal != nil {
-            postGameModal.leadingAnchor.constraintEqualToAnchor(self.view.leadingAnchor).active = true
-            postGameModal.trailingAnchor.constraintEqualToAnchor(self.view.trailingAnchor).active = true
-            postGameModal.topAnchor.constraintEqualToAnchor(topLayoutGuide.bottomAnchor).active = true
-            postGameModal.bottomAnchor.constraintEqualToAnchor(bottomLayoutGuide.topAnchor).active = true
+            postGameModal.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+            postGameModal.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+            postGameModal.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
+            postGameModal.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor).isActive = true
 
         }
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize{
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize{
         
         let width:CGFloat = self.view.bounds.size.width
         let height:CGFloat = self.view.bounds.size.height
         
-        return CGSizeMake(width, height)
+        return CGSize(width: width, height: height)
     }
     
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
         self.flowLayout.invalidateLayout()
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int{
         return self.items.count
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as! CustomCollectionViewCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CustomCollectionViewCell
         
         if indexPath.row == 0 {
             if debugMode {
@@ -140,24 +140,24 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         return cell
     }
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print(indexPath)
     }
     
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         resetGame()
     }
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        if collectionView.visibleCells().count == 1 {
-            for cell in collectionView.visibleCells() {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if collectionView.visibleCells.count == 1 {
+            for cell in collectionView.visibleCells {
                 let cell = cell as! CustomCollectionViewCell
 //                if collectionView.indexPathForCell(cell)!.row == 0 {
 //                    cameraHandler.session.stopRunning()
 //                } else {
 //                    cameraHandler.session.startRunning()
 //                }
-                appDelegate.currentCell = collectionView.indexPathForCell(cell)!.row
+                appDelegate.currentCell = collectionView.indexPath(for: cell)!.row
             }
         }
     }
@@ -165,8 +165,8 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     //MARK: Basketball SpriteKit methods
     func setupGameLayer() -> UIView {
         gameView = UIView(frame: self.view.frame)
-        gameView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
-        gameView.transform = CGAffineTransformScale(gameView.transform, 1, -1)
+        gameView.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
+        gameView.transform = gameView.transform.scaledBy(x: 1, y: -1)
 
         let skView = SKView(frame: view.frame)
         skView.allowsTransparency = true
@@ -181,8 +181,8 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         
         /* Set the scale mode to scale to fit the window */
         scene = GameScene(size: self.view.frame.size)
-        scene.scaleMode = .AspectFill
-        scene.backgroundColor = UIColor.clearColor()
+        scene.scaleMode = .aspectFill
+        scene.backgroundColor = UIColor.clear
         skView.presentScene(scene)
         
         return gameView
@@ -198,17 +198,17 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         skView.ignoresSiblingOrder = true
         
         manager = GameManager(size: self.view.frame.size)
-        manager.scaleMode = .AspectFill
-        manager.backgroundColor = UIColor.clearColor()
+        manager.scaleMode = .aspectFill
+        manager.backgroundColor = UIColor.clear
         skView.presentScene(manager)
         
         
-        if let score:Double = appDelegate.userDefaults.doubleForKey("highScore") {
+        if let score:Double = appDelegate.userDefaults.double(forKey: "highScore") {
             print("load high score \(score)")
             appDelegate.highScore = score
         } else {
             print("init high score")
-            appDelegate.userDefaults.setDouble(0, forKey: "highScore")
+            appDelegate.userDefaults.set(0, forKey: "highScore")
         }
         
         return managerView
@@ -239,7 +239,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         
         if postGameModal != nil {
             postGameModal.removeFromSuperview()
-            NSNotificationCenter.defaultCenter().removeObserver(self, name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
         }
         postGameModal = nil
         isWritingToVideo = false
@@ -264,7 +264,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         
         //update highscore if needed
         if manager.hasNewHighScore {
-            appDelegate.userDefaults.setDouble(appDelegate.currentScore, forKey: "highScore")
+            appDelegate.userDefaults.set(appDelegate.currentScore, forKey: "highScore")
             print("updated high score \(appDelegate.currentScore)")
         }
         
@@ -286,7 +286,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     
     func takeScreenShot(){
         UIGraphicsBeginImageContext(self.view.frame.size)
-        self.view?.drawViewHierarchyInRect(self.view.frame, afterScreenUpdates: true)
+        self.view?.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
         var screenShot = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         gamePlayArray.append(screenShot!)
@@ -294,7 +294,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
 //        print("screenshot # \(gamePlayArray.count)")
     }
     
-    func gamePlayToVideo(inputArray:[UIImage]){
+    func gamePlayToVideo(_ inputArray:[UIImage]){
         let settings = RenderSettings()
         let imageAnimator = ImageAnimator(renderSettings: settings, imageArray: inputArray)
         imageAnimator.render { [unowned self] videoURL in

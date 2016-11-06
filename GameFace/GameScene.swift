@@ -7,9 +7,33 @@
 //
 
 import SpriteKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func <= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l <= r
+  default:
+    return !(rhs < lhs)
+  }
+}
+
 
 protocol GameSceneDelegate: class {
-    func updateTimer(countDown:Double)
+    func updateTimer(_ countDown:Double)
     func getTimer() -> Double
     func swapInstructionsWithScore()
     func loadPostGame()
@@ -43,15 +67,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     var shadesSprite:SKSpriteNode!
     
     var possibleObjects = ["candy", "bomb"]
-    var gameTimer: NSTimer!
+    var gameTimer: Timer!
     
     var objectMissedCount = 0;
     
     var lastState:GameState = .postGame
     
-    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    override func didMoveToView(view: SKView) {
+    override func didMove(to view: SKView) {
         setupInterface()
     }
     
@@ -65,9 +89,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         guard gameVarDelegate != nil else {return}
         guard gameVarDelegate?.getSpriteInitialSpeed() != nil else {return}
         
-        let start = CGPointMake(RandomCGFloat(0, max: self.frame.width), self.frame.height)
-        let end = CGPointMake(RandomCGFloat(self.frame.width * 1/CGFloat(gameVarDelegate!.getSpriteEndRange()),
-            max: self.frame.width * CGFloat(gameVarDelegate!.getSpriteEndRange() - 1)/CGFloat(gameVarDelegate!.getSpriteEndRange())), 0)
+        let start = CGPoint(x: RandomCGFloat(0, max: self.frame.width), y: self.frame.height)
+        let end = CGPoint(x: RandomCGFloat(self.frame.width * 1/CGFloat(gameVarDelegate!.getSpriteEndRange()),
+            max: self.frame.width * CGFloat(gameVarDelegate!.getSpriteEndRange() - 1)/CGFloat(gameVarDelegate!.getSpriteEndRange())), y: 0)
         
         createNew(fromPoint: start, toPoint: end)
     }
@@ -88,20 +112,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         let sprite = SKSpriteNode(imageNamed: possibleObjects[rand - 1])
         sprite.size = CGSize(width: gameVarDelegate!.getSpriteSize(), height: gameVarDelegate!.getSpriteSize())
         let path = arcBetweenPoints(fromPoint: start, toPoint: end)
-        let followArc = SKAction.followPath(path, asOffset: false, orientToPath: true, duration: gameVarDelegate!.getSpriteInitialSpeed())
+        let followArc = SKAction.follow(path, asOffset: false, orientToPath: true, duration: gameVarDelegate!.getSpriteInitialSpeed())
         
         sprite.position = start
         sprite.physicsBody = SKPhysicsBody(texture: sprite.texture!, size: sprite.size)
         sprite.physicsBody?.categoryBitMask = UInt32(rand)
         
         self.addChild(sprite)
-        sprite.runAction(followArc) { [unowned self] in
+        sprite.run(followArc, completion: { [unowned self] in
             
             if sprite.physicsBody?.categoryBitMask == 1 {
                 let emitterNode = SKEmitterNode(fileNamed: "explosion.sks")
                 emitterNode!.particlePosition = sprite.position
                 self.addChild(emitterNode!)
-                self.runAction(SKAction.waitForDuration(2), completion: {
+                self.run(SKAction.wait(forDuration: 2), completion: {
                     emitterNode!.removeFromParent()
                 })
                 
@@ -116,10 +140,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                 print("bomb dodged")
 //                self.sceneDelegate?.updateTimer(self.gameVarDelegate!.getGameScoreBonus() / 10.0)
             }
-        }
+        }) 
     }
     
-    func didBeginContact(contact: SKPhysicsContact) {
+    func didBegin(_ contact: SKPhysicsContact) {
         let object:SKPhysicsBody!
         
         //if bodyA is an object
@@ -137,7 +161,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                 let emitterNode = SKEmitterNode(fileNamed: "candyEater.sks")
                 emitterNode!.particlePosition = thing.position
                 self.addChild(emitterNode!)
-                self.runAction(SKAction.waitForDuration(2), completion: {
+                self.run(SKAction.wait(forDuration: 2), completion: {
                     emitterNode!.removeFromParent()
                 })
                 thing.removeFromParent()
@@ -152,7 +176,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                 let emitterNode = SKEmitterNode(fileNamed: "explosion.sks")
                 emitterNode!.particlePosition = thing.position
                 self.addChild(emitterNode!)
-                self.runAction(SKAction.waitForDuration(2), completion: {
+                self.run(SKAction.wait(forDuration: 2), completion: {
                     emitterNode!.removeFromParent()
                 })
                 thing.removeFromParent()
@@ -161,7 +185,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         }
     }
     
-    override func update(currentTime: CFTimeInterval) {
+    override func update(_ currentTime: TimeInterval) {
         guard gameVarDelegate != nil else { return }
         guard gameVarDelegate?.getWillRecordGame() != nil else { return }
         guard gameVarDelegate?.getVideoLength() != nil else { return }
@@ -220,7 +244,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         }
     }
     
-    func triggerGameStart(mouth:[CGPoint]) -> Bool {
+    func triggerGameStart(_ mouth:[CGPoint]) -> Bool {
         guard appDelegate.currentCell != nil else {
             return false
         }
@@ -233,7 +257,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         return false
     }
     
-    func checkMouth(mouth:[CGPoint], dist:Float) -> Bool{
+    func checkMouth(_ mouth:[CGPoint], dist:Float) -> Bool{
         if !mouth.isEmpty && mouth.first!.x != 0 && mouth.first!.y != 0 {
             let p1 = mouth[2]
             let p2 = mouth[6]
@@ -245,31 +269,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         return false
     }
     
-    func addMouth(mouth:[CGPoint]) {
+    func addMouth(_ mouth:[CGPoint]) {
         
         var anchorPoint:CGPoint!
-        let pathToDraw:CGMutablePathRef = CGPathCreateMutable()
+        let pathToDraw:CGMutablePath = CGMutablePath()
         
-        var center = self.view!.convertPoint( CGPointMake( (mouth[2].x + mouth[6].x) / 2, (mouth[2].y + mouth[6].y) / 2), toScene: self)
-        center = CGPointMake(center.x,center.y)
+        var center = self.view!.convert( CGPoint( x: (mouth[2].x + mouth[6].x) / 2, y: (mouth[2].y + mouth[6].y) / 2), to: self)
+        center = CGPoint(x: center.x,y: center.y)
         for m in mouth {
-            let mm = self.view!.convertPoint(m, toScene: self)
+            let mm = self.view!.convert(m, to: self)
             if m == mouth.first! {
                 anchorPoint = mm
-                CGPathMoveToPoint(pathToDraw, nil, mm.x, mm.y)
+                pathToDraw.move(to: mm)
+//                CGPathMoveToPoint(pathToDraw, nil, mm.x, mm.y)
             } else {
-                CGPathAddLineToPoint(pathToDraw, nil, mm.x, mm.y)
+                pathToDraw.addLine(to: mm)
+//                CGPathAddLineToPoint(pathToDraw, nil, mm.x, mm.y)
             }
         }
+        pathToDraw.addLine(to: anchorPoint)
+//        CGPathAddLineToPoint(pathToDraw, nil, anchorPoint.x, anchorPoint.y)
         
-        CGPathAddLineToPoint(pathToDraw, nil, anchorPoint.x, anchorPoint.y)
         mouthShape = SKShapeNode(path: pathToDraw)
-        mouthShape.antialiased = true
-        mouthShape.strokeColor = UIColor.cyanColor()//RandomColor()
+        mouthShape.isAntialiased = true
+        mouthShape.strokeColor = UIColor.cyan//RandomColor()
 //        polygon.fillColor = RandomColor()
         mouthShape.name = "mouthshape"
 
-        let texture = view!.textureFromNode(mouthShape)
+        let texture = view!.texture(from: mouthShape)
         mouthSprite = SKSpriteNode(texture: texture, size: mouthShape.calculateAccumulatedFrame().size)
         mouthSprite.physicsBody = SKPhysicsBody(texture: mouthSprite.texture!, size: mouthSprite.calculateAccumulatedFrame().size)
         
@@ -282,10 +309,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
 
     }
     
-    func addShades(position:CGPoint){
+    func addShades(_ position:CGPoint){
         shadesSprite = SKSpriteNode(imageNamed: "shades")
         shadesSprite.aspectFillToSize(CGSize(width: 100, height: 100))
-        shadesSprite.position = self.view!.convertPoint(position, toScene: self)
+        shadesSprite.position = self.view!.convert(position, to: self)
         shadesSprite.zPosition = -100
         shadesSprite.physicsBody = SKPhysicsBody(texture: shadesSprite.texture!, size: shadesSprite.size)
         shadesSprite.physicsBody?.categoryBitMask = UInt32(0)
@@ -300,7 +327,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         let path = UIBezierPath()
         
         // Move the "cursor" to the start
-        path.moveToPoint(start)
+        path.move(to: start)
         
         // Calculate the control points
         let factor : CGFloat = 0.5
@@ -312,31 +339,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         let c2 = CGPoint(x: end.x, y: end.y - deltaY * factor)
         
         // Draw a curve towards the end, using control points
-        path.addCurveToPoint(end, controlPoint1:c1, controlPoint2:c2)
+        path.addCurve(to: end, controlPoint1:c1, controlPoint2:c2)
         
 //        debugDrawCurvePath(path.CGPath)
         
         // Use this path as the animation's path (casted to CGPath)
-        return path.CGPath;
+        return path.cgPath;
     }
 
-    func debugDrawCurvePath(cgPath:CGPath){
+    func debugDrawCurvePath(_ cgPath:CGPath){
         let curve = SKShapeNode()
         curve.path = cgPath
         curve.lineWidth = 4
-        curve.strokeColor = UIColor.redColor()
+        curve.strokeColor = UIColor.red
         self.addChild(curve)
     }
     
     func updatePauseHandler(to state:GameState) {
         if state == .paused {
             appDelegate.gameState = .paused
-            scene?.view?.paused = true
+            scene?.view?.isPaused = true
             print("pause game")
             gameTimer.invalidate()
         } else {
             appDelegate.gameState = .inPlay
-            scene?.view?.paused = false
+            scene?.view?.isPaused = false
             print("resume game")
             addGameTimer()
         }
@@ -346,6 +373,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         guard gameVarDelegate?.getSpawnRate() != nil else {
             return
         }
-        gameTimer = NSTimer.scheduledTimerWithTimeInterval((gameVarDelegate?.getSpawnRate())!, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
+        gameTimer = Timer.scheduledTimer(timeInterval: (gameVarDelegate?.getSpawnRate())!, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
     }
 }
