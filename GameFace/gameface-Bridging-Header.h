@@ -8,3 +8,6 @@
 #import "CVFFaceDetect.h"
 
 #import "PlayFabClientAPI.h"
+
+#import "BCMeshTransformView.h"
+#import "BCMutableMeshTransform+Convenience.h"

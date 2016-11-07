@@ -40,6 +40,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     
     let cameraHandler = CameraHandler()
     var cameraImage:UIImageView!
+    var transformView:BCMeshTransformView!
     
     var gameView:UIView!
     var managerView:UIView!
@@ -74,12 +75,59 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     }
     
     func setupCameraImage(){
+        transformView = BCMeshTransformView(frame: self.view.bounds)
+        transformView.autoresizingMask = [UIViewAutoresizing.flexibleHeight, UIViewAutoresizing.flexibleWidth]
+        
+        self.view.addSubview(transformView)
+        
         cameraImage = UIImageView()
         cameraImage.frame = self.view.frame
-        self.view.addSubview(cameraImage)
+        transformView.contentView.addSubview(cameraImage)
+        
+        // we don't want any shading on this one
+        transformView.diffuseLightFactor = 0.0
+        
         cameraImage.transform = self.cameraImage.transform.scaledBy(x: -1, y: 1)
+        
+        let points = [CGPoint(x: 135, y: 440), CGPoint(x: 240, y: 440)]
+        self.transformView.meshTransform = bulgeWarp(at: points, withRadius: 120.0, boundSize: self.transformView.bounds.size)
     }
     
+    func bulgeWarp(at points:[CGPoint], withRadius radius:CGFloat, boundSize size:CGSize) -> BCMutableMeshTransform {
+        let Bulginess:CGFloat = 0.4
+        let transform = BCMutableMeshTransform.identityMeshTransform(withNumberOfRows: 36, numberOfColumns: 36)
+        
+        let rMax:CGFloat = radius/size.width
+        let yScale:CGFloat = size.height/size.width
+        
+        for point in points {
+            let x:CGFloat = point.x/size.width;
+            let y:CGFloat = point.y/size.height
+            
+            let vertexCount = transform?.vertexCount
+            for i in 0..<vertexCount! {
+                var v:BCMeshVertex = transform!.vertex(at: i)
+                let dx:CGFloat = v.to.x - x
+                let dy:CGFloat = (v.to.y - y) * yScale
+                
+                let r:CGFloat = sqrt(dx*dx + dy*dy)
+                
+                if r > rMax {
+                    continue
+                }
+                
+                let t:CGFloat = r/rMax
+                let scale:CGFloat = Bulginess*(cos(t * CGFloat(M_PI)) + 1.0)
+                
+                v.to.x += dx * scale
+                v.to.y += dy * scale / yScale
+                v.to.z = scale * 0.2
+                
+                transform?.replaceVertex(at: i, with: v)
+            }
+        }
+        return transform!
+    }
     
     //MARK: Collection View Delegate
     override func viewDidLayoutSubviews() {
@@ -245,8 +293,8 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         isWritingToVideo = false
         
         self.collectionView.reloadData()
-        setupGameLayer()
-        setupGameManager()
+        _ = setupGameLayer()
+        _ = setupGameManager()
         
         appDelegate.gameState = .preGame
         self.manager.timer.xScale = 1.0
