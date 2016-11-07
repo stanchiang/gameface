@@ -89,7 +89,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         
         cameraImage.transform = self.cameraImage.transform.scaledBy(x: -1, y: 1)
         
-        let points = [CGPoint(x: 135, y: 440), CGPoint(x: 240, y: 440)]
+        let points = [CGPoint(x: 135, y: 314), CGPoint(x: 302, y: 314)]
         self.transformView.meshTransform = bulgeWarp(at: points, withRadius: 120.0, boundSize: self.transformView.bounds.size)
     }
     

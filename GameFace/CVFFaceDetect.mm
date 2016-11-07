@@ -125,12 +125,15 @@ dlib::shape_predictor sp;
                 [self.delegate noseBridgePosition: CGPointMake( [self pixelToPoints:shape.part(k).x()], [self pixelToPoints:shape.part(k).y()]) ];
             }
             
-            subdiv.insert([self toCv:shape.part(k)]);
+            if (rect.contains([self toCv:shape.part(k)])) {
+                subdiv.insert([self toCv:shape.part(k)]);
+            }
         }
+        
 //        if ([self.delegate showFaceDetect]) {
             [self draw_delaunay:mat subdiv:subdiv delaunay:delaunay_color];
-        
 //        }
+        
         [self.delegate mouthVerticePositions:m];
         
     }
