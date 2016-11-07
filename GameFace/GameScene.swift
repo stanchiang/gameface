@@ -65,6 +65,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     var mouthShape:SKShapeNode!
 
     var shadesSprite:SKSpriteNode!
+    var stacheSprite:SKSpriteNode!
     
     var possibleObjects = ["candy", "bomb"]
     var gameTimer: Timer!
@@ -214,6 +215,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         if appDelegate.gameState == .inPlay {
             if mouthSprite != nil { mouthSprite.removeFromParent() }
             if shadesSprite != nil { shadesSprite.removeFromParent() }
+            if stacheSprite != nil { stacheSprite.removeFromParent() }
 
             //        if we have data to work with
             if !mouth.isEmpty && mouth.first!.x != 0 && mouth.first!.y != 0 {
@@ -229,9 +231,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                 }
             }
             
-            if appDelegate.noseBridge != nil {
-                addShades(appDelegate.noseBridge)
-            }
+            if appDelegate.noseBridge != nil { addShades(appDelegate.noseBridge) }
+            if appDelegate.mustache != nil { addStache(appDelegate.mustache) }
             
             if gameVarDelegate!.getWillRecordGame() {
                 if (appDelegate.window?.rootViewController as! GameGallery).gamePlayArray.count >= Int( 30 * gameVarDelegate!.getVideoLength() ) {
@@ -307,6 +308,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         shadesSprite.physicsBody?.contactTestBitMask = 0
         shadesSprite.physicsBody?.collisionBitMask = 0
         self.addChild(shadesSprite)
+    }
+    
+    func addStache(_ position:CGPoint){
+        stacheSprite = SKSpriteNode(imageNamed: "mustache")
+        stacheSprite.aspectFillToSize(CGSize(width: 50, height: 50))
+        stacheSprite.position = self.view!.convert(position, to: self)
+        stacheSprite.zPosition = -100
+        stacheSprite.physicsBody = SKPhysicsBody(texture: stacheSprite.texture!, size: stacheSprite.size)
+        stacheSprite.physicsBody?.categoryBitMask = UInt32(0)
+        stacheSprite.physicsBody?.contactTestBitMask = 0
+        stacheSprite.physicsBody?.collisionBitMask = 0
+        self.addChild(stacheSprite)
     }
     
     func arcBetweenPoints(fromPoint start : CGPoint, toPoint end: CGPoint) -> CGPath {

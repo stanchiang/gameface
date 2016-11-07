@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var mouth = [CGPoint]()
     var noseBridge:CGPoint!
     var noseTip:CGPoint!
+    var mustache:CGPoint!
     
     var currentCell:Int!
     var gameState = GameState.preGame

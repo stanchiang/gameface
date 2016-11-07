@@ -18,4 +18,5 @@
 -(bool) showFaceDetect;
 -(void) noseBridgePosition: (CGPoint) position;
 -(void) noseTipPosition: (CGPoint) position;
+-(void) mustachePosition: (CGPoint) position;
 @end

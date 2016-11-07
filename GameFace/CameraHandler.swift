@@ -81,6 +81,10 @@ class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AV
         appDelegate.noseBridge = position
     }
     
+    func mustachePosition(_ position: CGPoint) {
+        appDelegate.mustache = position
+    }
+    
     func noseTipPosition(_ position: CGPoint) {
         appDelegate.noseTip = position
         let warpPoints = [appDelegate.noseTip!]
