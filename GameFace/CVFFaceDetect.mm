@@ -117,13 +117,16 @@ dlib::shape_predictor sp;
                 draw_solid_circle(dlibMat, shape.part(k), 3, dlib::rgb_pixel(0, 255, 0));
             }
             
-            if (k >= 60) {
-                [m addObject: [NSValue valueWithCGPoint:CGPointMake( [self pixelToPoints:shape.part(k).x()], [self pixelToPoints:shape.part(k).y()]) ]];
-            }
+            CGPoint landmark = CGPointMake( [self pixelToPoints:shape.part(k).x()], [self pixelToPoints:shape.part(k).y()]);
             
-            if (k == 28) {
-                [self.delegate noseBridgePosition: CGPointMake( [self pixelToPoints:shape.part(k).x()], [self pixelToPoints:shape.part(k).y()]) ];
-            }
+            //inside lips outline
+            if (k >= 60) { [m addObject: [NSValue valueWithCGPoint: landmark ]]; }
+            
+            //nose bridge
+            if (k == 28) { [self.delegate noseBridgePosition: landmark ]; }
+            
+            //nose tip
+            if (k == 31) { [self.delegate noseTipPosition: landmark ]; }
             
             if (rect.contains([self toCv:shape.part(k)])) {
                 subdiv.insert([self toCv:shape.part(k)]);

@@ -105,9 +105,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         
         //1 is good 2 is bad
         var rand = 1
-        if gameVarDelegate!.getWillAddBombs() {
-            rand = RandomInt(1, max: 2)
-        }
+        if gameVarDelegate!.getWillAddBombs() { rand = RandomInt(1, max: 2) }
         
         let sprite = SKSpriteNode(imageNamed: possibleObjects[rand - 1])
         sprite.size = CGSize(width: gameVarDelegate!.getSpriteSize(), height: gameVarDelegate!.getSpriteSize())
@@ -224,7 +222,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                     addMouth(mouth)
                     
 //use when we get boost fps - it will stop showing sprite if face is not detected, but then sprites give off strobe effect
-//                    appDelegate.mouth = []
+                    appDelegate.mouth = []
                     sceneDelegate?.updateTimer((gameVarDelegate?.getOpenMouthDrainRate())! * -1.0 / 1000)
                 }else {
                     sceneDelegate?.updateTimer((gameVarDelegate?.getClosedMouthDrainRate())! * -1.0 / 1000)
@@ -245,15 +243,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     }
     
     func triggerGameStart(_ mouth:[CGPoint]) -> Bool {
-        guard appDelegate.currentCell != nil else {
-            return false
-        }
-        guard (gameVarDelegate?.getGameStartMouthDist() != nil) else {
-            return false
-        }
-        if appDelegate.currentCell == 1 && checkMouth(mouth, dist: (gameVarDelegate?.getGameStartMouthDist())!) {
-            return true
-        }
+        guard appDelegate.currentCell != nil else { return false }
+        guard (gameVarDelegate?.getGameStartMouthDist() != nil) else { return false }
+        
+        if appDelegate.currentCell == 1 && checkMouth(mouth, dist: (gameVarDelegate?.getGameStartMouthDist())!) { return true }
         return false
     }
     
@@ -262,9 +255,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             let p1 = mouth[2]
             let p2 = mouth[6]
             let distance = hypotf(Float(p1.x) - Float(p2.x), Float(p1.y) - Float(p2.y));
-            if distance > dist {
-                return true
-            }
+            if distance > dist { return true }
         }
         return false
     }
@@ -281,14 +272,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             if m == mouth.first! {
                 anchorPoint = mm
                 pathToDraw.move(to: mm)
-//                CGPathMoveToPoint(pathToDraw, nil, mm.x, mm.y)
             } else {
                 pathToDraw.addLine(to: mm)
-//                CGPathAddLineToPoint(pathToDraw, nil, mm.x, mm.y)
             }
         }
         pathToDraw.addLine(to: anchorPoint)
-//        CGPathAddLineToPoint(pathToDraw, nil, anchorPoint.x, anchorPoint.y)
         
         mouthShape = SKShapeNode(path: pathToDraw)
         mouthShape.isAntialiased = true
@@ -370,9 +358,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     }
     
     func addGameTimer(){
-        guard gameVarDelegate?.getSpawnRate() != nil else {
-            return
-        }
+        guard gameVarDelegate?.getSpawnRate() != nil else { return }
         gameTimer = Timer.scheduledTimer(timeInterval: (gameVarDelegate?.getSpawnRate())!, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
     }
 }
