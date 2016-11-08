@@ -8,27 +8,28 @@
 
 // Based on the OpenCV example: <opencv>/samples/c/facedetect.cpp
 
+
+#import <Foundation/Foundation.h>
+#import <CoreMedia/CoreMedia.h>
+#import <UIKit/UIKit.h>
+
 #import "CVFFaceDetect.h"
+#include "CVFImageProcessorDelegate.h"
 
 #include "opencv2/objdetect/objdetect.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
-
-//Start - from dlib
-#import <Foundation/Foundation.h>
-#import <CoreMedia/CoreMedia.h>
-
-#import <UIKit/UIKit.h>
-
-#include <dlib/image_processing.h>
-#include <dlib/image_io.h>
-//End - from dlib
-
-//Start - from attentiontracker
 #include <opencv2/calib3d/calib3d.hpp>
 #include <opencv2/highgui/highgui.hpp>
-//End - from attentiontracker
+#include <opencv2/core/core.hpp>
 
-#include "CVFImageProcessorDelegate.h"
+#include <dlib/opencv.h>
+#include <dlib/image_processing/frontal_face_detector.h>
+#include <dlib/image_processing.h>
+#include <dlib/image_io.h>
+
+#include <vector>
+#include <array>
+#include <string>
 
 using namespace std;
 using namespace cv;
@@ -38,19 +39,6 @@ std::string modelFileNameCString;
 double scale = 1;
 dlib::shape_predictor sp;
 dlib::full_object_detection shape;
-
-
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/highgui/highgui.hpp>
-
-#include <opencv2/core/core.hpp>
-#include <dlib/opencv.h>
-#include <dlib/image_processing.h>
-#include <dlib/image_processing/frontal_face_detector.h>
-
-#include <vector>
-#include <array>
-#include <string>
 
 // Anthropometric for male adult
 // Relative position of various facial feature relative to sellion
@@ -90,9 +78,6 @@ typedef struct {
     cv::Mat		tvec;
     cv::Mat		rvec;
 } head_pose;
-
-
-
 
 @interface CVFFaceDetect() {
     bool _inited;
