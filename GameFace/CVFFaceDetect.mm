@@ -24,6 +24,7 @@
 //End - from dlib
 
 //Start - from attentiontracker
+#include <opencv2/calib3d/calib3d.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include "head_pose_estimation.hpp"
 //End - from attentiontracker
@@ -37,6 +38,8 @@ CascadeClassifier cascade;
 std::string modelFileNameCString;
 double scale = 1;
 dlib::shape_predictor sp;
+dlib::full_object_detection shape;
+
 @interface CVFFaceDetect() {
     bool _inited;
 }
@@ -95,7 +98,7 @@ dlib::shape_predictor sp;
 //            dlib::draw_rectangle(dlibMat, dlibRect, dlib::rgb_pixel(0, 255, 255));
 //        }
         
-        dlib::full_object_detection shape = sp(dlibMat, dlibRect);
+        shape = sp(dlibMat, dlibRect);
         NSMutableArray *m = [NSMutableArray new];
         
         /////
@@ -144,7 +147,7 @@ dlib::shape_predictor sp;
 //        }
         
         [self.delegate mouthVerticePositions:m];
-        
+        [self pose:0 image:mat];
     }
 
     [self matReady:mat];
@@ -237,137 +240,89 @@ dlib::shape_predictor sp;
     
 }
 
+-(head_pose) pose: (size_t) face_idx image: (Mat) image {
+    
+    cv::Mat projectionMat = cv::Mat::zeros(3,3,CV_32F);
+    cv::Matx33f projection = projectionMat;
+    projection(0,0) = 500;//focalLength;
+    projection(1,1) = 500;//focalLength;
+    projection(0,2) = [UIScreen mainScreen].bounds.size.width / 2.0;//opticalCenterX;
+    projection(1,2) = [UIScreen mainScreen].bounds.size.height / 2.0;//opticalCenterY;
+    projection(2,2) = 1;
+    
+    std::vector<Point3f> head_points;
+    
+    head_points.push_back(P3D_SELLION);
+    head_points.push_back(P3D_RIGHT_EYE);
+    head_points.push_back(P3D_LEFT_EYE);
+    head_points.push_back(P3D_RIGHT_EAR);
+    head_points.push_back(P3D_LEFT_EAR);
+    head_points.push_back(P3D_MENTON);
+    head_points.push_back(P3D_NOSE);
+    head_points.push_back(P3D_STOMMION);
+    
+    std::vector<Point2f> detected_points;
+    
+    detected_points.push_back([self coordsOf:face_idx feature:SELLION]);
+    detected_points.push_back([self coordsOf:face_idx feature:RIGHT_EYE]);
+    detected_points.push_back([self coordsOf:face_idx feature:LEFT_EYE]);
+    detected_points.push_back([self coordsOf:face_idx feature:RIGHT_SIDE]);
+    detected_points.push_back([self coordsOf:face_idx feature:LEFT_SIDE]);
+    detected_points.push_back([self coordsOf:face_idx feature:MENTON]);
+    detected_points.push_back([self coordsOf:face_idx feature:NOSE]);
+    
+    auto stomion = ([self coordsOf:face_idx feature:MOUTH_CENTER_TOP] + [self coordsOf:face_idx feature:MOUTH_CENTER_BOTTOM]) * 0.5;
+    detected_points.push_back(stomion);
+    
+    cv::Mat rvec, tvec;
+    
+    // Find the 3D pose of our head
+    solvePnP(head_points, detected_points,
+             projection, noArray(),
+             rvec, tvec, false,
+             CV_ITERATIVE);
+    Matx33d rotation;
+    Rodrigues(rvec, rotation);
+    
+    cv::Matx44d pose = {
+        rotation(0,0),    rotation(0,1),    rotation(0,2),    tvec.at<double>(0)/1000,
+        rotation(1,0),    rotation(1,1),    rotation(1,2),    tvec.at<double>(1)/1000,
+        rotation(2,0),    rotation(2,1),    rotation(2,2),    tvec.at<double>(2)/1000,
+        0,                0,                0,                     1
+    };
+    
+    std::vector<Point2f> reprojected_points;
+    
+    projectPoints(head_points, rvec, tvec, projection, noArray(), reprojected_points);
+    
+    for (auto point : reprojected_points) {
+        circle(image, point,2, Scalar(0,255,255),2);
+    }
+    
+    std::vector<Point3f> axes;
+    axes.push_back(Point3f(0,0,0));
+    axes.push_back(Point3f(50,0,0));
+    axes.push_back(Point3f(0,50,0));
+    axes.push_back(Point3f(0,0,50));
+    std::vector<Point2f> projected_axes;
+    
+    projectPoints(axes, rvec, tvec, projection, noArray(), projected_axes);
+    
+    line(image, projected_axes[0], projected_axes[3], Scalar(255,0,0),2,CV_AA);
+    line(image, projected_axes[0], projected_axes[2], Scalar(0,255,0),2,CV_AA);
+    line(image, projected_axes[0], projected_axes[1], Scalar(0,0,255),2,CV_AA);
+    
+    // putText(image, "(" + to_string(int(pose(0,3) * 100)) + "cm, " + to_string(int(pose(1,3) * 100)) + "cm, " + to_string(int(pose(2,3) * 100)) + "cm)", coordsOf(face_idx, SELLION), FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0,0,255),2);
+    
+    head_pose pose_head	=	{pose,	// transformation matrix
+        tvec,	// vector with translations
+        rvec};	// vector with rotations
+    
+    return pose_head;
+}
+
+-(Point2f) coordsOf: (size_t) face_idx feature: (FACIAL_FEATURE) feature {
+    return [self toCv:shape.part(feature)];
+}
+
 @end
-
-
-
-
-//int main( int argc, char** argv) {
-//    Point2f topLeft = Point2f(215,355);
-//    Point2f topRight = Point2f(320,355);
-//    Point2f bottomLeft = Point2f(215,400);
-//    Point2f bottomRight = Point2f(320,400);
-//    
-//    Point2f center = Point2f(290,373);
-//    Point2f newCenter = Point2f(260,373);
-//    
-//    // Input triangle
-//    vector <Point2f> triIn; //left
-//    triIn.push_back(topLeft);
-//    triIn.push_back(bottomLeft);
-//    triIn.push_back(center);
-//    
-//    // input tri 2
-//    vector <Point2f> triIn2; //bottom
-//    triIn2.push_back(bottomLeft);
-//    triIn2.push_back(bottomRight);
-//    triIn2.push_back(center);
-//    
-//    // input tri 3
-//    vector <Point2f> triIn3; //top
-//    triIn3.push_back(topRight);
-//    triIn3.push_back(topLeft);
-//    triIn3.push_back(center);
-//    
-//    // input tri 4
-//    vector <Point2f> triIn4; //right
-//    triIn4.push_back(bottomRight);
-//    triIn4.push_back(topRight);
-//    triIn4.push_back(center);
-//    
-//    
-//    // Output triangle
-//    vector <Point2f> triOut;
-//    triOut.push_back(topLeft);
-//    triOut.push_back(bottomLeft);
-//    triOut.push_back(newCenter);
-//    
-//    //output tri 2
-//    vector <Point2f> triOut2;
-//    triOut2.push_back(bottomLeft);
-//    triOut2.push_back(bottomRight);
-//    triOut2.push_back(newCenter);
-//    
-//    //output tri 3
-//    vector <Point2f> triOut3;
-//    triOut3.push_back(topRight);
-//    triOut3.push_back(topLeft);
-//    triOut3.push_back(newCenter);
-//    
-//    //output tri 4
-//    vector <Point2f> triOut4;
-//    triOut4.push_back(bottomRight);
-//    triOut4.push_back(topRight);
-//    triOut4.push_back(newCenter);
-//    
-//    // Read input image and convert to float
-//    Mat imgIn = imread("face.jpg");
-//    imgIn.convertTo(imgIn, CV_32FC3, 1/255.0);
-//    
-//    // Output image is set to white
-//    // Mat imgOut = Mat::ones(imgIn.size(), imgIn.type());
-//    // imgOut = Scalar(1.0,1.0,1.0);
-//    Mat imgOut = imread("face.jpg");
-//    imgOut.convertTo(imgOut, CV_32FC3, 1/255.0);
-//    
-//    // Warp all pixels inside input triangle to output triangle
-//    warpTriangle(imgIn, imgIn, triIn, triOut);
-//    warpTriangle(imgIn, imgIn, triIn2, triOut2);
-//    warpTriangle(imgIn, imgIn, triIn3, triOut3);
-//    warpTriangle(imgIn, imgIn, triIn4, triOut4);
-//    // Draw triangle on the input and output image.
-//    
-//    // Convert back to uint because OpenCV antialiasing
-//    // does not work on image of type CV_32FC3
-//    
-//    imgIn.convertTo(imgIn, CV_8UC3, 255.0);
-//    imgOut.convertTo(imgOut, CV_8UC3, 255.0);
-//    
-//    // Draw triangle using this color
-//    Scalar black = Scalar(0, 0, 0);
-//    Scalar red = Scalar(0, 0, 255);
-//    Scalar blue = Scalar(255, 0, 0);
-//    Scalar green = Scalar(0, 255, 0);
-//    
-//    // cv::polylines needs vector of type Point and not Point2f
-//    vector <Point> triInInt, triOutInt;
-//    vector <Point> triInInt2, triOutInt2;
-//    vector <Point> triInInt3, triOutInt3;
-//    vector <Point> triInInt4, triOutInt4;
-//    
-//    for(int i=0; i < 3; i++) {
-//        triInInt.push_back(Point(triIn[i].x,triIn[i].y));
-//        triInInt2.push_back(Point(triIn2[i].x,triIn2[i].y));
-//        triInInt3.push_back(Point(triIn3[i].x,triIn3[i].y));
-//        triInInt4.push_back(Point(triIn4[i].x,triIn4[i].y));
-//        
-//        triOutInt.push_back(Point(triOut[i].x,triOut[i].y));
-//        triOutInt2.push_back(Point(triOut2[i].x,triOut2[i].y));
-//        triOutInt3.push_back(Point(triOut3[i].x,triOut3[i].y));
-//        triOutInt4.push_back(Point(triOut4[i].x,triOut4[i].y));
-//        
-//    }
-//    
-//    // Draw triangles in input and output images
-//    bool showLines = true;
-//    if (showLines) {
-//        polylines(imgIn, triInInt, true, black, 1, 16);
-//        polylines(imgIn, triInInt2, true, red, 1, 16);
-//        polylines(imgIn, triInInt3, true, blue, 1, 16);
-//        polylines(imgIn, triInInt4, true, green, 1, 16);
-//        
-//        polylines(imgOut, triOutInt, true, black, 1, 16);
-//        polylines(imgOut, triOutInt2, true, red, 1, 16);
-//        polylines(imgOut, triOutInt3, true, blue, 1, 16);
-//        polylines(imgOut, triOutInt4, true, green, 1, 16);
-//    }
-//    
-//    // Draw triangles in input and output images
-//    
-//    imshow("main", imgIn);
-//    imshow("orig", imgOut);
-//    waitKey(0);
-//    
-//    return 0;
-//}
-//

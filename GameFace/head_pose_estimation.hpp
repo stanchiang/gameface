@@ -1,5 +1,5 @@
-#ifndef __HEAD_POSE_ESTIMATION
-#define __HEAD_POSE_ESTIMATION
+//#ifndef __HEAD_POSE_ESTIMATION
+//#define __HEAD_POSE_ESTIMATION
 
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -52,47 +52,47 @@ typedef struct {
 	cv::Mat		rvec;
 } head_pose;
 
-class HeadPoseEstimation {
+//class HeadPoseEstimation {
+//
+//public:
+//
+//    HeadPoseEstimation(const std::string& face_detection_model = "shape_predictor_68_face_landmarks.dat", float focalLength=455.);
+//
+//    void update(cv::InputArray image, double subsample_detection_frame);
+//    void draw_point( cv::Mat& img, cv::Point2f fp, cv::Scalar color );
+//    void draw_delaunay( cv::Mat& img, cv::Subdiv2D& subdiv, cv::Scalar delaunay_color );
+//
+//    head_pose pose(size_t face_idx, cv::Mat image) const;
+//
+//    std::vector<head_pose> poses(cv::Mat image) const;
+//
+//    float focalLength;
+//    float opticalCenterX;
+//    float opticalCenterY;
+//
+//private:
+//
+//    dlib::cv_image<dlib::bgr_pixel> current_image;
+//
+//    dlib::frontal_face_detector detector;
+//    dlib::shape_predictor pose_model;
+//
+//    std::vector<dlib::rectangle> faces;
+//
+//    std::vector<dlib::full_object_detection> shapes;
+//
+//
+//    /** Return the point corresponding to the dictionary marker.
+//    */
+//    cv::Point2f coordsOf(size_t face_idx, FACIAL_FEATURE feature) const;
+//
+//    /** Returns true if the lines intersect (and set r to the intersection
+//     *  coordinates), false otherwise.
+//     */
+//    bool intersection(cv::Point2f o1, cv::Point2f p1,
+//                      cv::Point2f o2, cv::Point2f p2,
+//                      cv::Point2f &r) const;
+//
+//};
 
-public:
-
-    HeadPoseEstimation(const std::string& face_detection_model = "shape_predictor_68_face_landmarks.dat", float focalLength=455.);
-
-    void update(cv::InputArray image, double subsample_detection_frame);
-    void draw_point( cv::Mat& img, cv::Point2f fp, cv::Scalar color );
-    void draw_delaunay( cv::Mat& img, cv::Subdiv2D& subdiv, cv::Scalar delaunay_color );
-
-    head_pose pose(size_t face_idx, cv::Mat image) const;
-
-    std::vector<head_pose> poses(cv::Mat image) const;
-
-    float focalLength;
-    float opticalCenterX;
-    float opticalCenterY;
-
-private:
-
-    dlib::cv_image<dlib::bgr_pixel> current_image;
-
-    dlib::frontal_face_detector detector;
-    dlib::shape_predictor pose_model;
-
-    std::vector<dlib::rectangle> faces;
-
-    std::vector<dlib::full_object_detection> shapes;
-
-
-    /** Return the point corresponding to the dictionary marker.
-    */
-    cv::Point2f coordsOf(size_t face_idx, FACIAL_FEATURE feature) const;
-
-    /** Returns true if the lines intersect (and set r to the intersection
-     *  coordinates), false otherwise.
-     */
-    bool intersection(cv::Point2f o1, cv::Point2f p1,
-                      cv::Point2f o2, cv::Point2f p2,
-                      cv::Point2f &r) const;
-
-};
-
-#endif // __HEAD_POSE_ESTIMATION
+//#endif // __HEAD_POSE_ESTIMATION

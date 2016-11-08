@@ -231,8 +231,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                 }
             }
             
-            if appDelegate.noseBridge != nil { addShades(appDelegate.noseBridge) }
-            if appDelegate.mustache != nil { addStache(appDelegate.mustache) }
+//            if appDelegate.noseBridge != nil { addShades(appDelegate.noseBridge) }
+//            if appDelegate.mustache != nil { addStache(appDelegate.mustache) }
             
             if gameVarDelegate!.getWillRecordGame() {
                 if (appDelegate.window?.rootViewController as! GameGallery).gamePlayArray.count >= Int( 30 * gameVarDelegate!.getVideoLength() ) {

@@ -91,7 +91,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
 
         let points = [CGPoint(x: 188.720858895706, y: 449.717791411043)]
 //        let points = [CGPoint(x: 135, y: 314), CGPoint(x: 302, y: 314)]
-        self.transformView.meshTransform = bulgeWarp(at: points, withRadius: 120.0, boundSize: self.transformView.bounds.size)
+//        self.transformView.meshTransform = bulgeWarp(at: points, withRadius: 120.0, boundSize: self.transformView.bounds.size)
     }
     
     func bulgeWarp(at points:[CGPoint], withRadius radius:CGFloat, boundSize size:CGSize) -> BCMutableMeshTransform {
