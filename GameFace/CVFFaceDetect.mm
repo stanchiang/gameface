@@ -198,6 +198,38 @@ typedef struct {
 //    Canny(edges, edges, 10, 100, 3);
 //    [self matReady:edges];
 
+//    cv::Mat grayscaleMat, dstMat, finalMat;
+//    cvtColor(mat, grayscaleMat, CV_BGR2GRAY);
+//    
+//    for (int i = 0; i < grayscaleMat.rows; i++) {
+//        for (int j = 0; j < grayscaleMat.cols; j++) {
+//            
+//            if (grayscaleMat.at<uchar>(i,j) < 70) {
+//                // black color
+//                grayscaleMat.at<uchar>(i,j) = 0;
+//            } else if (70 <= grayscaleMat.at<uchar>(i,j) && grayscaleMat.at<uchar>(i,j) < 120) {
+//                // gray color
+//                grayscaleMat.at<uchar>(i,j) = 100;
+//            } else {
+//                // white color
+//                grayscaleMat.at<uchar>(i,j) = 255;
+//            }
+//        }
+//    }
+    
+//    GaussianBlur(grayscaleMat, grayscaleMat, cv::Size(3, 3), 0, 0);
+//    Canny(grayscaleMat, dstMat, 20, 120);
+//    bitwise_not(dstMat,dstMat);
+
+    
+//    cvtColor(grayscaleMat, dstMat, CV_GRAY2BGR);
+//    float mask[6] = {100, 100, 100, 100, 100, 100};
+//    cv::Mat maskMat = cv::Mat(1, 6, CV_32F, mask).clone();
+//    dstMat.copyTo(finalMat, maskMat);
+//    [self matReady:finalMat];
+    
+    
+//    [self matReady:dstMat];
 }
 
 - (CGFloat)pixelToPoints:(CGFloat)px {
