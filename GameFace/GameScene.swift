@@ -125,15 +125,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         let sprite = SKSpriteNode(imageNamed: possibleObjects[rand - 1])
         sprite.size = CGSize(width: gameVarDelegate!.getSpriteSize(), height: gameVarDelegate!.getSpriteSize())
         let path = arcBetweenPoints(fromPoint: start, toPoint: end)
-        let followArc = SKAction.follow(path, asOffset: false, orientToPath: true, duration: gameVarDelegate!.getSpriteInitialSpeed())
         
         sprite.position = start
         sprite.physicsBody = SKPhysicsBody(texture: sprite.texture!, size: sprite.size)
         sprite.physicsBody?.categoryBitMask = UInt32(rand)
         
-//        sprite.speed = sceneDelegate!.getSpeed()
-        
         self.addChild(sprite)
+        spriteRunAction(sprite: sprite, path: path)
+    }
+    
+    func spriteRunAction(sprite:SKSpriteNode, path:CGPath) {
+        let followArc = SKAction.follow(path, asOffset: false, orientToPath: true, duration: gameVarDelegate!.getSpriteInitialSpeed())
         sprite.run(followArc, completion: { [unowned self] in
             if sprite.physicsBody?.categoryBitMask == 1 {
                 let emitterNode = SKEmitterNode(fileNamed: "explosion.sks")
@@ -152,9 +154,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             if sprite.physicsBody?.categoryBitMask == 2 {
                 sprite.removeFromParent()
                 print("bomb dodged")
-//                self.sceneDelegate?.updateTimer(self.gameVarDelegate!.getGameScoreBonus() / 10.0)
+                //                self.sceneDelegate?.updateTimer(self.gameVarDelegate!.getGameScoreBonus() / 10.0)
             }
-        }) 
+        })
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -248,8 +250,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             
             let allNodes:[SKNode] = (scene?.children)!
             for node in allNodes {
-                if node is SKSpriteNode && (node.physicsBody?.categoryBitMask)! >= 0 {
-                        node.speed = sceneDelegate!.getSpeed()
+                if node is SKSpriteNode {
+                    if (node.physicsBody?.categoryBitMask)! >= 0 { node.speed = sceneDelegate!.getSpeed() }
+//                    if (node.physicsBody?.categoryBitMask)! == 1 && sceneDelegate!.getSpeed() == 0.25 {
+//                        print("------catchall------")
+//                        node.removeAllActions()
+//                        print("fromPoint: \(node.position)")
+//                        print("toPoint: \(mouth.first!)")
+//                        let newPath = arcBetweenPoints(fromPoint: node.position, toPoint: mouth.first!)
+//                        spriteRunAction(sprite: node as! SKSpriteNode, path: newPath)
+//                    }
                 }
             }
             
@@ -364,7 +374,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         // Draw a curve towards the end, using control points
         path.addCurve(to: end, controlPoint1:c1, controlPoint2:c2)
         
-//        debugDrawCurvePath(path.CGPath)
+//        debugDrawCurvePath(path.cgPath)
         
         // Use this path as the animation's path (casted to CGPath)
         return path.cgPath;

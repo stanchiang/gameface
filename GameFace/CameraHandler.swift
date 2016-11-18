@@ -93,12 +93,16 @@ class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AV
     }
     
     func hasDetectedFace(_ found: Bool) {
-        if found {
-            //hide faceMeshGuide
-            print("hide faceMesh")
-        } else {
-            //show faceMeshGuide
-            print("show faceMesh")
+        let instructions = (appDelegate.window?.rootViewController as! GameGallery).manager.instructions
+        let faceMeshGuide = (appDelegate.window?.rootViewController as! GameGallery).manager.faceMeshGuide
+        if appDelegate.gameState == .preGame{
+            if found {
+                faceMeshGuide!.isHidden = true
+                instructions!.text = "Open Your Mouth 😮"
+            } else {
+                faceMeshGuide!.isHidden = false
+                instructions!.text = "Line Face Up To Mask"
+            }
         }
     }
 }
