@@ -75,6 +75,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     
     var lastState:GameState = .postGame
     
+    var startTime:TimeInterval?
+    var endTime:TimeInterval!
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     override func didMove(to view: SKView) {
@@ -88,14 +90,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     }
     
     func setupNew() {
-        guard gameVarDelegate != nil else {return}
-        guard gameVarDelegate?.getSpriteInitialSpeed() != nil else {return}
+        if startTime == nil { startTime = NSDate.timeIntervalSinceReferenceDate }
+        endTime = NSDate.timeIntervalSinceReferenceDate
+        let elapsedSec = endTime - startTime!
+        let realSecInterval = (gameVarDelegate?.getSpawnRate())! * 1 / Double((sceneDelegate?.getSpeed())!)
         
-        let start = CGPoint(x: RandomCGFloat(0, max: self.frame.width), y: self.frame.height)
-        let end = CGPoint(x: RandomCGFloat(self.frame.width * 1/CGFloat(gameVarDelegate!.getSpriteEndRange()),
-            max: self.frame.width * CGFloat(gameVarDelegate!.getSpriteEndRange() - 1)/CGFloat(gameVarDelegate!.getSpriteEndRange())), y: 0)
-        
-        createNew(fromPoint: start, toPoint: end)
+        if elapsedSec >= realSecInterval {
+            guard gameVarDelegate != nil else {return}
+            guard gameVarDelegate?.getSpriteInitialSpeed() != nil else {return}
+            
+            let start = CGPoint(x: RandomCGFloat(0, max: self.frame.width), y: self.frame.height)
+            let end = CGPoint(x: RandomCGFloat(self.frame.width * 1/CGFloat(gameVarDelegate!.getSpriteEndRange()),
+                                               max: self.frame.width * CGFloat(gameVarDelegate!.getSpriteEndRange() - 1)/CGFloat(gameVarDelegate!.getSpriteEndRange())), y: 0)
+            createNew(fromPoint: start, toPoint: end)
+            
+            startTime = nil
+        }
     }
     
     func createNew(fromPoint start : CGPoint, toPoint end: CGPoint) {
@@ -387,6 +397,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         guard sceneDelegate?.getSpeed() != nil else { return }
         
         //need to run timer every milisecond but then do a secondary interval to determine when to actually spawn game sprites
-        gameTimer = Timer.scheduledTimer(timeInterval: (gameVarDelegate?.getSpawnRate())! * Double((sceneDelegate?.getSpeed())!), target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
+        gameTimer = Timer.scheduledTimer(timeInterval: 1/1000, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
     }
 }
