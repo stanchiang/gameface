@@ -125,6 +125,12 @@ typedef struct {
                              ,
                              cv::Size(75, 75) );
     
+    if (faces.size() > 0){
+        [self.delegate hasDetectedFace:true];
+    } else {
+        [self.delegate hasDetectedFace:false];
+    }
+    
     for( vector<cv::Rect>::const_iterator r = faces.begin(); r != faces.end(); r++, i++ ) {
         dlib::cv_image<dlib::bgr_pixel> dlibMat(mat);
         
@@ -181,9 +187,9 @@ typedef struct {
             }
         }
         
-//        if ([self.delegate showFaceDetect]) {
+        if ([self.delegate showFaceDetect]) {
             [self draw_delaunay:mat subdiv:subdiv delaunay:delaunay_color];
-//        }
+        }
         
         [self.delegate mouthVerticePositions:m];
         [self pose:0 image:mat];
@@ -366,9 +372,9 @@ typedef struct {
     
     projectPoints(head_points, rvec, tvec, projection, noArray(), reprojected_points);
     
-    for (auto point : reprojected_points) {
-        circle(image, point,2, Scalar(0,255,255),2);
-    }
+//    for (auto point : reprojected_points) {
+//        circle(image, point,2, Scalar(0,255,255),2);
+//    }
     
     std::vector<Point3f> axes;
     axes.push_back(Point3f(0,0,0));

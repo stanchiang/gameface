@@ -91,4 +91,14 @@ class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AV
 //        (appDelegate.window?.rootViewController as! GameGallery).updateWarp(points: warpPoints)
 //        (appDelegate.window?.rootViewController as! GameGallery).transformView.meshTransform = (appDelegate.window?.rootViewController as! GameGallery).testWarp
     }
+    
+    func hasDetectedFace(_ found: Bool) {
+        if found {
+            //hide faceMeshGuide
+            print("hide faceMesh")
+        } else {
+            //show faceMeshGuide
+            print("show faceMesh")
+        }
+    }
 }

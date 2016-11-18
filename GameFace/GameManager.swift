@@ -30,6 +30,8 @@ class GameManager: SKScene, GameSceneDelegate {
     var scoreValue:SKLabelNode!
     var highScoreOnStart:SKLabelNode!
     
+    var faceMeshGuide:SKSpriteNode!
+    
     var powerup1Space:SKSpriteNode!
     var powerup2Space:SKSpriteNode!
     
@@ -51,6 +53,14 @@ class GameManager: SKScene, GameSceneDelegate {
 //        addPause()
         addPowerup1Space()
         addPowerup2Space()
+        addFaceMeshGuide()
+    }
+    
+    func addFaceMeshGuide(){
+        faceMeshGuide = SKSpriteNode(imageNamed: "faceMesh")
+        faceMeshGuide.size = CGSize(width: 250, height: 250)
+        faceMeshGuide.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2)
+        addChild(faceMeshGuide)
     }
     
     func addScoreValue() {
@@ -113,14 +123,14 @@ class GameManager: SKScene, GameSceneDelegate {
     func addPowerup1Space(){
         powerup1Space = SKSpriteNode(imageNamed: "powerup1")
         powerup1Space.size = CGSize(width: 100, height: 100)
-        powerup1Space.position = CGPoint(x: self.frame.width * 1 / 4, y: self.frame.height / 2)
+        powerup1Space.position = CGPoint(x: self.frame.width * 1 / 4, y: 100)
         addChild(powerup1Space)
     }
 
     func addPowerup2Space(){
         powerup2Space = SKSpriteNode(imageNamed: "powerup2")
         powerup2Space.size = CGSize(width: 100, height: 100)
-        powerup2Space.position = CGPoint(x: self.frame.width * 3 / 4, y: self.frame.height / 2)
+        powerup2Space.position = CGPoint(x: self.frame.width * 3 / 4, y: 100)
         addChild(powerup2Space)
     }
 
