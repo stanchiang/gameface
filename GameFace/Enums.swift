@@ -27,6 +27,11 @@ enum PlayerAttribute:String {
     case highscore
 }
 
+enum PowerUp:String {
+    case slomo
+    case catchall
+}
+
 enum PlayerEvent:String {
     case player_started_playing //isFirstTimePlaying, isfrompostgamemodal
     case player_finished_game

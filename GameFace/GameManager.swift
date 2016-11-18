@@ -23,11 +23,15 @@ class GameManager: SKScene, GameSceneDelegate {
     var instructions:SKLabelNode!
     var pauseButton:SKSpriteNode!
     
-    let length:CGFloat = 50
+    var gameSpeed:CGFloat = 1
+    
     var timer:SKSpriteNode!
     var scoreTitle:SKLabelNode!
     var scoreValue:SKLabelNode!
     var highScoreOnStart:SKLabelNode!
+    
+    var powerup1Space:SKSpriteNode!
+    var powerup2Space:SKSpriteNode!
     
     var startTime = TimeInterval()
 
@@ -37,12 +41,16 @@ class GameManager: SKScene, GameSceneDelegate {
     
     override func didMove(to view: SKView) {
         setupInterface()
+        view.isMultipleTouchEnabled = true
     }
     
     func setupInterface() {
         addTimer()
         addInstructions()
         addHighScoreOnStartLabel()
+//        addPause()
+        addPowerup1Space()
+        addPowerup2Space()
     }
     
     func addScoreValue() {
@@ -87,10 +95,10 @@ class GameManager: SKScene, GameSceneDelegate {
         addChild(highScoreOnStart)
     }
     
-    func addPause(_ length:CGFloat){
+    func addPause(){
         pauseButton = SKSpriteNode(imageNamed: "pause")
-        pauseButton.size = CGSize(width: length, height: length)
-        pauseButton.position = CGPoint(x: self.frame.width - length, y: self.frame.height - length)
+        pauseButton.size = CGSize(width: 200, height: 200)
+        pauseButton.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2)
         addChild(pauseButton)
     }
     
@@ -102,6 +110,20 @@ class GameManager: SKScene, GameSceneDelegate {
         addChild(timer)
     }
     
+    func addPowerup1Space(){
+        powerup1Space = SKSpriteNode(imageNamed: "powerup1")
+        powerup1Space.size = CGSize(width: 100, height: 100)
+        powerup1Space.position = CGPoint(x: self.frame.width * 1 / 4, y: self.frame.height / 2)
+        addChild(powerup1Space)
+    }
+
+    func addPowerup2Space(){
+        powerup2Space = SKSpriteNode(imageNamed: "powerup2")
+        powerup2Space.size = CGSize(width: 100, height: 100)
+        powerup2Space.position = CGPoint(x: self.frame.width * 3 / 4, y: self.frame.height / 2)
+        addChild(powerup2Space)
+    }
+
     func updateScore() {
         
         let currentTime = Date.timeIntervalSinceReferenceDate
@@ -152,16 +174,60 @@ class GameManager: SKScene, GameSceneDelegate {
         return Double(timer.xScale)
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        for touch: AnyObject in touches {
+            let location = touch.location(in: self)
+            if powerup1Space.contains(location) { startPowerUp(.slomo) }
+            if powerup2Space.contains(location) { startPowerUp(.catchall) }
+        }
+    }
+    
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        // Loop over all the touches in this event
-//        for touch: AnyObject in touches {
-            // Get the location of the touch in this scene
-//            let location = touch.locationInNode(self)
-            // Check if the location of the touch is within the button's bounds
-//            if pauseButton.containsPoint(location) {
-//                togglePause()
-//            }
-//        }
+        super.touchesEnded(touches, with: event)
+        for touch: AnyObject in touches {
+            let location = touch.location(in: self)
+            if powerup1Space.contains(location) { endPowerUp(.slomo) }
+            if powerup2Space.contains(location) { endPowerUp(.catchall) }
+        }
+    }
+
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesCancelled(touches, with: event)
+        for touch: AnyObject in touches {
+            let location = touch.location(in: self)
+            if powerup1Space.contains(location) { endPowerUp(.slomo) }
+            if powerup2Space.contains(location) { endPowerUp(.catchall) }
+        }
+    }
+    
+    func startPowerUp(_ type:PowerUp) {
+        print("start \(type)")
+        switch type {
+        case .slomo:
+            gameSpeed = 0.5
+        case .catchall:
+            gameSpeed = 0.25
+        default:
+            gameSpeed = 1
+        }
+
+    }
+    
+    func endPowerUp(_ type:PowerUp) {
+        print("end \(type)")
+        switch type {
+        case .slomo:
+            gameSpeed = 1
+        case .catchall:
+            gameSpeed = 1
+        default:
+            gameSpeed = 1
+        }
+    }
+    
+    func getSpeed() -> CGFloat {
+        return gameSpeed
     }
     
     func togglePause(){

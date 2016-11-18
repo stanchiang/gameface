@@ -87,8 +87,8 @@ class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AV
     
     func noseTipPosition(_ position: CGPoint) {
         appDelegate.noseTip = position
-        let warpPoints = [appDelegate.noseTip!]
-        print(warpPoints)
-//        (appDelegate.window?.rootViewController as! GameGallery).transformView.meshTransform = (appDelegate.window?.rootViewController as! GameGallery).bulgeWarp(at: warpPoints, withRadius: 120.0, boundSize: (appDelegate.window?.rootViewController as! GameGallery).transformView.bounds.size)
+        let warpPoints = [CGPoint(x: 188.720858895706, y: 449.717791411043)]//[appDelegate.noseTip!]
+//        (appDelegate.window?.rootViewController as! GameGallery).updateWarp(points: warpPoints)
+//        (appDelegate.window?.rootViewController as! GameGallery).transformView.meshTransform = (appDelegate.window?.rootViewController as! GameGallery).testWarp
     }
 }

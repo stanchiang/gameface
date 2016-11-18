@@ -38,6 +38,7 @@ protocol GameSceneDelegate: class {
     func swapInstructionsWithScore()
     func loadPostGame()
     func startGamePlay()
+    func getSpeed() -> CGFloat
 }
 
 protocol GameVarDelegate: class {
@@ -104,6 +105,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         guard gameVarDelegate?.getSpriteSize() != nil else {return}
         guard gameVarDelegate?.getWillAddBombs() != nil else {return}
         
+        guard sceneDelegate != nil else {return}
+        guard sceneDelegate?.getSpeed() != nil else {return}
+        
         //1 is good 2 is bad
         var rand = 1
         if gameVarDelegate!.getWillAddBombs() { rand = RandomInt(1, max: 2) }
@@ -117,9 +121,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         sprite.physicsBody = SKPhysicsBody(texture: sprite.texture!, size: sprite.size)
         sprite.physicsBody?.categoryBitMask = UInt32(rand)
         
+//        sprite.speed = sceneDelegate!.getSpeed()
+        
         self.addChild(sprite)
         sprite.run(followArc, completion: { [unowned self] in
-            
             if sprite.physicsBody?.categoryBitMask == 1 {
                 let emitterNode = SKEmitterNode(fileNamed: "explosion.sks")
                 emitterNode!.particlePosition = sprite.position
@@ -228,6 +233,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                     sceneDelegate?.updateTimer((gameVarDelegate?.getOpenMouthDrainRate())! * -1.0 / 1000)
                 }else {
                     sceneDelegate?.updateTimer((gameVarDelegate?.getClosedMouthDrainRate())! * -1.0 / 1000)
+                }
+            }
+            
+            let allNodes:[SKNode] = (scene?.children)!
+            for node in allNodes {
+                if node is SKSpriteNode && (node.physicsBody?.categoryBitMask)! >= 0 {
+                        node.speed = sceneDelegate!.getSpeed()
                 }
             }
             
@@ -372,6 +384,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     
     func addGameTimer(){
         guard gameVarDelegate?.getSpawnRate() != nil else { return }
-        gameTimer = Timer.scheduledTimer(timeInterval: (gameVarDelegate?.getSpawnRate())!, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
+        guard sceneDelegate?.getSpeed() != nil else { return }
+        
+        //need to run timer every milisecond but then do a secondary interval to determine when to actually spawn game sprites
+        gameTimer = Timer.scheduledTimer(timeInterval: (gameVarDelegate?.getSpawnRate())! * Double((sceneDelegate?.getSpeed())!), target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
     }
 }

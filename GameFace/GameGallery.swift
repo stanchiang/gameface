@@ -61,6 +61,8 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var postGameModal:PostGameView!
     
+    var testWarp:BCMutableMeshTransform!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideKeyboardWhenTappedAround()
@@ -89,9 +91,14 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         
         cameraImage.transform = self.cameraImage.transform.scaledBy(x: -1, y: 1)
 
-        let points = [CGPoint(x: 188.720858895706, y: 449.717791411043)]
-//        let points = [CGPoint(x: 135, y: 314), CGPoint(x: 302, y: 314)]
-//        self.transformView.meshTransform = bulgeWarp(at: points, withRadius: 120.0, boundSize: self.transformView.bounds.size)
+//        let points = [CGPoint(x: 188.720858895706, y: 449.717791411043)]
+        let points = [CGPoint(x: 135, y: 314), CGPoint(x: 302, y: 314)]
+        testWarp = bulgeWarp(at: points, withRadius: 120.0, boundSize: self.transformView.bounds.size)
+        updateWarp(points: points)
+    }
+    
+    func updateWarp(points:[CGPoint]){
+        self.transformView.meshTransform = bulgeWarp(at: points, withRadius: 120.0, boundSize: self.transformView.bounds.size)        
     }
     
     func bulgeWarp(at points:[CGPoint], withRadius radius:CGFloat, boundSize size:CGSize) -> BCMutableMeshTransform {
@@ -253,10 +260,10 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         
         
         if let score:Double = appDelegate.userDefaults.double(forKey: "highScore") {
-            print("load high score \(score)")
+//            print("load high score \(score)")
             appDelegate.highScore = score
         } else {
-            print("init high score")
+//            print("init high score")
             appDelegate.userDefaults.set(0, forKey: "highScore")
         }
         
