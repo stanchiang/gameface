@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var gameState = GameState.preGame
     var currentScore:Double = 0
     var highScore:Double = 0
+    var activePowerups = [PowerUp]()
     
     var userDefaults = UserDefaults.standard
     

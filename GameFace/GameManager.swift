@@ -7,6 +7,7 @@
 //
 
 import SpriteKit
+import AudioToolbox
 
 protocol GameManagerDelegate: class {
     func updatePauseHandler(to state:GameState)
@@ -121,14 +122,16 @@ class GameManager: SKScene, GameSceneDelegate {
     }
     
     func addPowerup1Space(){
-        powerup1Space = SKSpriteNode(imageNamed: "powerup1")
+        powerup1Space = SKSpriteNode(imageNamed: "shades")
+//        powerup1Space.aspectFillToSize(CGSize(width: 100, height: 100))
         powerup1Space.size = CGSize(width: 100, height: 100)
         powerup1Space.position = CGPoint(x: self.frame.width * 1 / 4, y: 100)
         addChild(powerup1Space)
     }
 
     func addPowerup2Space(){
-        powerup2Space = SKSpriteNode(imageNamed: "powerup2")
+        powerup2Space = SKSpriteNode(imageNamed: "mustache")
+//        powerup2Space.aspectFillToSize(CGSize(width: 100, height: 100))
         powerup2Space.size = CGSize(width: 100, height: 100)
         powerup2Space.position = CGPoint(x: self.frame.width * 3 / 4, y: 100)
         addChild(powerup2Space)
@@ -213,15 +216,15 @@ class GameManager: SKScene, GameSceneDelegate {
     
     func startPowerUp(_ type:PowerUp) {
         print("start \(type)")
+        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         switch type {
         case .slomo:
-            gameSpeed = 0.5
-        case .catchall:
             gameSpeed = 0.25
-        default:
+            if !appDelegate.activePowerups.contains(.slomo) { appDelegate.activePowerups.append(.slomo) }
+        case .catchall:
             gameSpeed = 1
+            if !appDelegate.activePowerups.contains(.catchall) { appDelegate.activePowerups.append(.catchall) }
         }
-
     }
     
     func endPowerUp(_ type:PowerUp) {
@@ -229,10 +232,10 @@ class GameManager: SKScene, GameSceneDelegate {
         switch type {
         case .slomo:
             gameSpeed = 1
+            if appDelegate.activePowerups.contains(.slomo) { appDelegate.activePowerups.remove(object: .slomo) }
         case .catchall:
             gameSpeed = 1
-        default:
-            gameSpeed = 1
+            if appDelegate.activePowerups.contains(.slomo) { appDelegate.activePowerups.remove(object: .catchall) }
         }
     }
     

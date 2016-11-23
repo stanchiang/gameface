@@ -98,3 +98,33 @@ extension SKSpriteNode {
     }
     
 }
+
+//http://stackoverflow.com/a/36086275/1079379
+extension SKNode
+{
+    func run(action: SKAction!, withKey: String!, optionalCompletion:((Void) -> Void)?) {
+        if let completion = optionalCompletion {
+            let completionAction = SKAction.run(completion)
+            let compositeAction = SKAction.sequence([ action, completionAction ])
+            run(compositeAction, withKey: withKey )
+        }
+        else {
+            run( action, withKey: withKey )
+        }
+    }
+    
+    func actionForKeyIsRunning(key: String) -> Bool {
+        return self.action(forKey: key) != nil ? true : false
+    }
+}
+
+//http://stackoverflow.com/a/30724543/1079379
+extension Array where Element: Equatable {
+    
+    // Remove first collection element that is equal to the given `object`:
+    mutating func remove(object: Element) {
+        if let index = index(of: object) {
+            remove(at: index)
+        }
+    }
+}
