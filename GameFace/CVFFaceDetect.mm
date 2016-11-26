@@ -192,7 +192,7 @@ typedef struct {
         }
         
         [self.delegate mouthVerticePositions:m];
-        [self pose:0 image:mat];
+//        [self pose:0 image:mat];
     }
 
     [self matReady:mat];

@@ -130,6 +130,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         sprite.physicsBody = SKPhysicsBody(texture: sprite.texture!, size: sprite.size)
         sprite.physicsBody?.categoryBitMask = UInt32(rand)
         
+        if rand == 1 {
+            sprite.name = "candy"
+        } else {
+            sprite.name = "bomb"
+        }
+        
         self.addChild(sprite)
         spriteRunAction(sprite: sprite, path: path, key: "base")
     }
@@ -137,7 +143,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     func spriteRunAction(sprite:SKSpriteNode, path:CGPath, key: String) {
         let followArc = SKAction.follow(path, asOffset: false, orientToPath: true, duration: gameVarDelegate!.getSpriteInitialSpeed())
         sprite.run(action: followArc, withKey: key, optionalCompletion: { [unowned self] in
-            if sprite.physicsBody?.categoryBitMask == 1 {
+            
+//            if sprite.physicsBody?.categoryBitMask == 1 {
+            if sprite.name == "candy" {
+                print("missed explosion = \(sprite.physicsBody?.categoryBitMask)")
                 let emitterNode = SKEmitterNode(fileNamed: "explosion.sks")
                 emitterNode!.particlePosition = sprite.position
                 self.addChild(emitterNode!)
@@ -151,7 +160,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                 self.sceneDelegate?.updateTimer(self.gameVarDelegate!.getGameScoreBonus() / -10.0)
             }
             
-            if sprite.physicsBody?.categoryBitMask == 2 {
+//            if sprite.physicsBody?.categoryBitMask == 2 {
+            if sprite.name == "bomb" {
                 sprite.removeFromParent()
                 print("bomb dodged")
 //                self.sceneDelegate?.updateTimer(self.gameVarDelegate!.getGameScoreBonus() / 10.0)
@@ -170,7 +180,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             object = contact.bodyB
         }
         
-        if object.categoryBitMask == 1 {
+        
+        if object.categoryBitMask != 4 {
+            print(object.node?.name ?? "unknown")
+        } else {
+            return
+        }
+        
+        
+//        if object.categoryBitMask == 1 {
+        if object.node?.name == "candy" {
             if let thing = object.node {
                 object.categoryBitMask = 4
                 
@@ -185,8 +204,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             }
         }
         
-        if object.categoryBitMask == 2 {
+//        if object.categoryBitMask == 2 {
+        if object.node?.name == "bomb" {
             if let thing = object.node {
+                print("contact explosion = \(object.categoryBitMask)")
                 object.categoryBitMask = 4
                 
                 let emitterNode = SKEmitterNode(fileNamed: "explosion.sks")
@@ -252,7 +273,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             for node in allNodes {
                 if node is SKSpriteNode {
                     if (node.physicsBody?.categoryBitMask)! > 0 { node.speed = sceneDelegate!.getSpeed() }
-                    if !mouth.isEmpty && (node.physicsBody?.categoryBitMask)! == 1 && appDelegate.activePowerups.contains(PowerUp.catchall) {
+                    if !mouth.isEmpty && (node.physicsBody?.categoryBitMask)! == 1 {// && appDelegate.activePowerups.contains(PowerUp.catchall) {
                         if (node.action(forKey: "base") != nil) {
                             node.removeAllActions()
                             let newPath = arcBetweenPoints(fromPoint: node.position, toPoint: self.view!.convert( mouth[2], to: self))

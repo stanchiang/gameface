@@ -32,6 +32,14 @@ enum PowerUp:String {
     case catchall
 }
 
+enum Sprite:String {
+    case mouth
+    case glasses
+    case mustache
+    case candy
+    case bomb
+}
+
 enum PlayerEvent:String {
     case player_started_playing //isFirstTimePlaying, isfrompostgamemodal
     case player_finished_game
