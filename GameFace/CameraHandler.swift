@@ -95,7 +95,7 @@ class CameraHandler : NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AV
     func hasDetectedFace(_ found: Bool) {
         let instructions = (appDelegate.window?.rootViewController as! GameGallery).manager.instructions
         let faceMeshGuide = (appDelegate.window?.rootViewController as! GameGallery).manager.faceMeshGuide
-        if appDelegate.gameState == .preGame{
+        if appDelegate.gameState == .preGame && faceMeshGuide != nil && instructions != nil {
             if found {
                 faceMeshGuide!.isHidden = true
                 instructions!.text = "Open Your Mouth 😮"

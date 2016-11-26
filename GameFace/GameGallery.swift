@@ -63,6 +63,8 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     
     var testWarp:BCMutableMeshTransform!
     
+    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapReceived(sender:)))
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideKeyboardWhenTappedAround()
@@ -74,6 +76,9 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         self.items.addObjects(from: ["Card #1"])
         self.items.addObjects(from: ["Card #2"])
         self.view.addSubview(self.collectionView)
+        
+//        collectionView.addGestureRecognizer(tapRecognizer)
+//        tapRecognizer.delegate = collectionView
     }
     
     func setupCameraImage(){
@@ -194,6 +199,11 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         }
         
         return cell
+    }
+    
+    func tapReceived(sender: UITapGestureRecognizer){
+        sender.location(in: self.collectionView)
+        print("tap received")
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
