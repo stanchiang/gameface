@@ -213,7 +213,7 @@ class GameManager: SKScene, GameSceneDelegate {
             if powerup2Space.contains(location) { endPowerUp(.catchall) }
         }
     }
-    
+    //need to deactivate collection view scrolling when power ups are enabled
     func startPowerUp(_ type:PowerUp) {
         print("start \(type)")
         AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
@@ -221,21 +221,24 @@ class GameManager: SKScene, GameSceneDelegate {
         case .slomo:
             gameSpeed = 0.25
             if !appDelegate.activePowerups.contains(.slomo) { appDelegate.activePowerups.append(.slomo) }
+            powerup1Space.alpha = 0.25
         case .catchall:
-            gameSpeed = 1
             if !appDelegate.activePowerups.contains(.catchall) { appDelegate.activePowerups.append(.catchall) }
+            powerup2Space.alpha = 0.25
         }
     }
     
     func endPowerUp(_ type:PowerUp) {
         print("end \(type)")
+        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         switch type {
         case .slomo:
             gameSpeed = 1
             if appDelegate.activePowerups.contains(.slomo) { appDelegate.activePowerups.remove(object: .slomo) }
+            powerup1Space.alpha = 1
         case .catchall:
-            gameSpeed = 1
-            if appDelegate.activePowerups.contains(.slomo) { appDelegate.activePowerups.remove(object: .catchall) }
+            if appDelegate.activePowerups.contains(.catchall) { appDelegate.activePowerups.remove(object: .catchall) }
+            powerup2Space.alpha = 1
         }
     }
     

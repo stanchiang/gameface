@@ -176,13 +176,14 @@ typedef struct {
             //nose tip
             if (k == 31) { [self.delegate noseTipPosition: landmark ]; }
             
+            //philtrum
             if (k == 52) {
                 CGPoint landmark34 = CGPointMake( [self pixelToPoints:shape.part(34).x()], [self pixelToPoints:shape.part(34).y()]);
                 CGPoint midpoint = CGPointMake( (landmark.x + landmark34.x) / 2.0 , (landmark.y + landmark34.y) / 2.0 );
                 [self.delegate mustachePosition:midpoint];
             }
             
-            if (rect.contains([self toCv:shape.part(k)])) {
+            if ([self.delegate showFaceDetect] && rect.contains([self toCv:shape.part(k)])) {
                 subdiv.insert([self toCv:shape.part(k)]);
             }
         }

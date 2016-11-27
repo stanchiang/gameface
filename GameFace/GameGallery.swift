@@ -211,7 +211,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        resetGame()
+        if appDelegate.gameState != .inPlay { resetGame() }
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {

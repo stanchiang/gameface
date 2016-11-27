@@ -208,7 +208,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             }
         }
         
-        
         guard sprite != nil else { return }
         
         sprite.physicsBody?.categoryBitMask = 4
@@ -272,6 +271,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             }
             
             let allNodes:[SKNode] = (scene?.children)!
+            print(appDelegate.activePowerups)
             for node in allNodes {
                 if node is SKSpriteNode {
                     if (node.physicsBody?.categoryBitMask)! > 0 { node.speed = sceneDelegate!.getSpeed() }
@@ -285,8 +285,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                 }
             }
             
-//            if appDelegate.noseBridge != nil { addShades(appDelegate.noseBridge) }
-//            if appDelegate.mustache != nil { addStache(appDelegate.mustache) }
+            if appDelegate.noseBridge != nil && appDelegate.activePowerups.contains(PowerUp.slomo) { addShades(appDelegate.noseBridge) }
+            if appDelegate.mustache != nil && appDelegate.activePowerups.contains(PowerUp.catchall) { addStache(appDelegate.mustache) }
             
             if gameVarDelegate!.getWillRecordGame() {
                 if (appDelegate.window?.rootViewController as! GameGallery).gamePlayArray.count >= Int( 30 * gameVarDelegate!.getVideoLength() ) {
@@ -413,7 +413,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         curve.strokeColor = UIColor.red
         self.addChild(curve)
     }
-    
+        
     func updatePauseHandler(to state:GameState) {
         if state == .paused {
             appDelegate.gameState = .paused
