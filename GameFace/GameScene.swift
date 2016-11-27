@@ -252,6 +252,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         }
         
         if appDelegate.gameState == .inPlay {
+            (appDelegate.window?.rootViewController as! GameGallery).collectionView.isScrollEnabled = false
             if mouthSprite != nil { mouthSprite.removeFromParent() }
             if shadesSprite != nil { shadesSprite.removeFromParent() }
             if stacheSprite != nil { stacheSprite.removeFromParent() }
@@ -271,7 +272,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             }
             
             let allNodes:[SKNode] = (scene?.children)!
-            print(appDelegate.activePowerups)
+            
             for node in allNodes {
                 if node is SKSpriteNode {
                     if (node.physicsBody?.categoryBitMask)! > 0 { node.speed = sceneDelegate!.getSpeed() }

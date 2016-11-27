@@ -310,13 +310,14 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         postGameModal = nil
         isWritingToVideo = false
         
-        self.collectionView.reloadData()
+        collectionView.reloadData()
+        collectionView.isScrollEnabled = true
         _ = setupGameLayer()
         _ = setupGameManager()
         
         appDelegate.gameState = .preGame
-        self.manager.timer.xScale = 1.0
-        self.cameraHandler.session.startRunning()
+        manager.timer.xScale = 1.0
+        cameraHandler.session.startRunning()
     }
     
     func startPlaying() {
