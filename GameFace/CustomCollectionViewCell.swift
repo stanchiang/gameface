@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import SpriteKit
 
-class CustomCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDelegate {
-    
+class CustomCollectionViewCell: UICollectionViewCell {
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     let note = UITextView()
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -33,4 +34,5 @@ class CustomCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDelegat
         note.widthAnchor.constraint(equalToConstant: 200).isActive = true
         note.heightAnchor.constraint(equalToConstant: 200).isActive = true
     }
+    
 }

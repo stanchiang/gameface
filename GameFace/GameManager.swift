@@ -122,7 +122,7 @@ class GameManager: SKScene, GameSceneDelegate {
     }
     
     func addPowerup1Space(){
-        powerup1Space = SKSpriteNode(imageNamed: "shades")
+        powerup1Space = SKSpriteNode(imageNamed: "redo")
 //        powerup1Space.aspectFillToSize(CGSize(width: 100, height: 100))
         powerup1Space.size = CGSize(width: 100, height: 100)
         powerup1Space.position = CGPoint(x: self.frame.width * 1 / 4, y: 100)
@@ -130,7 +130,7 @@ class GameManager: SKScene, GameSceneDelegate {
     }
 
     func addPowerup2Space(){
-        powerup2Space = SKSpriteNode(imageNamed: "mustache")
+        powerup2Space = SKSpriteNode(imageNamed: "redo")
 //        powerup2Space.aspectFillToSize(CGSize(width: 100, height: 100))
         powerup2Space.size = CGSize(width: 100, height: 100)
         powerup2Space.position = CGPoint(x: self.frame.width * 3 / 4, y: 100)
@@ -187,32 +187,6 @@ class GameManager: SKScene, GameSceneDelegate {
         return Double(timer.xScale)
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        for touch: AnyObject in touches {
-            let location = touch.location(in: self)
-            if powerup1Space.contains(location) { startPowerUp(.slomo) }
-            if powerup2Space.contains(location) { startPowerUp(.catchall) }
-        }
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesEnded(touches, with: event)
-        for touch: AnyObject in touches {
-            let location = touch.location(in: self)
-            if powerup1Space.contains(location) { endPowerUp(.slomo) }
-            if powerup2Space.contains(location) { endPowerUp(.catchall) }
-        }
-    }
-
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesCancelled(touches, with: event)
-        for touch: AnyObject in touches {
-            let location = touch.location(in: self)
-            if powerup1Space.contains(location) { endPowerUp(.slomo) }
-            if powerup2Space.contains(location) { endPowerUp(.catchall) }
-        }
-    }
     //need to deactivate collection view scrolling when power ups are enabled
     func startPowerUp(_ type:PowerUp) {
         print("start \(type)")

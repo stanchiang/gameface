@@ -11,7 +11,7 @@ import AVKit
 import AVFoundation
 import SpriteKit
 
-class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate, UIKitDelegate, PostGameViewDelegate {
+class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIKitDelegate, PostGameViewDelegate {
     lazy var collectionView:UICollectionView = {
         var cv = UICollectionView(frame: self.view.bounds, collectionViewLayout: self.flowLayout)
         cv.delegate = self
@@ -44,10 +44,11 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     
     var gameView:UIView!
     var managerView:UIView!
+    var powerupView:UIView!
     
     var scene:GameScene!
     var manager:GameManager!
-    
+
     var mouth:[CGPoint]!
     
     var debugView:DebugView!
@@ -62,8 +63,6 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     var postGameModal:PostGameView!
     
     var testWarp:BCMutableMeshTransform!
-    
-    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapReceived(sender:)))
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,11 +75,44 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         self.items.addObjects(from: ["Card #1"])
         self.items.addObjects(from: ["Card #2"])
         self.view.addSubview(self.collectionView)
-        
-//        collectionView.addGestureRecognizer(tapRecognizer)
-//        tapRecognizer.delegate = collectionView
     }
-    
+
+//    func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+//        print("2point = \(point)")
+//        let manager = (appDelegate.window?.rootViewController as! GameGallery).manager!
+//        let spriteCoordPoint = manager.scene!.view!.convert(point, to: manager.scene!)
+//        
+//        if manager.powerup1Space!.contains(spriteCoordPoint) { manager.startPowerUp(.slomo) }
+//        if manager.powerup2Space!.contains(spriteCoordPoint) { manager.startPowerUp(.catchall) }
+//        
+//        return self.view
+//    }
+//    
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        print("2touches began")
+//        super.touchesBegan(touches, with: event)
+//        getTouchesLocation(touches: touches)
+//    }
+//    
+//    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        print("2touches ended")
+//        super.touchesEnded(touches, with: event)
+//        getTouchesLocation(touches: touches)
+//    }
+//    
+//    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        print("2touches cancelled")
+//        super.touchesCancelled(touches, with: event)
+//        getTouchesLocation(touches: touches)
+//    }
+//    
+//    func getTouchesLocation(touches:Set<UITouch>) {
+//        for touch: AnyObject in touches {
+//            let location = touch.location(in: self.view)
+//            print("\(location)")
+//        }
+//    }
+//    
     func setupCameraImage(){
         transformView = BCMeshTransformView(frame: self.view.bounds)
         transformView.autoresizingMask = [UIViewAutoresizing.flexibleHeight, UIViewAutoresizing.flexibleWidth]
@@ -189,6 +221,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
             cell.note.alpha = 0
             cell.contentView.addSubview(setupGameLayer())
             cell.contentView.addSubview(setupGameManager())
+            cell.contentView.addSubview(setupPowerupView())
             
             scene.sceneDelegate = manager
             scene.gameVarDelegate = debugView
@@ -199,15 +232,6 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         }
         
         return cell
-    }
-    
-    func tapReceived(sender: UITapGestureRecognizer){
-        sender.location(in: self.collectionView)
-        print("tap received")
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath)
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -278,6 +302,41 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         }
         
         return managerView
+    }
+    
+    func setupPowerupView() -> UIView {
+        
+        powerupView = UIView(frame: CGRect(x: 0, y: 300, width: 400, height: 100))
+        
+        let powerUp1:UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        powerUp1.backgroundColor = UIColor.orange
+        powerUp1.addTarget(self, action: #selector(powerup1TouchDown(sender:)), for: UIControlEvents.touchDown)
+        powerUp1.addTarget(self, action: #selector(powerup1TouchUpInside(sender:)), for: UIControlEvents.touchUpInside)
+        powerupView.addSubview(powerUp1)
+
+        let powerUp2:UIButton = UIButton(frame: CGRect(x: 200, y: 0, width: 100, height: 100))
+        powerUp2.backgroundColor = UIColor.purple
+        powerUp2.addTarget(self, action: #selector(powerup2TouchDown(sender:)), for: UIControlEvents.touchDown)
+        powerUp2.addTarget(self, action: #selector(powerup2TouchUpInside(sender:)), for: UIControlEvents.touchUpInside)
+        powerupView.addSubview(powerUp2)
+
+        return powerupView
+    }
+    
+    func powerup1TouchDown(sender: UIButton){
+        manager.startPowerUp(.slomo)
+    }
+    
+    func powerup1TouchUpInside(sender: UIButton){
+        manager.endPowerUp(.slomo)
+    }
+    
+    func powerup2TouchDown(sender: UIButton){
+        manager.startPowerUp(.catchall)
+    }
+    
+    func powerup2TouchUpInside(sender: UIButton){
+        manager.endPowerUp(.catchall)
     }
     
     func resetGame() {

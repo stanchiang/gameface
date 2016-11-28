@@ -144,16 +144,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             
             if sprite.name == Sprite.candy.rawValue {
                 if (sprite.action(forKey: "orig") != nil) {
-                    print("completion - candy missed")
+//                    print("completion - candy missed")
                     self.registerBadOutcome(sprite: sprite)
                 } else {
-                    print("completion - candy caught")
+//                    print("completion - candy caught")
                     self.registerGoodOutcome(sprite: sprite)
                 }
             }
             
             if sprite.name == Sprite.bomb.rawValue {
-                print("completion - bomb dodged")
+//                print("completion - bomb dodged")
                 self.registerNeutralOutcome(sprite: sprite)
             }
         })
@@ -213,12 +213,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         sprite.physicsBody?.categoryBitMask = 4
         
         if sprite.name == Sprite.candy.rawValue {
-            print("contact - candy caught")
+//            print("contact - candy caught")
             registerGoodOutcome(sprite: sprite)
         }
         
         if sprite.name == Sprite.bomb.rawValue {
-            print("contact - bomb caught")
+//            print("contact - bomb caught")
             registerBadOutcome(sprite: sprite)
         }
     }
@@ -436,4 +436,5 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         //need to run timer every milisecond but then do a secondary interval to determine when to actually spawn game sprites
         gameTimer = Timer.scheduledTimer(timeInterval: 1/1000, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
     }
+
 }
