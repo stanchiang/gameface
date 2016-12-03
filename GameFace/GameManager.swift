@@ -33,9 +33,6 @@ class GameManager: SKScene, GameSceneDelegate {
     
     var faceMeshGuide:SKSpriteNode!
     
-    var powerup1Space:SKSpriteNode!
-    var powerup2Space:SKSpriteNode!
-    
     var startTime = TimeInterval()
 
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -52,8 +49,6 @@ class GameManager: SKScene, GameSceneDelegate {
         addInstructions()
         addHighScoreOnStartLabel()
 //        addPause()
-        addPowerup1Space()
-        addPowerup2Space()
         addFaceMeshGuide()
     }
     
@@ -120,22 +115,6 @@ class GameManager: SKScene, GameSceneDelegate {
         timer.position = CGPoint(x: 0, y: self.frame.height)
         addChild(timer)
     }
-    
-    func addPowerup1Space(){
-        powerup1Space = SKSpriteNode(imageNamed: "redo")
-//        powerup1Space.aspectFillToSize(CGSize(width: 100, height: 100))
-        powerup1Space.size = CGSize(width: 100, height: 100)
-        powerup1Space.position = CGPoint(x: self.frame.width * 1 / 4, y: 100)
-        addChild(powerup1Space)
-    }
-
-    func addPowerup2Space(){
-        powerup2Space = SKSpriteNode(imageNamed: "redo")
-//        powerup2Space.aspectFillToSize(CGSize(width: 100, height: 100))
-        powerup2Space.size = CGSize(width: 100, height: 100)
-        powerup2Space.position = CGPoint(x: self.frame.width * 3 / 4, y: 100)
-        addChild(powerup2Space)
-    }
 
     func updateScore() {
         
@@ -195,10 +174,8 @@ class GameManager: SKScene, GameSceneDelegate {
         case .slomo:
             gameSpeed = 0.25
             if !appDelegate.activePowerups.contains(.slomo) { appDelegate.activePowerups.append(.slomo) }
-            powerup1Space.alpha = 0.25
         case .catchall:
             if !appDelegate.activePowerups.contains(.catchall) { appDelegate.activePowerups.append(.catchall) }
-            powerup2Space.alpha = 0.25
         }
     }
     
@@ -209,10 +186,8 @@ class GameManager: SKScene, GameSceneDelegate {
         case .slomo:
             gameSpeed = 1
             if appDelegate.activePowerups.contains(.slomo) { appDelegate.activePowerups.remove(object: .slomo) }
-            powerup1Space.alpha = 1
         case .catchall:
             if appDelegate.activePowerups.contains(.catchall) { appDelegate.activePowerups.remove(object: .catchall) }
-            powerup2Space.alpha = 1
         }
     }
     

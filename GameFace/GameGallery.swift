@@ -64,6 +64,13 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     
     var testWarp:BCMutableMeshTransform!
 
+    var spacer1:UIView = UIView()
+    var powerUp1:UIButton = UIButton()
+    
+    var spacer2:UIView = UIView()
+    var powerUp2:UIButton = UIButton()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideKeyboardWhenTappedAround()
@@ -77,42 +84,6 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         self.view.addSubview(self.collectionView)
     }
 
-//    func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-//        print("2point = \(point)")
-//        let manager = (appDelegate.window?.rootViewController as! GameGallery).manager!
-//        let spriteCoordPoint = manager.scene!.view!.convert(point, to: manager.scene!)
-//        
-//        if manager.powerup1Space!.contains(spriteCoordPoint) { manager.startPowerUp(.slomo) }
-//        if manager.powerup2Space!.contains(spriteCoordPoint) { manager.startPowerUp(.catchall) }
-//        
-//        return self.view
-//    }
-//    
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        print("2touches began")
-//        super.touchesBegan(touches, with: event)
-//        getTouchesLocation(touches: touches)
-//    }
-//    
-//    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        print("2touches ended")
-//        super.touchesEnded(touches, with: event)
-//        getTouchesLocation(touches: touches)
-//    }
-//    
-//    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        print("2touches cancelled")
-//        super.touchesCancelled(touches, with: event)
-//        getTouchesLocation(touches: touches)
-//    }
-//    
-//    func getTouchesLocation(touches:Set<UITouch>) {
-//        for touch: AnyObject in touches {
-//            let location = touch.location(in: self.view)
-//            print("\(location)")
-//        }
-//    }
-//    
     func setupCameraImage(){
         transformView = BCMeshTransformView(frame: self.view.bounds)
         transformView.autoresizingMask = [UIViewAutoresizing.flexibleHeight, UIViewAutoresizing.flexibleWidth]
@@ -174,21 +145,58 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         return transform!
     }
     
-    //MARK: Collection View Delegate
-    override func viewDidLayoutSubviews() {
-        collectionView.layoutIfNeeded()
-        collectionView.scrollToItem(at: IndexPath(item: 1, section: 0), at: UICollectionViewScrollPosition(), animated: false)
-        appDelegate.currentCell = 1
-        
+    override func viewWillLayoutSubviews() {
         if postGameModal != nil {
             postGameModal.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
             postGameModal.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
             postGameModal.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
             postGameModal.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor).isActive = true
-
         }
+        
+        if powerupView != nil {
+            powerupView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+            powerupView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+            powerupView.bottomAnchor.constraint(equalTo: self.bottomLayoutGuide.topAnchor).isActive = true
+            powerupView.heightAnchor.constraint(equalToConstant: self.view.frame.size.width / 2).isActive = true
+        }
+        
+        if let superview = spacer1.superview {
+            spacer1.leadingAnchor.constraint(equalTo: superview.leadingAnchor).isActive = true
+            spacer1.trailingAnchor.constraint(equalTo: superview.centerXAnchor).isActive = true
+            spacer1.centerYAnchor.constraint(equalTo: superview.centerYAnchor).isActive = true
+            spacer1.heightAnchor.constraint(equalTo: superview.heightAnchor).isActive = true
+        }
+        
+        if let superview = spacer2.superview {
+            spacer2.leadingAnchor.constraint(equalTo: superview.centerXAnchor).isActive = true
+            spacer2.trailingAnchor.constraint(equalTo: superview.trailingAnchor).isActive = true
+            spacer2.centerYAnchor.constraint(equalTo: superview.centerYAnchor).isActive = true
+            spacer2.heightAnchor.constraint(equalTo: superview.heightAnchor).isActive = true
+        }
+        
+        if let superview = powerUp1.superview {
+            powerUp1.centerXAnchor.constraint(equalTo: superview.centerXAnchor).isActive = true
+            powerUp1.centerYAnchor.constraint(equalTo: superview.centerYAnchor).isActive = true
+            powerUp1.widthAnchor.constraint(equalTo: superview.widthAnchor, constant: -superview.frame.width / 2).isActive = true
+            powerUp1.heightAnchor.constraint(equalTo: powerUp1.widthAnchor).isActive = true
+        }
+        
+        if let superview = powerUp2.superview {
+            powerUp2.centerXAnchor.constraint(equalTo: superview.centerXAnchor).isActive = true
+            powerUp2.centerYAnchor.constraint(equalTo: superview.centerYAnchor).isActive = true
+            powerUp2.widthAnchor.constraint(equalTo: superview.widthAnchor, constant: -superview.frame.width / 2).isActive = true
+            powerUp2.heightAnchor.constraint(equalTo: powerUp2.widthAnchor).isActive = true
+        }
+        
     }
     
+    override func viewDidLayoutSubviews() {
+        collectionView.layoutIfNeeded()
+        collectionView.scrollToItem(at: IndexPath(item: 1, section: 0), at: UICollectionViewScrollPosition(), animated: false)
+        appDelegate.currentCell = 1
+    }
+    
+    //MARK: Collection View Delegate
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize{
         
         let width:CGFloat = self.view.bounds.size.width
@@ -305,20 +313,26 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     }
     
     func setupPowerupView() -> UIView {
+        powerupView = UIView()
+        powerupView.translatesAutoresizingMaskIntoConstraints = false
         
-        powerupView = UIView(frame: CGRect(x: 0, y: 300, width: 400, height: 100))
+        spacer1.translatesAutoresizingMaskIntoConstraints = false
+        powerupView.addSubview(spacer1)
         
-        let powerUp1:UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-        powerUp1.backgroundColor = UIColor.orange
+        powerUp1.translatesAutoresizingMaskIntoConstraints = false
+        powerUp1.setImage(UIImage(named: "redo"), for: UIControlState.normal)
         powerUp1.addTarget(self, action: #selector(powerup1TouchDown(sender:)), for: UIControlEvents.touchDown)
         powerUp1.addTarget(self, action: #selector(powerup1TouchUpInside(sender:)), for: UIControlEvents.touchUpInside)
-        powerupView.addSubview(powerUp1)
+        spacer1.addSubview(powerUp1)
 
-        let powerUp2:UIButton = UIButton(frame: CGRect(x: 200, y: 0, width: 100, height: 100))
-        powerUp2.backgroundColor = UIColor.purple
+        spacer2.translatesAutoresizingMaskIntoConstraints = false
+        powerupView.addSubview(spacer2)
+        
+        powerUp2.translatesAutoresizingMaskIntoConstraints = false
+        powerUp2.setImage(UIImage(named: "redo"), for: UIControlState.normal)
         powerUp2.addTarget(self, action: #selector(powerup2TouchDown(sender:)), for: UIControlEvents.touchDown)
         powerUp2.addTarget(self, action: #selector(powerup2TouchUpInside(sender:)), for: UIControlEvents.touchUpInside)
-        powerupView.addSubview(powerUp2)
+        spacer2.addSubview(powerUp2)
 
         return powerupView
     }
