@@ -445,7 +445,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     
     func takeScreenShot(){
         UIGraphicsBeginImageContext(self.view.frame.size)
-        self.view?.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
+        self.view?.drawHierarchy(in: self.view.frame, afterScreenUpdates: false)
         var screenShot = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         gamePlayArray.append(screenShot!)

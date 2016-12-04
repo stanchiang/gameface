@@ -293,7 +293,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                 if (appDelegate.window?.rootViewController as! GameGallery).gamePlayArray.count >= Int( 30 * gameVarDelegate!.getVideoLength() ) {
                     (appDelegate.window?.rootViewController as! GameGallery).gamePlayArray.removeFirst()
                 }
-                (appDelegate.window?.rootViewController as! GameGallery).takeScreenShot()
+                
+//apparently we don't need to go to the background just drawhierarchy without screenupdates
+//                DispatchQueue.global(qos: .background).async { [unowned self]() -> Void in
+                    (self.appDelegate.window?.rootViewController as! GameGallery).takeScreenShot()
+//                }
             }
         }
     }
