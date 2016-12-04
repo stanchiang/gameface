@@ -27,9 +27,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var userDefaults = UserDefaults.standard
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        window = UIWindow(frame: UIScreen.main.bounds)
+        window = UIWindow()
         window?.rootViewController = GameGallery()
         window?.makeKeyAndVisible()
+        window?.frame = UIScreen.main.bounds
         Tracker.sharedInstance.loginRequest()
         return true
 

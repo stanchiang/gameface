@@ -177,14 +177,14 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         if let superview = powerUp1.superview {
             powerUp1.centerXAnchor.constraint(equalTo: superview.centerXAnchor).isActive = true
             powerUp1.centerYAnchor.constraint(equalTo: superview.centerYAnchor).isActive = true
-            powerUp1.widthAnchor.constraint(equalTo: superview.widthAnchor, constant: -superview.frame.width / 2).isActive = true
+            powerUp1.widthAnchor.constraint(equalTo: superview.widthAnchor, constant: -self.view.frame.width / 5).isActive = true
             powerUp1.heightAnchor.constraint(equalTo: powerUp1.widthAnchor).isActive = true
         }
         
         if let superview = powerUp2.superview {
             powerUp2.centerXAnchor.constraint(equalTo: superview.centerXAnchor).isActive = true
             powerUp2.centerYAnchor.constraint(equalTo: superview.centerYAnchor).isActive = true
-            powerUp2.widthAnchor.constraint(equalTo: superview.widthAnchor, constant: -superview.frame.width / 2).isActive = true
+            powerUp2.widthAnchor.constraint(equalTo: superview.widthAnchor, constant: -self.view.frame.width / 5).isActive = true
             powerUp2.heightAnchor.constraint(equalTo: powerUp2.widthAnchor).isActive = true
         }
         
@@ -194,6 +194,14 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         collectionView.layoutIfNeeded()
         collectionView.scrollToItem(at: IndexPath(item: 1, section: 0), at: UICollectionViewScrollPosition(), animated: false)
         appDelegate.currentCell = 1
+        
+        powerUp1.layer.borderColor = UIColor.black.cgColor
+        powerUp1.layer.borderWidth = 3
+        powerUp1.layer.cornerRadius = powerUp1.frame.width / 2
+        
+        powerUp2.layer.borderColor = UIColor.black.cgColor
+        powerUp2.layer.borderWidth = 3
+        powerUp2.layer.cornerRadius = powerUp2.frame.width / 2
     }
     
     //MARK: Collection View Delegate
@@ -316,11 +324,15 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         powerupView = UIView()
         powerupView.translatesAutoresizingMaskIntoConstraints = false
         
+        let inset:CGFloat = 30
+        
         spacer1.translatesAutoresizingMaskIntoConstraints = false
         powerupView.addSubview(spacer1)
         
+        let shades = UIImage(named: "shades")
         powerUp1.translatesAutoresizingMaskIntoConstraints = false
-        powerUp1.setImage(UIImage(named: "redo"), for: UIControlState.normal)
+        powerUp1.setImage(shades, for: UIControlState.normal)
+        powerUp1.imageEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset)
         powerUp1.addTarget(self, action: #selector(powerup1TouchDown(sender:)), for: UIControlEvents.touchDown)
         powerUp1.addTarget(self, action: #selector(powerup1TouchUpInside(sender:)), for: UIControlEvents.touchUpInside)
         spacer1.addSubview(powerUp1)
@@ -328,8 +340,10 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         spacer2.translatesAutoresizingMaskIntoConstraints = false
         powerupView.addSubview(spacer2)
         
+        let mustache = UIImage(named: "mustache")
         powerUp2.translatesAutoresizingMaskIntoConstraints = false
-        powerUp2.setImage(UIImage(named: "redo"), for: UIControlState.normal)
+        powerUp2.setImage(mustache, for: UIControlState.normal)
+        powerUp2.imageEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset)
         powerUp2.addTarget(self, action: #selector(powerup2TouchDown(sender:)), for: UIControlEvents.touchDown)
         powerUp2.addTarget(self, action: #selector(powerup2TouchUpInside(sender:)), for: UIControlEvents.touchUpInside)
         spacer2.addSubview(powerUp2)
@@ -338,19 +352,24 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     }
     
     func powerup1TouchDown(sender: UIButton){
+        print("in button action")
         manager.startPowerUp(.slomo)
+        powerUp1.alpha = 0.5
     }
     
     func powerup1TouchUpInside(sender: UIButton){
         manager.endPowerUp(.slomo)
+        powerUp1.alpha = 1
     }
     
     func powerup2TouchDown(sender: UIButton){
         manager.startPowerUp(.catchall)
+        powerUp2.alpha = 0.5
     }
     
     func powerup2TouchUpInside(sender: UIButton){
         manager.endPowerUp(.catchall)
+        powerUp2.alpha = 1
     }
     
     func resetGame() {

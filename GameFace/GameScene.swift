@@ -264,7 +264,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                     addMouth(mouth)
                     
 //use when we get boost fps - it will stop showing sprite if face is not detected, but then sprites give off strobe effect
-                    appDelegate.mouth = []
+//                    appDelegate.mouth = []
                     sceneDelegate?.updateTimer((gameVarDelegate?.getOpenMouthDrainRate())! * -1.0 / 1000)
                 }else {
                     sceneDelegate?.updateTimer((gameVarDelegate?.getClosedMouthDrainRate())! * -1.0 / 1000)
