@@ -168,26 +168,30 @@ class GameManager: SKScene, GameSceneDelegate {
     
     //need to deactivate collection view scrolling when power ups are enabled
     func startPowerUp(_ type:PowerUp) {
-        print("start \(type)")
-        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-        switch type {
-        case .slomo:
-            gameSpeed = 0.25
-            if !appDelegate.activePowerups.contains(.slomo) { appDelegate.activePowerups.append(.slomo) }
-        case .catchall:
-            if !appDelegate.activePowerups.contains(.catchall) { appDelegate.activePowerups.append(.catchall) }
+        if appDelegate.gameState == .inPlay {
+            print("start \(type)")
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+            switch type {
+            case .slomo:
+                gameSpeed = 0.25
+                if !appDelegate.activePowerups.contains(.slomo) { appDelegate.activePowerups.append(.slomo) }
+            case .catchall:
+                if !appDelegate.activePowerups.contains(.catchall) { appDelegate.activePowerups.append(.catchall) }
+            }
         }
     }
     
     func endPowerUp(_ type:PowerUp) {
-        print("end \(type)")
-        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-        switch type {
-        case .slomo:
-            gameSpeed = 1
-            if appDelegate.activePowerups.contains(.slomo) { appDelegate.activePowerups.remove(object: .slomo) }
-        case .catchall:
-            if appDelegate.activePowerups.contains(.catchall) { appDelegate.activePowerups.remove(object: .catchall) }
+        if appDelegate.gameState == .inPlay {
+            print("end \(type)")
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+            switch type {
+            case .slomo:
+                gameSpeed = 1
+                if appDelegate.activePowerups.contains(.slomo) { appDelegate.activePowerups.remove(object: .slomo) }
+            case .catchall:
+                if appDelegate.activePowerups.contains(.catchall) { appDelegate.activePowerups.remove(object: .catchall) }
+            }
         }
     }
     

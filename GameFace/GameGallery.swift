@@ -152,42 +152,6 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
             postGameModal.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
             postGameModal.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor).isActive = true
         }
-        
-        if powerupView != nil {
-            powerupView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-            powerupView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-            powerupView.bottomAnchor.constraint(equalTo: self.bottomLayoutGuide.topAnchor).isActive = true
-            powerupView.heightAnchor.constraint(equalToConstant: self.view.frame.size.width / 2).isActive = true
-        }
-        
-        if let superview = spacer1.superview {
-            spacer1.leadingAnchor.constraint(equalTo: superview.leadingAnchor).isActive = true
-            spacer1.trailingAnchor.constraint(equalTo: superview.centerXAnchor).isActive = true
-            spacer1.centerYAnchor.constraint(equalTo: superview.centerYAnchor).isActive = true
-            spacer1.heightAnchor.constraint(equalTo: superview.heightAnchor).isActive = true
-        }
-        
-        if let superview = spacer2.superview {
-            spacer2.leadingAnchor.constraint(equalTo: superview.centerXAnchor).isActive = true
-            spacer2.trailingAnchor.constraint(equalTo: superview.trailingAnchor).isActive = true
-            spacer2.centerYAnchor.constraint(equalTo: superview.centerYAnchor).isActive = true
-            spacer2.heightAnchor.constraint(equalTo: superview.heightAnchor).isActive = true
-        }
-        
-        if let superview = powerUp1.superview {
-            powerUp1.centerXAnchor.constraint(equalTo: superview.centerXAnchor).isActive = true
-            powerUp1.centerYAnchor.constraint(equalTo: superview.centerYAnchor).isActive = true
-            powerUp1.widthAnchor.constraint(equalTo: superview.widthAnchor, constant: -self.view.frame.width / 5).isActive = true
-            powerUp1.heightAnchor.constraint(equalTo: powerUp1.widthAnchor).isActive = true
-        }
-        
-        if let superview = powerUp2.superview {
-            powerUp2.centerXAnchor.constraint(equalTo: superview.centerXAnchor).isActive = true
-            powerUp2.centerYAnchor.constraint(equalTo: superview.centerYAnchor).isActive = true
-            powerUp2.widthAnchor.constraint(equalTo: superview.widthAnchor, constant: -self.view.frame.width / 5).isActive = true
-            powerUp2.heightAnchor.constraint(equalTo: powerUp2.widthAnchor).isActive = true
-        }
-        
     }
     
     override func viewDidLayoutSubviews() {
@@ -321,27 +285,35 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     }
     
     func setupPowerupView() -> UIView {
-        powerupView = UIView()
-        powerupView.translatesAutoresizingMaskIntoConstraints = false
+        let size = self.view.frame.size
+        powerupView = UIView(frame: CGRect(x: 0, y: size.height - size.width / 2, width: size.width, height: size.width / 2))
         
         let inset:CGFloat = 30
+        let spacerSize = CGSize(width: size.width / 2, height: size.width / 2)
+        let powerUpSize = CGSize(width: size.width / 4, height: size.width / 4)
         
-        spacer1.translatesAutoresizingMaskIntoConstraints = false
+        spacer1.frame = CGRect(origin: CGPoint.zero, size: spacerSize)
+//        spacer1.backgroundColor = UIColor.blue
+//        spacer1.alpha = 0.5
         powerupView.addSubview(spacer1)
         
         let shades = UIImage(named: "shades")
-        powerUp1.translatesAutoresizingMaskIntoConstraints = false
+        powerUp1.frame = CGRect(origin: midpoint(p1: CGPoint.zero, p2: spacer1.center), size: powerUpSize)
+        powerUp1.backgroundColor = UIColor.cyan
         powerUp1.setImage(shades, for: UIControlState.normal)
         powerUp1.imageEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset)
         powerUp1.addTarget(self, action: #selector(powerup1TouchDown(sender:)), for: UIControlEvents.touchDown)
         powerUp1.addTarget(self, action: #selector(powerup1TouchUpInside(sender:)), for: UIControlEvents.touchUpInside)
         spacer1.addSubview(powerUp1)
 
-        spacer2.translatesAutoresizingMaskIntoConstraints = false
+        spacer2.frame = CGRect(origin: CGPoint(x: size.width / 2, y: 0), size: spacerSize)
+//        spacer2.backgroundColor = UIColor.orange
+//        spacer2.alpha = 0.5
         powerupView.addSubview(spacer2)
         
         let mustache = UIImage(named: "mustache")
-        powerUp2.translatesAutoresizingMaskIntoConstraints = false
+        powerUp2.frame = CGRect(origin: midpoint(p1: CGPoint.zero, p2: spacer1.center), size: powerUpSize)
+        powerUp2.backgroundColor = UIColor.purple
         powerUp2.setImage(mustache, for: UIControlState.normal)
         powerUp2.imageEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset)
         powerUp2.addTarget(self, action: #selector(powerup2TouchDown(sender:)), for: UIControlEvents.touchDown)
@@ -349,6 +321,10 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         spacer2.addSubview(powerUp2)
 
         return powerupView
+    }
+    
+    func midpoint(p1:CGPoint, p2:CGPoint) -> CGPoint{
+        return CGPoint( x: (p1.x + p2.x)/2, y: (p1.y + p2.y)/2)
     }
     
     func powerup1TouchDown(sender: UIButton){
