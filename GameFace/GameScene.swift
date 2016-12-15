@@ -73,7 +73,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     
     var lastState:GameState = .postGame
     
-    var startTime:TimeInterval?
+    var frameUpdateStartTime:TimeInterval?
     var endTime:TimeInterval!
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
@@ -84,13 +84,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     func setupInterface(){        
         physicsWorld.gravity = CGVector(dx: 0, dy: 0)
         physicsWorld.contactDelegate = self
-
     }
     
     func setupNew() {
-        if startTime == nil { startTime = NSDate.timeIntervalSinceReferenceDate }
+        if frameUpdateStartTime == nil { frameUpdateStartTime = NSDate.timeIntervalSinceReferenceDate }
         endTime = NSDate.timeIntervalSinceReferenceDate
-        let elapsedSec = endTime - startTime!
+        let elapsedSec = endTime - frameUpdateStartTime!
         let realSecInterval = (gameVarDelegate?.getSpawnRate())! * 1 / Double((sceneDelegate?.getSpeed())!)
         
         if elapsedSec >= realSecInterval {
@@ -102,7 +101,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                                                max: self.frame.width * CGFloat(gameVarDelegate!.getSpriteEndRange() - 1)/CGFloat(gameVarDelegate!.getSpriteEndRange())), y: 0)
             createNew(fromPoint: start, toPoint: end)
             
-            startTime = nil
+            frameUpdateStartTime = nil
         }
     }
     
@@ -286,8 +285,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                 }
             }
             
-            if appDelegate.noseBridge != nil && appDelegate.activePowerups.contains(PowerUp.slomo) { addShades(appDelegate.noseBridge) }
-            if appDelegate.mustache != nil && appDelegate.activePowerups.contains(PowerUp.catchall) { addStache(appDelegate.mustache) }
+            if !appDelegate.activePowerups.isEmpty {
+                sceneDelegate?.updateTimer((gameVarDelegate?.getOpenMouthDrainRate())! * -2.0 * Double(appDelegate.activePowerups.count) / 1000)
+                if appDelegate.noseBridge != nil && appDelegate.activePowerups.contains(PowerUp.slomo) { addShades(appDelegate.noseBridge) }
+                if appDelegate.mustache != nil && appDelegate.activePowerups.contains(PowerUp.catchall) { addStache(appDelegate.mustache) }
+            }
             
             if gameVarDelegate!.getWillRecordGame() {
                 if (appDelegate.window?.rootViewController as! GameGallery).gamePlayArray.count >= Int( 30 * gameVarDelegate!.getVideoLength() ) {

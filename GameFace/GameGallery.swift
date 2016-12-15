@@ -328,7 +328,6 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     }
     
     func powerup1TouchDown(sender: UIButton){
-        print("in button action")
         manager.startPowerUp(.slomo)
         powerUp1.alpha = 0.5
     }

@@ -33,7 +33,7 @@ class GameManager: SKScene, GameSceneDelegate {
     
     var faceMeshGuide:SKSpriteNode!
     
-    var startTime = TimeInterval()
+    var gameScoreStartTime = TimeInterval()
 
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
@@ -121,7 +121,7 @@ class GameManager: SKScene, GameSceneDelegate {
         let currentTime = Date.timeIntervalSinceReferenceDate
         
         //Find the difference between current time and start time.
-        let elapsedTime: TimeInterval = currentTime - startTime
+        let elapsedTime: TimeInterval = currentTime - gameScoreStartTime
         appDelegate.currentScore = elapsedTime
 //        print(appDelegate.currentScore)
         
@@ -218,7 +218,7 @@ class GameManager: SKScene, GameSceneDelegate {
         
         addScoreTitle()
         addScoreValue()
-        startTime = Date.timeIntervalSinceReferenceDate
+        gameScoreStartTime = Date.timeIntervalSinceReferenceDate
     }
     
     func loadPostGame() {
