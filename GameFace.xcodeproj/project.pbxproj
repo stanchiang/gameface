@@ -31,6 +31,10 @@
 		F67EA26E1DB3DEE7006DE24B /* CVFImageProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = F67EA26C1DB3DEE7006DE24B /* CVFImageProcessor.mm */; };
 		F67EA2711DB3DF39006DE24B /* CVFFaceDetect.mm in Sources */ = {isa = PBXBuildFile; fileRef = F67EA2701DB3DF39006DE24B /* CVFFaceDetect.mm */; };
 		F67EA2731DB3DFE0006DE24B /* haarcascade_frontalface_alt.xml in Resources */ = {isa = PBXBuildFile; fileRef = F67EA2721DB3DFE0006DE24B /* haarcascade_frontalface_alt.xml */; };
+		F68753981E04471B003C7F81 /* commonCvFunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F68753901E04471B003C7F81 /* commonCvFunctions.cpp */; };
+		F68753991E04471B003C7F81 /* kltTrackingOBJ.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F68753911E04471B003C7F81 /* kltTrackingOBJ.cpp */; };
+		F687539A1E04471B003C7F81 /* orException.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F68753941E04471B003C7F81 /* orException.cpp */; };
+		F687539B1E04471B003C7F81 /* trackingOBJ.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F68753961E04471B003C7F81 /* trackingOBJ.cpp */; };
 		F68975E61DCD168900D9B542 /* JAGProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = F68975D01DCD168900D9B542 /* JAGProperty.m */; };
 		F68975E71DCD168900D9B542 /* JAGPropertyConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = F68975D31DCD168900D9B542 /* JAGPropertyConverter.m */; };
 		F68975E81DCD168900D9B542 /* JAGPropertyFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = F68975D51DCD168900D9B542 /* JAGPropertyFinder.m */; };
@@ -88,6 +92,14 @@
 		F67EA26F1DB3DF39006DE24B /* CVFFaceDetect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVFFaceDetect.h; sourceTree = "<group>"; };
 		F67EA2701DB3DF39006DE24B /* CVFFaceDetect.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CVFFaceDetect.mm; sourceTree = "<group>"; };
 		F67EA2721DB3DFE0006DE24B /* haarcascade_frontalface_alt.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haarcascade_frontalface_alt.xml; sourceTree = "<group>"; };
+		F68753901E04471B003C7F81 /* commonCvFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = commonCvFunctions.cpp; sourceTree = "<group>"; };
+		F68753911E04471B003C7F81 /* kltTrackingOBJ.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kltTrackingOBJ.cpp; sourceTree = "<group>"; };
+		F68753921E04471B003C7F81 /* commonCvFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = commonCvFunctions.h; sourceTree = "<group>"; };
+		F68753931E04471B003C7F81 /* kltTrackingOBJ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kltTrackingOBJ.h; sourceTree = "<group>"; };
+		F68753941E04471B003C7F81 /* orException.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = orException.cpp; sourceTree = "<group>"; };
+		F68753951E04471B003C7F81 /* orException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = orException.h; sourceTree = "<group>"; };
+		F68753961E04471B003C7F81 /* trackingOBJ.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = trackingOBJ.cpp; sourceTree = "<group>"; };
+		F68753971E04471B003C7F81 /* trackingOBJ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = trackingOBJ.h; sourceTree = "<group>"; };
 		F68975CF1DCD168900D9B542 /* JAGProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JAGProperty.h; sourceTree = "<group>"; };
 		F68975D01DCD168900D9B542 /* JAGProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JAGProperty.m; sourceTree = "<group>"; };
 		F68975D11DCD168900D9B542 /* JAGPropertyConverter-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "JAGPropertyConverter-Prefix.pch"; sourceTree = "<group>"; };
@@ -231,11 +243,24 @@
 			isa = PBXGroup;
 			children = (
 				A566961D1CE8B4A100BD7EAF /* CameraHandler.swift */,
+				F64578AC1E0446BD00DFC10C /* tracker */,
 				F60507361DBFE2A900D1A8EA /* Datasets */,
 				F60507371DBFE2B200D1A8EA /* Frameworks */,
 				F67EA2661DB3DDF2006DE24B /* engine */,
 			);
 			name = facialRec;
+			sourceTree = "<group>";
+		};
+		F64578AC1E0446BD00DFC10C /* tracker */ = {
+			isa = PBXGroup;
+			children = (
+				F687539C1E044736003C7F81 /* helper */,
+				F68753911E04471B003C7F81 /* kltTrackingOBJ.cpp */,
+				F68753931E04471B003C7F81 /* kltTrackingOBJ.h */,
+				F68753961E04471B003C7F81 /* trackingOBJ.cpp */,
+				F68753971E04471B003C7F81 /* trackingOBJ.h */,
+			);
+			name = tracker;
 			sourceTree = "<group>";
 		};
 		F669C03E1DB16994001161E1 /* collectionView */ = {
@@ -291,6 +316,17 @@
 				F67EA2701DB3DF39006DE24B /* CVFFaceDetect.mm */,
 			);
 			name = engine;
+			sourceTree = "<group>";
+		};
+		F687539C1E044736003C7F81 /* helper */ = {
+			isa = PBXGroup;
+			children = (
+				F68753901E04471B003C7F81 /* commonCvFunctions.cpp */,
+				F68753921E04471B003C7F81 /* commonCvFunctions.h */,
+				F68753941E04471B003C7F81 /* orException.cpp */,
+				F68753951E04471B003C7F81 /* orException.h */,
+			);
+			name = helper;
 			sourceTree = "<group>";
 		};
 		F68975CD1DCD168900D9B542 /* PlayFabSDK */ = {
@@ -439,6 +475,7 @@
 			files = (
 				F68975E71DCD168900D9B542 /* JAGPropertyConverter.m in Sources */,
 				F679543A1DBE7AAA0075870B /* RenderSettings.swift in Sources */,
+				F68753991E04471B003C7F81 /* kltTrackingOBJ.cpp in Sources */,
 				F68975F01DCD168900D9B542 /* PlayFabVersion.m in Sources */,
 				F67EA2711DB3DF39006DE24B /* CVFFaceDetect.mm in Sources */,
 				F6772BC01DB207AC00328961 /* DebugView.swift in Sources */,
@@ -449,6 +486,7 @@
 				F6B90FC81D6270FE00EC0338 /* GameManager.swift in Sources */,
 				F63CE9411DBED65700582F22 /* PostGameView.swift in Sources */,
 				F63847B31DBFD27600C86015 /* Extensions.swift in Sources */,
+				F687539B1E04471B003C7F81 /* trackingOBJ.cpp in Sources */,
 				F6C0A0571DCFF60D003F00FA /* BCMeshTransformView.m in Sources */,
 				F68975EE1DCD168900D9B542 /* PlayFabSDK.m in Sources */,
 				F679543B1DBE7AAA0075870B /* VideoWriter.swift in Sources */,
@@ -468,6 +506,8 @@
 				F68975EA1DCD168900D9B542 /* PlayFabClientAPI.m in Sources */,
 				A56695F01CE8B34B00BD7EAF /* AppDelegate.swift in Sources */,
 				F669C0391DB15C3D001161E1 /* GameGallery.swift in Sources */,
+				F687539A1E04471B003C7F81 /* orException.cpp in Sources */,
+				F68753981E04471B003C7F81 /* commonCvFunctions.cpp in Sources */,
 				F68975EF1DCD168900D9B542 /* PlayFabSettings.m in Sources */,
 				F6339D941D590587006C4231 /* Randomizer.swift in Sources */,
 				F68975E81DCD168900D9B542 /* JAGPropertyFinder.m in Sources */,
