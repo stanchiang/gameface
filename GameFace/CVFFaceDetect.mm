@@ -13,6 +13,9 @@
 #import <CoreMedia/CoreMedia.h>
 #import <UIKit/UIKit.h>
 
+#import "trackingOBJ.h"
+#import "commonCvFunctions.h"
+
 #import "CVFFaceDetect.h"
 #include "CVFImageProcessorDelegate.h"
 
@@ -39,6 +42,11 @@ std::string modelFileNameCString;
 double scale = 1;
 dlib::shape_predictor sp;
 dlib::full_object_detection shape;
+cvar::trackingOBJ* trckOBJ;
+bool trackCurrentFrame;
+bool isTrackingCustomFrame;
+bool isRecognized;
+bool isTracking;
 
 // Anthropometric for male adult
 // Relative position of various facial feature relative to sellion
@@ -99,6 +107,12 @@ typedef struct {
         modelFileNameCString = [modelFileName UTF8String];
         dlib::deserialize(modelFileNameCString) >> sp;
         
+        trackCurrentFrame = false;
+        isTrackingCustomFrame = false;
+        isRecognized = false;
+        isTracking = false;
+        trckOBJ = cvar::trackingOBJ::create(cvar::trackingOBJ::TRACKER_KLT);
+        
 //        for (int i = 0; i < [self.delegate getDelaunayEdges].count; i++) {
 //            NSMutableArray *m = [self.delegate getDelaunayEdges][i];
 //            for (int j = 0; j < m.count; j++) {
@@ -125,7 +139,8 @@ typedef struct {
                              ,
                              cv::Size(75, 75) );
     
-    if (faces.size() > 0){
+//    if (faces.size() > 0){
+    if (true){
         [self.delegate hasDetectedFace:true];
     } else {
         [self.delegate hasDetectedFace:false];
@@ -142,6 +157,26 @@ typedef struct {
 //        if ([self.delegate showFaceDetect]) {
 //            dlib::draw_rectangle(dlibMat, dlibRect, dlib::rgb_pixel(0, 255, 255));
 //        }
+        
+        if (!isTracking) {
+            isTracking = true;
+            cv::Mat grayFrame;
+            cv::cvtColor(mat, grayFrame, cv::COLOR_BGRA2GRAY);
+            cv::resize(grayFrame, grayFrame, mat.size());
+            
+            std::vector<cv::Point2f>  points2d; // pts[0]:Top Left, pts[1]:Bottom Left, pts[2]:Bottom Right, pts[3]:Top Right
+            points2d.push_back(r->tl());
+            
+            cv::Point2f bl(r->tl().x,r->tl().y + r->size().height);
+            points2d.push_back(bl);
+            
+            points2d.push_back(r->br());
+            
+            cv::Point2f tr( r->br().x, r->br().y - r->size().height );
+            points2d.push_back(tr);
+            
+            trckOBJ->startTracking(grayFrame, points2d);
+        }
         
         shape = sp(dlibMat, dlibRect);
         NSMutableArray *m = [NSMutableArray new];
@@ -193,6 +228,14 @@ typedef struct {
         }
         
         [self.delegate mouthVerticePositions:m];
+        
+        trckOBJ->onTracking(mat);
+//        if (!trckOBJ->onTracking(mat)){
+//            isTracking = false;
+//        } else {
+//            isTracking = true;
+//        }
+        
 //        [self pose:0 image:mat];
     }
 

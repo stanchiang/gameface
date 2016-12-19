@@ -262,7 +262,7 @@ class DebugView: UIView, UITextFieldDelegate, GameVarDelegate, MFMessageComposeV
     }
     
     func loadDict() {
-        dict.updateValue(["tag":0,"value":25,"min":0,"max":50,"step":1], forKey: "start game mouth open distance")
+        dict.updateValue(["tag":0,"value":250,"min":0,"max":50,"step":1], forKey: "start game mouth open distance")
         dict.updateValue(["tag":1,"value":3,"min":0,"max":20,"step":1], forKey: "open mouth drain rate")
         dict.updateValue(["tag":2,"value":1,"min":0,"max":20,"step":1], forKey: "closed mouth drain rate")
         dict.updateValue(["tag":3,"value":2,"min":0,"max":10,"step":1], forKey: "game score bonus")
