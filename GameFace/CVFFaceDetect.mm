@@ -51,6 +51,7 @@ bool trackObject = false;
 ObjectTrackingClass ot;
 cv::Mat imageNext, imagePrev;
 cv::Mat outputFrame;
+cv::Mat roi;
 std::vector<uchar> status;
 std::vector<float> err;
 std::string m_algorithmName;
@@ -191,12 +192,14 @@ typedef struct {
 //            dlib::draw_rectangle(dlibMat, dlibRect, dlib::rgb_pixel(0, 255, 255));
 //        }
         
-        
+        cv::Rect rRect(r->tl().x,r->tl().y,r->width,r->height);
+        roi = mat( rRect );
+        cv::rectangle(mat, cv::Rect(0,0,roi.cols, roi.rows), cv::Scalar(255, 255, 255));
+        cv::rectangle(mat, cv::Rect(rRect.br(),rRect.tl()), cv::Scalar(0, 255, 255));
+
         // store the reference frame as the object to track
         if ( computeObject ) {
-            cv::Mat roi = mat( cv::Rect(r->x,r->y,r->width,r->height) );
             cv::cvtColor(roi, imagePrev, cv::COLOR_BGRA2GRAY);
-            
             ot.init(mat, imagePrev, pointsNext);
             trackObject = true;
             computeObject = false;
@@ -263,7 +266,10 @@ typedef struct {
     // backup points array
     std::swap(pointsNext, pointsPrev);
     
-    [self matReady:mat];
+    cv::Mat blurred = [self blurGray:roi];
+    cv::Mat circles = [self drawHoughCircles:blurred :mat];
+    
+    [self matReady:circles];
 
 }
 
@@ -429,6 +435,70 @@ typedef struct {
 
 -(Point2f) coordsOf: (size_t) face_idx feature: (FACIAL_FEATURE) feature {
     return [self toCv:shape.part(feature)];
+}
+
+
+// Draw circle (x, y, r) on image with a green center at (x, y) and a red
+// perimeter at radius r around the center.
+//
+- (void) drawCircle: (cv::Mat &) image: (cv::Vec3f &) circle
+{
+    //    std::cout << "circle == " << circle << std::endl;
+    const float centerX = circle[0];
+    const float centerY = circle[1];
+    const float fRadius = circle[2];
+    const cv::Point center(cvRound(centerX), cvRound(centerY));
+    static const int centerRadius = 3;
+    static const cv::Scalar colorGreen(0, 255, 0);
+    static const int centerThickness = CV_FILLED;
+    //    static const int lineKind = cv::LINE_8;
+    static const int lineKind = 8;
+    static const int shift = 0;
+    cv::circle(image, center, centerRadius, colorGreen,
+               centerThickness, lineKind, shift);
+    const int outerRadius = cvRound(fRadius);
+    static const cv::Scalar colorRed(0, 0, 255);
+    static const int outerThickness = 3;
+    cv::circle(image, center, outerRadius, colorRed,
+               outerThickness, lineKind, shift);
+}
+
+// Discover circles in gray using the Hough transform and return a copy of
+// image after drawing the discovered circles on it.
+//
+- (cv::Mat) drawHoughCircles: (cv::Mat &) gray: (cv::Mat &)image
+{
+    static const int method = CV_HOUGH_GRADIENT;
+    static const double dotPitchRatio = 1.0;
+    static const double minDistance = 3.0;
+    static const double param1 = 200.0;
+    static const double param2 = 44.0;
+    static const int minRadius = 10;
+    static const int maxRadius = 50;
+    std::vector<cv::Vec3f> circles;
+    cv::HoughCircles(gray, circles, method, dotPitchRatio, minDistance,
+                     param1, param2, minRadius, maxRadius);
+    std::cout << "circles.size() == " << circles.size() << std::endl;
+    cv::Mat result;
+    image.copyTo(result);
+    for (int i = 0; i < circles.size(); ++i) [self drawCircle:result :circles[i]];
+    return result;
+}
+
+// Return a grayscale copy of image blurred with a 7x7 kernel.
+//
+- (cv::Mat) blurGray: (cv::Mat &) image
+{
+    cv::Mat gray, result;
+    cv::cvtColor(image, gray, cv::COLOR_BGRA2GRAY);
+    static const cv::Size kernelSize(7, 7);
+    static const double sigmaX = 2.0;
+    static const double sigmaY = 2.0;
+    cv::GaussianBlur(gray, result, kernelSize, sigmaX, sigmaY);
+    
+    cv::Canny(result, result, 0, 30, 3);
+    
+    return result;
 }
 
 @end
