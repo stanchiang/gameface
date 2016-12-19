@@ -13,8 +13,7 @@
 #import <CoreMedia/CoreMedia.h>
 #import <UIKit/UIKit.h>
 
-#import "trackingOBJ.h"
-#import "commonCvFunctions.h"
+#include "ObjectTrackingClass.h"
 
 #import "CVFFaceDetect.h"
 #include "CVFImageProcessorDelegate.h"
@@ -33,6 +32,7 @@
 #include <vector>
 #include <array>
 #include <string>
+#include <iostream>
 
 using namespace std;
 using namespace cv;
@@ -42,11 +42,19 @@ std::string modelFileNameCString;
 double scale = 1;
 dlib::shape_predictor sp;
 dlib::full_object_detection shape;
-cvar::trackingOBJ* trckOBJ;
-bool trackCurrentFrame;
-bool isTrackingCustomFrame;
-bool isRecognized;
-bool isTracking;
+
+// control flags
+bool computeObject = false;
+bool detectObject = false;
+bool trackObject = false;
+
+ObjectTrackingClass ot;
+cv::Mat imageNext, imagePrev;
+cv::Mat outputFrame;
+std::vector<uchar> status;
+std::vector<float> err;
+std::string m_algorithmName;
+std::vector<cv::Point2f> pointsPrev, pointsNext;
 
 // Anthropometric for male adult
 // Relative position of various facial feature relative to sellion
@@ -107,11 +115,9 @@ typedef struct {
         modelFileNameCString = [modelFileName UTF8String];
         dlib::deserialize(modelFileNameCString) >> sp;
         
-        trackCurrentFrame = false;
-        isTrackingCustomFrame = false;
-        isRecognized = false;
-        isTracking = false;
-        trckOBJ = cvar::trackingOBJ::create(cvar::trackingOBJ::TRACKER_KLT);
+        ot.setMaxCorners(200);
+        trackObject = false;
+        computeObject = true;
         
 //        for (int i = 0; i < [self.delegate getDelaunayEdges].count; i++) {
 //            NSMutableArray *m = [self.delegate getDelaunayEdges][i];
@@ -146,6 +152,33 @@ typedef struct {
         [self.delegate hasDetectedFace:false];
     }
     
+    // display the frame
+    cv::cvtColor(mat, imageNext, cv::COLOR_BGRA2GRAY);
+    
+    ObjectTrackingClass ot;
+    ot.setMaxCorners(200);
+    
+    // begin tracking object
+    if ( trackObject ) {
+        printf("tracking \n");
+        ot.track(mat,
+                 imagePrev,
+                 imageNext,
+                 pointsPrev,
+                 pointsNext,
+                 status,
+                 err);
+        
+        // check if the next points array isn't empty
+        if ( pointsNext.empty() ) {
+            printf("pointsNext = empty \n");
+            trackObject = false;
+            computeObject = true;
+        }
+    } else {
+        printf("not tracking \n");
+    }
+    
     for( vector<cv::Rect>::const_iterator r = faces.begin(); r != faces.end(); r++, i++ ) {
         dlib::cv_image<dlib::bgr_pixel> dlibMat(mat);
         
@@ -158,24 +191,17 @@ typedef struct {
 //            dlib::draw_rectangle(dlibMat, dlibRect, dlib::rgb_pixel(0, 255, 255));
 //        }
         
-        if (!isTracking) {
-            isTracking = true;
-            cv::Mat grayFrame;
-            cv::cvtColor(mat, grayFrame, cv::COLOR_BGRA2GRAY);
-            cv::resize(grayFrame, grayFrame, mat.size());
+        
+        // store the reference frame as the object to track
+        if ( computeObject ) {
+            cv::Mat roi = mat( cv::Rect(r->x,r->y,r->width,r->height) );
+            cv::cvtColor(roi, imagePrev, cv::COLOR_BGRA2GRAY);
             
-            std::vector<cv::Point2f>  points2d; // pts[0]:Top Left, pts[1]:Bottom Left, pts[2]:Bottom Right, pts[3]:Top Right
-            points2d.push_back(r->tl());
-            
-            cv::Point2f bl(r->tl().x,r->tl().y + r->size().height);
-            points2d.push_back(bl);
-            
-            points2d.push_back(r->br());
-            
-            cv::Point2f tr( r->br().x, r->br().y - r->size().height );
-            points2d.push_back(tr);
-            
-            trckOBJ->startTracking(grayFrame, points2d);
+            ot.init(mat, imagePrev, pointsNext);
+            trackObject = true;
+            computeObject = false;
+            printf("trackObject = true \n");
+            printf("computeObject = false \n");
         }
         
         shape = sp(dlibMat, dlibRect);
@@ -197,7 +223,7 @@ typedef struct {
         
         for (unsigned long k = 0; k < shape.num_parts(); k++) {
             if ([self.delegate showFaceDetect]) {
-                draw_solid_circle(dlibMat, shape.part(k), 3, dlib::rgb_pixel(0, 255, 0));
+//                draw_solid_circle(dlibMat, shape.part(k), 3, dlib::rgb_pixel(0, 255, 0));
             }
             
             CGPoint landmark = CGPointMake( [self pixelToPoints:shape.part(k).x()], [self pixelToPoints:shape.part(k).y()]);
@@ -224,62 +250,21 @@ typedef struct {
         }
         
         if ([self.delegate showFaceDetect]) {
-            [self draw_delaunay:mat subdiv:subdiv delaunay:delaunay_color];
+//            [self draw_delaunay:mat subdiv:subdiv delaunay:delaunay_color];
         }
         
         [self.delegate mouthVerticePositions:m];
-        
-        trckOBJ->onTracking(mat);
-//        if (!trckOBJ->onTracking(mat)){
-//            isTracking = false;
-//        } else {
-//            isTracking = true;
-//        }
-        
 //        [self pose:0 image:mat];
     }
 
+    // backup previous frame
+    imageNext.copyTo(imagePrev);
+    
+    // backup points array
+    std::swap(pointsNext, pointsPrev);
+    
     [self matReady:mat];
 
-//    cv::Mat edges;
-//    cvtColor(mat, edges, CV_BGR2GRAY);
-//    GaussianBlur(edges, edges, cv::Size(7, 7), 1.5, 1.5);
-//    Canny(edges, edges, 0, 30, 3);
-//    Canny(edges, edges, 10, 100, 3);
-//    [self matReady:edges];
-
-//    cv::Mat grayscaleMat, dstMat, finalMat;
-//    cvtColor(mat, grayscaleMat, CV_BGR2GRAY);
-//    
-//    for (int i = 0; i < grayscaleMat.rows; i++) {
-//        for (int j = 0; j < grayscaleMat.cols; j++) {
-//            
-//            if (grayscaleMat.at<uchar>(i,j) < 70) {
-//                // black color
-//                grayscaleMat.at<uchar>(i,j) = 0;
-//            } else if (70 <= grayscaleMat.at<uchar>(i,j) && grayscaleMat.at<uchar>(i,j) < 120) {
-//                // gray color
-//                grayscaleMat.at<uchar>(i,j) = 100;
-//            } else {
-//                // white color
-//                grayscaleMat.at<uchar>(i,j) = 255;
-//            }
-//        }
-//    }
-    
-//    GaussianBlur(grayscaleMat, grayscaleMat, cv::Size(3, 3), 0, 0);
-//    Canny(grayscaleMat, dstMat, 20, 120);
-//    bitwise_not(dstMat,dstMat);
-
-    
-//    cvtColor(grayscaleMat, dstMat, CV_GRAY2BGR);
-//    float mask[6] = {100, 100, 100, 100, 100, 100};
-//    cv::Mat maskMat = cv::Mat(1, 6, CV_32F, mask).clone();
-//    dstMat.copyTo(finalMat, maskMat);
-//    [self matReady:finalMat];
-    
-    
-//    [self matReady:dstMat];
 }
 
 - (CGFloat)pixelToPoints:(CGFloat)px {
