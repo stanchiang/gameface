@@ -23,6 +23,7 @@
 		F63B9CAB1E119B8D0088A6FF /* mallick_lbpcascade_profileface.xml in Resources */ = {isa = PBXBuildFile; fileRef = F63B9CA91E119B8D0088A6FF /* mallick_lbpcascade_profileface.xml */; };
 		F63B9CAD1E119C870088A6FF /* mallick_haarcascade_frontalface_alt.xml in Resources */ = {isa = PBXBuildFile; fileRef = F63B9CAC1E119C870088A6FF /* mallick_haarcascade_frontalface_alt.xml */; };
 		F63B9CAF1E119CA90088A6FF /* mallick_haarcascade_profileface.xml in Resources */ = {isa = PBXBuildFile; fileRef = F63B9CAE1E119CA90088A6FF /* mallick_haarcascade_profileface.xml */; };
+		F63B9CB51E11AEDB0088A6FF /* KDCircularProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63B9CB41E11AEDB0088A6FF /* KDCircularProgress.swift */; };
 		F63CE9411DBED65700582F22 /* PostGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63CE9401DBED65700582F22 /* PostGameView.swift */; };
 		F649D63B1E077D0C005AD765 /* ObjectTrackingClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F649D6391E077D0C005AD765 /* ObjectTrackingClass.cpp */; };
 		F64C2F391DADCFA7006E1021 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64C2F381DADCFA7006E1021 /* opencv2.framework */; };
@@ -82,6 +83,7 @@
 		F63B9CA91E119B8D0088A6FF /* mallick_lbpcascade_profileface.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mallick_lbpcascade_profileface.xml; sourceTree = "<group>"; };
 		F63B9CAC1E119C870088A6FF /* mallick_haarcascade_frontalface_alt.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mallick_haarcascade_frontalface_alt.xml; sourceTree = "<group>"; };
 		F63B9CAE1E119CA90088A6FF /* mallick_haarcascade_profileface.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mallick_haarcascade_profileface.xml; sourceTree = "<group>"; };
+		F63B9CB41E11AEDB0088A6FF /* KDCircularProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KDCircularProgress.swift; sourceTree = "<group>"; };
 		F63CE9401DBED65700582F22 /* PostGameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostGameView.swift; sourceTree = "<group>"; };
 		F649D6371E077D0C005AD765 /* ObjectTrackingClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectTrackingClass.h; sourceTree = "<group>"; };
 		F649D6391E077D0C005AD765 /* ObjectTrackingClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectTrackingClass.cpp; sourceTree = "<group>"; };
@@ -289,6 +291,7 @@
 				F614CDD31DAFFDAA0061F7FA /* Enums.swift */,
 				F63847B21DBFD27600C86015 /* Extensions.swift */,
 				F6339D931D590587006C4231 /* Randomizer.swift */,
+				F63B9CB41E11AEDB0088A6FF /* KDCircularProgress.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -469,6 +472,7 @@
 				F68975E71DCD168900D9B542 /* JAGPropertyConverter.m in Sources */,
 				F679543A1DBE7AAA0075870B /* RenderSettings.swift in Sources */,
 				F68975F01DCD168900D9B542 /* PlayFabVersion.m in Sources */,
+				F63B9CB51E11AEDB0088A6FF /* KDCircularProgress.swift in Sources */,
 				F67EA2711DB3DF39006DE24B /* CVFFaceDetect.mm in Sources */,
 				F6772BC01DB207AC00328961 /* DebugView.swift in Sources */,
 				F6C0A0541DCFF60D003F00FA /* BCMeshTransform+Interpolation.m in Sources */,

@@ -109,8 +109,10 @@ typedef struct {
     if (!_inited) {
         NSString* haarDataPath =
 //        [[NSBundle mainBundle] pathForResource:@"haarcascade_frontalface_alt.xml" ofType:nil];
-        [[NSBundle mainBundle] pathForResource:@"mallick_haarcascade_frontalface_alt.xml" ofType:nil];
         
+        [[NSBundle mainBundle] pathForResource:@"mallick_haarcascade_frontalface_alt.xml" ofType:nil];
+//        [[NSBundle mainBundle] pathForResource:@"mallick_haarcascade_profileface.xml" ofType:nil];
+
         cascade.load([haarDataPath UTF8String]);
         
         NSString *modelFileName = [[NSBundle mainBundle] pathForResource:@"shape_predictor_68_face_landmarks" ofType:@"dat"];
@@ -246,7 +248,7 @@ typedef struct {
         }
         
         if ([self.delegate showFaceDetect]) {
-//            [self draw_delaunay:mat subdiv:subdiv delaunay:delaunay_color];
+            [self draw_delaunay:mat subdiv:subdiv delaunay:delaunay_color];
         }
         
         [self.delegate mouthVerticePositions:m];

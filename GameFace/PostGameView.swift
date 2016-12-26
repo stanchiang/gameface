@@ -22,6 +22,10 @@ class PostGameView: UIView {
     let resetIcon = UIImage(named: "redo")
     let shareButton = UIButton()
     let shareIcon = UIImage(named: "share")
+    let continueButton = UIButton()
+    let continueIcon = UIImage(named: "play")
+    var continueTimer: KDCircularProgress!
+    
     let previewView = UIView()
     let inset:CGFloat = 25
     var videoURL:URL!
@@ -31,13 +35,13 @@ class PostGameView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.backgroundColor = UIColor.clear
-        self.blurView()
+        self.backgroundColor = UIColor.lightGray
+//        self.blurView()
         
         restartButton.translatesAutoresizingMaskIntoConstraints = false
         restartButton.contentMode = .scaleAspectFit
         
-        restartButton.setImage(resetIcon, for: UIControlState())
+        restartButton.setImage(resetIcon, for: UIControlState.normal)
         restartButton.imageEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset)
         restartButton.addTarget(self, action: #selector(restartAction(_:)), for: .touchUpInside)
         restartButton.backgroundColor = UIColor.clear
@@ -45,7 +49,7 @@ class PostGameView: UIView {
         
         shareButton.translatesAutoresizingMaskIntoConstraints = false
         shareButton.contentMode = .scaleAspectFit
-        shareButton.setImage(shareIcon, for: UIControlState())
+        shareButton.setImage(shareIcon, for: UIControlState.normal)
         shareButton.imageEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset)
         shareButton.addTarget(self, action: #selector(shareAction(_:)), for: .touchUpInside)
         shareButton.backgroundColor = UIColor.clear
@@ -54,6 +58,27 @@ class PostGameView: UIView {
         previewView.translatesAutoresizingMaskIntoConstraints = false
         previewView.backgroundColor = UIColor.clear
         addSubview(previewView)
+        
+        continueButton.translatesAutoresizingMaskIntoConstraints = false
+        continueButton.contentMode = .scaleAspectFit
+        continueButton.setImage(continueIcon, for: UIControlState.normal)
+        continueButton.imageEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset)
+        continueButton.addTarget(self, action: #selector(restartAction(_:)), for: .touchUpInside)
+        continueButton.backgroundColor = UIColor.clear
+        addSubview(continueButton)
+        
+        continueTimer = KDCircularProgress()
+        continueTimer.translatesAutoresizingMaskIntoConstraints = false
+        continueTimer.startAngle = -90
+        continueTimer.progressThickness = 0.3
+        continueTimer.trackThickness = 0.3
+        continueTimer.trackColor = UIColor.red
+        continueTimer.progressColors = [UIColor.lightGray]
+        continueTimer.clockwise = true
+        continueTimer.roundedCorners = false
+        continueTimer.glowMode = .noGlow
+        addSubview(continueTimer)
+        
     }
 
     func loadVideo(_ previewURL: URL){
@@ -68,6 +93,7 @@ class PostGameView: UIView {
                                                          name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
                                                          object: self.player.currentItem)
         
+        startContinueTimer()
     }
     
     func playerItemDidReachEnd(_ notification: Notification) {
@@ -87,9 +113,19 @@ class PostGameView: UIView {
         shareButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: self.frame.width * -1/20).isActive = true
         
         previewView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-        previewView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        previewView.trailingAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         previewView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         previewView.bottomAnchor.constraint(equalTo: restartButton.topAnchor, constant: self.frame.width * -1/20).isActive = true
+        
+        continueButton.centerYAnchor.constraint(equalTo: previewView.centerYAnchor).isActive = true
+        continueButton.leadingAnchor.constraint(equalTo: previewView.trailingAnchor).isActive = true
+        continueButton.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        continueButton.heightAnchor.constraint(equalTo: continueButton.widthAnchor).isActive = true
+        
+        continueTimer.centerXAnchor.constraint(equalTo: continueButton.centerXAnchor).isActive = true
+        continueTimer.centerYAnchor.constraint(equalTo: continueButton.centerYAnchor).isActive = true
+        continueTimer.widthAnchor.constraint(equalTo: continueButton.widthAnchor).isActive = true
+        continueTimer.heightAnchor.constraint(equalTo: continueButton.heightAnchor).isActive = true
     }
     
     func restartAction(_ sender: UIButton) {
@@ -108,8 +144,24 @@ class PostGameView: UIView {
         (window?.rootViewController as! GameGallery).present(activityViewController, animated: true, completion: nil)
     }
     
+    func startContinueTimer() {
+        continueTimer.animate(fromAngle: 0, toAngle: 360, duration: 3) { [unowned self] completed in
+            if completed {
+                print("animation stopped, completed")
+                self.continueButton.alpha = 0
+            } else {
+                print("animation stopped, was interrupted")
+            }
+        }
+
+//        Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(timerAction), userInfo: nil, repeats: false)
+    }
+    
+//    func timerAction(){
+//        continueButton.alpha = 0
+//    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
-
