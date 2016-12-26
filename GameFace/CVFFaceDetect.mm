@@ -108,7 +108,8 @@ typedef struct {
 {
     if (!_inited) {
         NSString* haarDataPath =
-        [[NSBundle mainBundle] pathForResource:@"haarcascade_frontalface_alt.xml" ofType:nil];
+//        [[NSBundle mainBundle] pathForResource:@"haarcascade_frontalface_alt.xml" ofType:nil];
+        [[NSBundle mainBundle] pathForResource:@"mallick_haarcascade_frontalface_alt.xml" ofType:nil];
         
         cascade.load([haarDataPath UTF8String]);
         
@@ -157,11 +158,10 @@ typedef struct {
     cv::cvtColor(mat, imageNext, cv::COLOR_BGRA2GRAY);
     
     ObjectTrackingClass ot;
-    ot.setMaxCorners(200);
+    ot.setMaxCorners(1000);
     
     // begin tracking object
     if ( trackObject ) {
-        printf("tracking \n");
         ot.track(mat,
                  imagePrev,
                  imageNext,
@@ -172,12 +172,9 @@ typedef struct {
         
         // check if the next points array isn't empty
         if ( pointsNext.empty() ) {
-            printf("pointsNext = empty \n");
             trackObject = false;
             computeObject = true;
         }
-    } else {
-        printf("not tracking \n");
     }
     
     for( vector<cv::Rect>::const_iterator r = faces.begin(); r != faces.end(); r++, i++ ) {
@@ -193,18 +190,14 @@ typedef struct {
 //        }
         
         cv::Rect rRect(r->tl().x,r->tl().y,r->width,r->height);
-        roi = mat( rRect );
-        cv::rectangle(mat, cv::Rect(0,0,roi.cols, roi.rows), cv::Scalar(255, 255, 255));
-        cv::rectangle(mat, cv::Rect(rRect.br(),rRect.tl()), cv::Scalar(0, 255, 255));
-
+        cv::rectangle(mat, rRect, cv::Scalar(0, 255, 255), 3);
+        
         // store the reference frame as the object to track
         if ( computeObject ) {
-            cv::cvtColor(roi, imagePrev, cv::COLOR_BGRA2GRAY);
-            ot.init(mat, imagePrev, pointsNext);
+            cv::cvtColor(mat, imagePrev, cv::COLOR_BGRA2GRAY);
+            ot.init(mat, imagePrev, rRect, pointsNext);
             trackObject = true;
             computeObject = false;
-            printf("trackObject = true \n");
-            printf("computeObject = false \n");
         }
         
         shape = sp(dlibMat, dlibRect);
@@ -266,10 +259,10 @@ typedef struct {
     // backup points array
     std::swap(pointsNext, pointsPrev);
     
-    cv::Mat blurred = [self blurGray:roi];
-    cv::Mat circles = [self drawHoughCircles:blurred :mat];
+//    cv::Mat blurred = [self blurGray:roi];
+//    cv::Mat circles = [self drawHoughCircles:blurred :mat];
     
-    [self matReady:circles];
+    [self matReady:mat];
 
 }
 
@@ -424,8 +417,8 @@ typedef struct {
     line(image, projected_axes[0], projected_axes[2], Scalar(0,255,0),2,CV_AA);
     line(image, projected_axes[0], projected_axes[1], Scalar(0,0,255),2,CV_AA);
     
-    // putText(image, "(" + to_string(int(pose(0,3) * 100)) + "cm, " + to_string(int(pose(1,3) * 100)) + "cm, " + to_string(int(pose(2,3) * 100)) + "cm)", coordsOf(face_idx, SELLION), FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0,0,255),2);
-    
+//    putText(image, "(" + to_string(int(pose(0,3) * 100)) + "cm, " + to_string(int(pose(1,3) * 100)) + "cm, " + to_string(int(pose(2,3) * 100)) + "cm)", [self coordsOf:face_idx feature:SELLION], FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0,0,255),2);
+//    printf("(%i cm, %i cm, %i cm) \n", int(pose(0,3) * 100), int(pose(1,3) * 100), int(pose(2,3) * 100));
     head_pose pose_head	=	{pose,	// transformation matrix
         tvec,	// vector with translations
         rvec};	// vector with rotations

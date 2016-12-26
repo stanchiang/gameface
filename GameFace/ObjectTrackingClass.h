@@ -50,6 +50,7 @@ public:
     // initialise tracker
     void init(cv::Mat& image, // output image
               cv::Mat& image1, // source image
+              cv::Rect roi,
               std::vector<cv::Point2f>& points1); // points array
     
     // track optical flow

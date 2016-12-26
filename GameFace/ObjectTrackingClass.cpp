@@ -23,6 +23,7 @@ void ObjectTrackingClass::setMaxCorners(int max_c) {
 // initialise tracker
 void ObjectTrackingClass::init(cv::Mat& image, // output image
                                cv::Mat& image1, // input image
+                               cv::Rect roi,
                                std::vector<cv::Point2f>& points1) // output points array
 {
     // initialise tracker
@@ -39,12 +40,21 @@ void ObjectTrackingClass::init(cv::Mat& image, // output image
     // refine corner locations
     cv::cornerSubPix(image1, points1, subPixWinSize, cv::Size(-1,-1), termcrit);
     
+    printf("1 pts = %lu \n",points1.size());
+    
     size_t i;
     for( i = 0; i < points1.size(); i++ )
-    {        
+    {
+        if (!roi.contains(points1[i])) {
+            points1.erase(points1.begin() + i);
+            continue;
+        }
+        
         // draw points
         cv::circle( image, points1[i], 3, cv::Scalar(0,255,0), -1, 8);
     }
+    
+    printf("2 pts = %lu \n",points1.size());
 }
 
 // track object

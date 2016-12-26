@@ -19,6 +19,10 @@
 		F6339D941D590587006C4231 /* Randomizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6339D931D590587006C4231 /* Randomizer.swift */; };
 		F6339DA71D5905C5006C4231 /* candyEater.sks in Resources */ = {isa = PBXBuildFile; fileRef = F6339D9B1D5905C5006C4231 /* candyEater.sks */; };
 		F63847B31DBFD27600C86015 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63847B21DBFD27600C86015 /* Extensions.swift */; };
+		F63B9CAA1E119B8D0088A6FF /* mallick_lbpcascade_frontalface.xml in Resources */ = {isa = PBXBuildFile; fileRef = F63B9CA81E119B8D0088A6FF /* mallick_lbpcascade_frontalface.xml */; };
+		F63B9CAB1E119B8D0088A6FF /* mallick_lbpcascade_profileface.xml in Resources */ = {isa = PBXBuildFile; fileRef = F63B9CA91E119B8D0088A6FF /* mallick_lbpcascade_profileface.xml */; };
+		F63B9CAD1E119C870088A6FF /* mallick_haarcascade_frontalface_alt.xml in Resources */ = {isa = PBXBuildFile; fileRef = F63B9CAC1E119C870088A6FF /* mallick_haarcascade_frontalface_alt.xml */; };
+		F63B9CAF1E119CA90088A6FF /* mallick_haarcascade_profileface.xml in Resources */ = {isa = PBXBuildFile; fileRef = F63B9CAE1E119CA90088A6FF /* mallick_haarcascade_profileface.xml */; };
 		F63CE9411DBED65700582F22 /* PostGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63CE9401DBED65700582F22 /* PostGameView.swift */; };
 		F649D63B1E077D0C005AD765 /* ObjectTrackingClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F649D6391E077D0C005AD765 /* ObjectTrackingClass.cpp */; };
 		F64C2F391DADCFA7006E1021 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64C2F381DADCFA7006E1021 /* opencv2.framework */; };
@@ -74,6 +78,10 @@
 		F6339D931D590587006C4231 /* Randomizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Randomizer.swift; sourceTree = "<group>"; };
 		F6339D9B1D5905C5006C4231 /* candyEater.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = candyEater.sks; sourceTree = "<group>"; };
 		F63847B21DBFD27600C86015 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		F63B9CA81E119B8D0088A6FF /* mallick_lbpcascade_frontalface.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mallick_lbpcascade_frontalface.xml; sourceTree = "<group>"; };
+		F63B9CA91E119B8D0088A6FF /* mallick_lbpcascade_profileface.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mallick_lbpcascade_profileface.xml; sourceTree = "<group>"; };
+		F63B9CAC1E119C870088A6FF /* mallick_haarcascade_frontalface_alt.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mallick_haarcascade_frontalface_alt.xml; sourceTree = "<group>"; };
+		F63B9CAE1E119CA90088A6FF /* mallick_haarcascade_profileface.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mallick_haarcascade_profileface.xml; sourceTree = "<group>"; };
 		F63CE9401DBED65700582F22 /* PostGameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostGameView.swift; sourceTree = "<group>"; };
 		F649D6371E077D0C005AD765 /* ObjectTrackingClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectTrackingClass.h; sourceTree = "<group>"; };
 		F649D6391E077D0C005AD765 /* ObjectTrackingClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectTrackingClass.cpp; sourceTree = "<group>"; };
@@ -186,6 +194,10 @@
 		F60507361DBFE2A900D1A8EA /* Datasets */ = {
 			isa = PBXGroup;
 			children = (
+				F63B9CA81E119B8D0088A6FF /* mallick_lbpcascade_frontalface.xml */,
+				F63B9CA91E119B8D0088A6FF /* mallick_lbpcascade_profileface.xml */,
+				F63B9CAE1E119CA90088A6FF /* mallick_haarcascade_profileface.xml */,
+				F63B9CAC1E119C870088A6FF /* mallick_haarcascade_frontalface_alt.xml */,
 				A5A1B2D71CEA431600626AC5 /* shape_predictor_68_face_landmarks.dat */,
 				F67EA2721DB3DFE0006DE24B /* haarcascade_frontalface_alt.xml */,
 			);
@@ -437,8 +449,12 @@
 				F6339DA71D5905C5006C4231 /* candyEater.sks in Resources */,
 				A56695F71CE8B34B00BD7EAF /* Assets.xcassets in Resources */,
 				F6ADFFAB1DBC667F001C7A06 /* explosion.sks in Resources */,
+				F63B9CAA1E119B8D0088A6FF /* mallick_lbpcascade_frontalface.xml in Resources */,
+				F63B9CAD1E119C870088A6FF /* mallick_haarcascade_frontalface_alt.xml in Resources */,
 				F67EA2731DB3DFE0006DE24B /* haarcascade_frontalface_alt.xml in Resources */,
 				F6C0A0501DCFF60D003F00FA /* BCMeshShader.fsh in Resources */,
+				F63B9CAF1E119CA90088A6FF /* mallick_haarcascade_profileface.xml in Resources */,
+				F63B9CAB1E119B8D0088A6FF /* mallick_lbpcascade_profileface.xml in Resources */,
 				A5A1B2D81CEA431600626AC5 /* shape_predictor_68_face_landmarks.dat in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
