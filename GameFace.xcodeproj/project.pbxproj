@@ -25,7 +25,6 @@
 		F63B9CAF1E119CA90088A6FF /* mallick_haarcascade_profileface.xml in Resources */ = {isa = PBXBuildFile; fileRef = F63B9CAE1E119CA90088A6FF /* mallick_haarcascade_profileface.xml */; };
 		F63B9CB51E11AEDB0088A6FF /* KDCircularProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63B9CB41E11AEDB0088A6FF /* KDCircularProgress.swift */; };
 		F63CE9411DBED65700582F22 /* PostGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63CE9401DBED65700582F22 /* PostGameView.swift */; };
-		F649D63B1E077D0C005AD765 /* ObjectTrackingClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F649D6391E077D0C005AD765 /* ObjectTrackingClass.cpp */; };
 		F64C2F391DADCFA7006E1021 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64C2F381DADCFA7006E1021 /* opencv2.framework */; };
 		F669C0391DB15C3D001161E1 /* GameGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = F669C0381DB15C3D001161E1 /* GameGallery.swift */; };
 		F669C03D1DB1698D001161E1 /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F669C03B1DB1698D001161E1 /* CustomCollectionViewCell.swift */; };
@@ -86,8 +85,6 @@
 		F63B9CAE1E119CA90088A6FF /* mallick_haarcascade_profileface.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mallick_haarcascade_profileface.xml; sourceTree = "<group>"; };
 		F63B9CB41E11AEDB0088A6FF /* KDCircularProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KDCircularProgress.swift; sourceTree = "<group>"; };
 		F63CE9401DBED65700582F22 /* PostGameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostGameView.swift; sourceTree = "<group>"; };
-		F649D6371E077D0C005AD765 /* ObjectTrackingClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectTrackingClass.h; sourceTree = "<group>"; };
-		F649D6391E077D0C005AD765 /* ObjectTrackingClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectTrackingClass.cpp; sourceTree = "<group>"; };
 		F64C2F381DADCFA7006E1021 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
 		F669C0381DB15C3D001161E1 /* GameGallery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameGallery.swift; sourceTree = "<group>"; };
 		F669C03B1DB1698D001161E1 /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -185,7 +182,7 @@
 			isa = PBXGroup;
 			children = (
 				F6C0A0391DCFF60D003F00FA /* BCMeshTransformView */,
-				F6223B951DCD3E45007892C5 /* Trackers */,
+				F6223B951DCD3E45007892C5 /* Analytics */,
 				F6339DB31D5914C8006C4231 /* facialRec */,
 				F67D513B1DC187330018501C /* Helpers */,
 				F669C03E1DB16994001161E1 /* collectionView */,
@@ -219,13 +216,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		F6223B951DCD3E45007892C5 /* Trackers */ = {
+		F6223B951DCD3E45007892C5 /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
 				F677E6371DCE8C2000D3A966 /* Tracker.swift */,
 				F68975CD1DCD168900D9B542 /* PlayFabSDK */,
 			);
-			name = Trackers;
+			name = Analytics;
 			sourceTree = "<group>";
 		};
 		F6339D951D5905A0006C4231 /* Game Code */ = {
@@ -253,21 +250,19 @@
 				A566961D1CE8B4A100BD7EAF /* CameraHandler.swift */,
 				F60507361DBFE2A900D1A8EA /* Datasets */,
 				F60507371DBFE2B200D1A8EA /* Frameworks */,
-				F649D6361E077CDE005AD765 /* ObjectTracking */,
+				F649D6361E077CDE005AD765 /* FaceTracker */,
 				F67EA2661DB3DDF2006DE24B /* engine */,
 			);
 			name = facialRec;
 			sourceTree = "<group>";
 		};
-		F649D6361E077CDE005AD765 /* ObjectTracking */ = {
+		F649D6361E077CDE005AD765 /* FaceTracker */ = {
 			isa = PBXGroup;
 			children = (
 				F6E540971E17156E00F78577 /* FaceTracker.h */,
 				F6E540981E17156E00F78577 /* FaceTracker.cpp */,
-				F649D6371E077D0C005AD765 /* ObjectTrackingClass.h */,
-				F649D6391E077D0C005AD765 /* ObjectTrackingClass.cpp */,
 			);
-			name = ObjectTracking;
+			name = FaceTracker;
 			sourceTree = "<group>";
 		};
 		F669C03E1DB16994001161E1 /* collectionView */ = {
@@ -484,7 +479,6 @@
 				F6C0A0541DCFF60D003F00FA /* BCMeshTransform+Interpolation.m in Sources */,
 				F6339D921D590573006C4231 /* GameScene.swift in Sources */,
 				F68975E61DCD168900D9B542 /* JAGProperty.m in Sources */,
-				F649D63B1E077D0C005AD765 /* ObjectTrackingClass.cpp in Sources */,
 				F68975E91DCD168900D9B542 /* PlayFabBaseModel.m in Sources */,
 				F6B90FC81D6270FE00EC0338 /* GameManager.swift in Sources */,
 				F63CE9411DBED65700582F22 /* PostGameView.swift in Sources */,

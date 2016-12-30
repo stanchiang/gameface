@@ -13,7 +13,6 @@
 #import <CoreMedia/CoreMedia.h>
 #import <UIKit/UIKit.h>
 
-#include "ObjectTrackingClass.h"
 #include "FaceTracker.h"
 
 #import "CVFFaceDetect.h"
@@ -45,20 +44,6 @@ dlib::shape_predictor sp;
 dlib::full_object_detection shape;
 
 FaceTracker tracker;
-
-// control flags
-bool computeObject = false;
-bool detectObject = false;
-bool trackObject = false;
-
-ObjectTrackingClass ot;
-cv::Mat imageNext, imagePrev;
-cv::Mat outputFrame;
-cv::Mat roi;
-std::vector<uchar> status;
-std::vector<float> err;
-std::string m_algorithmName;
-std::vector<cv::Point2f> pointsPrev, pointsNext;
 
 // Anthropometric for male adult
 // Relative position of various facial feature relative to sellion
@@ -122,11 +107,6 @@ typedef struct {
         NSString *modelFileName = [[NSBundle mainBundle] pathForResource:@"shape_predictor_68_face_landmarks" ofType:@"dat"];
         modelFileNameCString = [modelFileName UTF8String];
         dlib::deserialize(modelFileNameCString) >> sp;
-/*
-        ot.setMaxCorners(200);
-        trackObject = false;
-        computeObject = true;
-*/
         
 //        for (int i = 0; i < [self.delegate getDelaunayEdges].count; i++) {
 //            NSMutableArray *m = [self.delegate getDelaunayEdges][i];
@@ -149,8 +129,8 @@ typedef struct {
         printf("not found \n");
     }
     
-    [self matReady:mat];
-    return;
+//    [self matReady:mat];
+//    return;
     
     int i = 0;
     vector<cv::Rect> faces;
@@ -172,30 +152,6 @@ typedef struct {
     } else {
         [self.delegate hasDetectedFace:false];
     }
-    
-    // display the frame
-    cv::cvtColor(mat, imageNext, cv::COLOR_BGRA2GRAY);
-/*
-    ObjectTrackingClass ot;
-    ot.setMaxCorners(1000);
-    
-    // begin tracking object
-    if ( trackObject ) {
-        ot.track(mat,
-                 imagePrev,
-                 imageNext,
-                 pointsPrev,
-                 pointsNext,
-                 status,
-                 err);
-        
-        // check if the next points array isn't empty
-        if ( pointsNext.empty() ) {
-            trackObject = false;
-            computeObject = true;
-        }
-    }
-*/
 
     for( vector<cv::Rect>::const_iterator r = faces.begin(); r != faces.end(); r++, i++ ) {
         dlib::cv_image<dlib::bgr_pixel> dlibMat(mat);
@@ -208,18 +164,7 @@ typedef struct {
 //        if ([self.delegate showFaceDetect]) {
 //            dlib::draw_rectangle(dlibMat, dlibRect, dlib::rgb_pixel(0, 255, 255));
 //        }
-/*
-        cv::Rect rRect(r->tl().x,r->tl().y,r->width,r->height);
-        cv::rectangle(mat, rRect, cv::Scalar(0, 255, 255), 3);
-        
-        // store the reference frame as the object to track
-        if ( computeObject ) {
-            cv::cvtColor(mat, imagePrev, cv::COLOR_BGRA2GRAY);
-            ot.init(mat, imagePrev, rRect, pointsNext);
-            trackObject = true;
-            computeObject = false;
-        }
-*/
+
         shape = sp(dlibMat, dlibRect);
         NSMutableArray *m = [NSMutableArray new];
         
@@ -266,19 +211,13 @@ typedef struct {
         }
         
         if ([self.delegate showFaceDetect]) {
-//            [self draw_delaunay:mat subdiv:subdiv delaunay:delaunay_color];
+            [self draw_delaunay:mat subdiv:subdiv delaunay:delaunay_color];
         }
         
         [self.delegate mouthVerticePositions:m];
 //        [self pose:0 image:mat];
     }
-/*
-    // backup previous frame
-    imageNext.copyTo(imagePrev);
-    
-    // backup points array
-    std::swap(pointsNext, pointsPrev);
-*/
+
 //    cv::Mat blurred = [self blurGray:roi];
 //    cv::Mat circles = [self drawHoughCircles:blurred :mat];
     
