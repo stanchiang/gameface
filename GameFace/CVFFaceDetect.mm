@@ -123,103 +123,88 @@ typedef struct {
     tracker.getFrameAndDetect(mat);
     if (tracker.isFaceFound())
     {
-        cv::rectangle(mat, tracker.face(), cv::Scalar(0, 0, 255), 3);
-        cv::circle(mat, tracker.facePosition(), 30, cv::Scalar(0, 255, 0));
+//        cv::rectangle(mat, tracker.face(), cv::Scalar(0, 0, 255), 3);
+//        cv::circle(mat, tracker.facePosition(), 30, cv::Scalar(0, 255, 0));
+        
+        //    if (faces.size() > 0){
+        if (true){
+            [self.delegate hasDetectedFace:true];
+        } else {
+            [self.delegate hasDetectedFace:false];
+        }
+        
+//        for( vector<cv::Rect>::const_iterator r = faces.begin(); r != faces.end(); r++, i++ ) {
+            dlib::cv_image<dlib::bgr_pixel> dlibMat(mat);
+            
+            //        for converting either direction use this http://stackoverflow.com/a/34873134/1079379
+            //        static cv::Rect dlibRectangleToOpenCV(dlib::rectangle r){return cv::Rect(cv::Point2i(r.left(), r.top()), cv::Point2i(r.right() + 1, r.bottom() + 1));}
+            //        static dlib::rectangle openCVRectToDlib(cv::Rect r){return dlib::rectangle((long)r.tl().x, (long)r.tl().y, (long)r.br().x - 1, (long)r.br().y - 1);}
+            
+            dlib::rectangle dlibRect((long)tracker.face().tl().x, (long)tracker.face().tl().y, (long)tracker.face().br().x - 1, (long)tracker.face().br().y - 1);
+            //        if ([self.delegate showFaceDetect]) {
+//                        dlib::draw_rectangle(dlibMat, dlibRect, dlib::rgb_pixel(0, 255, 255));
+            //        }
+            
+            shape = sp(dlibMat, dlibRect);
+            NSMutableArray *m = [NSMutableArray new];
+            
+            /////
+            // Draws the contours of the face and face features onto the image
+            
+            // Define colors for drawing.
+            Scalar delaunay_color(255,255,255), points_color(0, 0, 255);
+            
+            // Rectangle to be used with Subdiv2D
+            cv::Size size = mat.size();
+            cv::Rect rect(0, 0, size.width, size.height);
+            
+            // Create an instance of Subdiv2D
+            Subdiv2D subdiv(rect);
+            /////
+            
+            for (unsigned long k = 0; k < shape.num_parts(); k++) {
+                if ([self.delegate showFaceDetect]) {
+                    //                draw_solid_circle(dlibMat, shape.part(k), 3, dlib::rgb_pixel(0, 255, 0));
+                }
+                
+                CGPoint landmark = CGPointMake( [self pixelToPoints:shape.part(k).x()], [self pixelToPoints:shape.part(k).y()]);
+                
+                //inside lips outline
+                if (k >= 60) { [m addObject: [NSValue valueWithCGPoint: landmark ]]; }
+                
+                //nose bridge
+                if (k == 28) { [self.delegate noseBridgePosition: landmark ]; }
+                
+                //nose tip
+                if (k == 31) { [self.delegate noseTipPosition: landmark ]; }
+                
+                //philtrum
+                if (k == 52) {
+                    CGPoint landmark34 = CGPointMake( [self pixelToPoints:shape.part(34).x()], [self pixelToPoints:shape.part(34).y()]);
+                    CGPoint midpoint = CGPointMake( (landmark.x + landmark34.x) / 2.0 , (landmark.y + landmark34.y) / 2.0 );
+                    [self.delegate mustachePosition:midpoint];
+                }
+                
+                if ([self.delegate showFaceDetect] && rect.contains([self toCv:shape.part(k)])) {
+                    subdiv.insert([self toCv:shape.part(k)]);
+                }
+            }
+            
+            if ([self.delegate showFaceDetect]) {
+                [self draw_delaunay:mat subdiv:subdiv delaunay:delaunay_color];
+            }
+            
+            [self.delegate mouthVerticePositions:m];
+            //        [self pose:0 image:mat];
+//        }
+        
+        //    cv::Mat blurred = [self blurGray:roi];
+        //    cv::Mat circles = [self drawHoughCircles:blurred :mat];
+
     }else {
         printf("not found \n");
     }
     
-//    [self matReady:mat];
-//    return;
-    
-    int i = 0;
-    vector<cv::Rect> faces;
-    Mat gray, smallImg( cvRound (mat.rows/scale), cvRound(mat.cols/scale), CV_8UC1 );
-    
-    cvtColor( mat, gray, CV_RGB2GRAY );
-    resize( gray, smallImg, smallImg.size(), 0, 0, INTER_LINEAR );
-    equalizeHist( smallImg, smallImg );
-    
-    cascade.detectMultiScale( smallImg, faces,
-                             1.2, 2, 0
-                             |CV_HAAR_SCALE_IMAGE
-                             ,
-                             cv::Size(75, 75) );
-    
-//    if (faces.size() > 0){
-    if (true){
-        [self.delegate hasDetectedFace:true];
-    } else {
-        [self.delegate hasDetectedFace:false];
-    }
-
-    for( vector<cv::Rect>::const_iterator r = faces.begin(); r != faces.end(); r++, i++ ) {
-        dlib::cv_image<dlib::bgr_pixel> dlibMat(mat);
-        
-//        for converting either direction use this http://stackoverflow.com/a/34873134/1079379
-//        static cv::Rect dlibRectangleToOpenCV(dlib::rectangle r){return cv::Rect(cv::Point2i(r.left(), r.top()), cv::Point2i(r.right() + 1, r.bottom() + 1));}
-//        static dlib::rectangle openCVRectToDlib(cv::Rect r){return dlib::rectangle((long)r.tl().x, (long)r.tl().y, (long)r.br().x - 1, (long)r.br().y - 1);}
-        
-        dlib::rectangle dlibRect((long)r->tl().x, (long)r->tl().y, (long)r->br().x - 1, (long)r->br().y - 1);
-//        if ([self.delegate showFaceDetect]) {
-//            dlib::draw_rectangle(dlibMat, dlibRect, dlib::rgb_pixel(0, 255, 255));
-//        }
-
-        shape = sp(dlibMat, dlibRect);
-        NSMutableArray *m = [NSMutableArray new];
-        
-        /////
-        // Draws the contours of the face and face features onto the image
-        
-        // Define colors for drawing.
-        Scalar delaunay_color(255,255,255), points_color(0, 0, 255);
-        
-        // Rectangle to be used with Subdiv2D
-        cv::Size size = mat.size();
-        cv::Rect rect(0, 0, size.width, size.height);
-        
-        // Create an instance of Subdiv2D
-        Subdiv2D subdiv(rect);
-        /////
-        
-        for (unsigned long k = 0; k < shape.num_parts(); k++) {
-            if ([self.delegate showFaceDetect]) {
-//                draw_solid_circle(dlibMat, shape.part(k), 3, dlib::rgb_pixel(0, 255, 0));
-            }
-            
-            CGPoint landmark = CGPointMake( [self pixelToPoints:shape.part(k).x()], [self pixelToPoints:shape.part(k).y()]);
-            
-            //inside lips outline
-            if (k >= 60) { [m addObject: [NSValue valueWithCGPoint: landmark ]]; }
-            
-            //nose bridge
-            if (k == 28) { [self.delegate noseBridgePosition: landmark ]; }
-            
-            //nose tip
-            if (k == 31) { [self.delegate noseTipPosition: landmark ]; }
-            
-            //philtrum
-            if (k == 52) {
-                CGPoint landmark34 = CGPointMake( [self pixelToPoints:shape.part(34).x()], [self pixelToPoints:shape.part(34).y()]);
-                CGPoint midpoint = CGPointMake( (landmark.x + landmark34.x) / 2.0 , (landmark.y + landmark34.y) / 2.0 );
-                [self.delegate mustachePosition:midpoint];
-            }
-            
-            if ([self.delegate showFaceDetect] && rect.contains([self toCv:shape.part(k)])) {
-                subdiv.insert([self toCv:shape.part(k)]);
-            }
-        }
-        
-        if ([self.delegate showFaceDetect]) {
-            [self draw_delaunay:mat subdiv:subdiv delaunay:delaunay_color];
-        }
-        
-        [self.delegate mouthVerticePositions:m];
-//        [self pose:0 image:mat];
-    }
-
-//    cv::Mat blurred = [self blurGray:roi];
-//    cv::Mat circles = [self drawHoughCircles:blurred :mat];
     
     [self matReady:mat];
 
