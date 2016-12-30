@@ -61,6 +61,7 @@
 		F6C0A0561DCFF60D003F00FA /* BCMeshTransformAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C0A0491DCFF60D003F00FA /* BCMeshTransformAnimation.m */; };
 		F6C0A0571DCFF60D003F00FA /* BCMeshTransformView.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C0A04B1DCFF60D003F00FA /* BCMeshTransformView.m */; };
 		F6C0A0581DCFF60D003F00FA /* BCMutableMeshTransform+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C0A04D1DCFF60D003F00FA /* BCMutableMeshTransform+Convenience.m */; };
+		F6E540991E17156E00F78577 /* FaceTracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6E540981E17156E00F78577 /* FaceTracker.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -146,6 +147,8 @@
 		F6C0A04B1DCFF60D003F00FA /* BCMeshTransformView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCMeshTransformView.m; sourceTree = "<group>"; };
 		F6C0A04C1DCFF60D003F00FA /* BCMutableMeshTransform+Convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BCMutableMeshTransform+Convenience.h"; sourceTree = "<group>"; };
 		F6C0A04D1DCFF60D003F00FA /* BCMutableMeshTransform+Convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BCMutableMeshTransform+Convenience.m"; sourceTree = "<group>"; };
+		F6E540971E17156E00F78577 /* FaceTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaceTracker.h; sourceTree = "<group>"; };
+		F6E540981E17156E00F78577 /* FaceTracker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FaceTracker.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -259,6 +262,8 @@
 		F649D6361E077CDE005AD765 /* ObjectTracking */ = {
 			isa = PBXGroup;
 			children = (
+				F6E540971E17156E00F78577 /* FaceTracker.h */,
+				F6E540981E17156E00F78577 /* FaceTracker.cpp */,
 				F649D6371E077D0C005AD765 /* ObjectTrackingClass.h */,
 				F649D6391E077D0C005AD765 /* ObjectTrackingClass.cpp */,
 			);
@@ -472,6 +477,7 @@
 				F68975E71DCD168900D9B542 /* JAGPropertyConverter.m in Sources */,
 				F679543A1DBE7AAA0075870B /* RenderSettings.swift in Sources */,
 				F68975F01DCD168900D9B542 /* PlayFabVersion.m in Sources */,
+				F6E540991E17156E00F78577 /* FaceTracker.cpp in Sources */,
 				F63B9CB51E11AEDB0088A6FF /* KDCircularProgress.swift in Sources */,
 				F67EA2711DB3DF39006DE24B /* CVFFaceDetect.mm in Sources */,
 				F6772BC01DB207AC00328961 /* DebugView.swift in Sources */,
