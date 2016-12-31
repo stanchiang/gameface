@@ -40,6 +40,11 @@ bool FaceTracker::isFaceFound() const
 	return m_foundFace;
 }
 
+bool FaceTracker::isTouchingBorder() const
+{
+    return false;
+}
+
 cv::Rect FaceTracker::face() const
 {
     cv::Rect faceRect = m_trackedFace;
@@ -134,10 +139,17 @@ void FaceTracker::detectFaceAllSizes(const cv::Mat &frame)
 {
     // Minimum face size is 1/5th of screen height
     // Maximum face size is 2/3rds of screen height
+
+//    cv::Mat gray, smallImg( cvRound (frame.rows), cvRound(frame.cols), CV_8UC1 );
+//    cvtColor( frame, gray, CV_RGB2GRAY );
+//    resize( gray, smallImg, smallImg.size(), 0, 0, cv::INTER_LINEAR );
+//    equalizeHist( smallImg, smallImg );
+//    m_faceCascade->detectMultiScale(smallImg, m_allFaces, 1.2, 2, 0, cv::Size(75, 75) );
+
     m_faceCascade->detectMultiScale(frame, m_allFaces, 1.1, 3, 0,
         cv::Size(frame.rows / 5, frame.rows / 5),
         cv::Size(frame.rows * 2 / 3, frame.rows * 2 / 3));
-
+    
     if (m_allFaces.empty()) return;
 
     m_foundFace = true;
