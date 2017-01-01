@@ -238,8 +238,6 @@ typedef struct {
         [self.delegate mouthVerticePositions:m];
         [self pose:0 image:mat];
     
-//    cv::Mat blurred = [self blurGray:roi];
-//    cv::Mat circles = [self drawHoughCircles:blurred :mat];
     }
     
     [self matReady:skinMask];
@@ -434,44 +432,6 @@ typedef struct {
     static const int outerThickness = 3;
     cv::circle(image, center, outerRadius, colorRed,
                outerThickness, lineKind, shift);
-}
-
-// Discover circles in gray using the Hough transform and return a copy of
-// image after drawing the discovered circles on it.
-//
-- (cv::Mat) drawHoughCircles: (cv::Mat &) gray: (cv::Mat &)image
-{
-    static const int method = CV_HOUGH_GRADIENT;
-    static const double dotPitchRatio = 1.0;
-    static const double minDistance = 3.0;
-    static const double param1 = 200.0;
-    static const double param2 = 44.0;
-    static const int minRadius = 10;
-    static const int maxRadius = 50;
-    std::vector<cv::Vec3f> circles;
-    cv::HoughCircles(gray, circles, method, dotPitchRatio, minDistance,
-                     param1, param2, minRadius, maxRadius);
-    std::cout << "circles.size() == " << circles.size() << std::endl;
-    cv::Mat result;
-    image.copyTo(result);
-    for (int i = 0; i < circles.size(); ++i) [self drawCircle:result :circles[i]];
-    return result;
-}
-
-// Return a grayscale copy of image blurred with a 7x7 kernel.
-//
-- (cv::Mat) blurGray: (cv::Mat &) image
-{
-    cv::Mat gray, result;
-    cv::cvtColor(image, gray, cv::COLOR_BGRA2GRAY);
-    static const cv::Size kernelSize(7, 7);
-    static const double sigmaX = 2.0;
-    static const double sigmaY = 2.0;
-    cv::GaussianBlur(gray, result, kernelSize, sigmaX, sigmaY);
-    
-    cv::Canny(result, result, 0, 30, 3);
-    
-    return result;
 }
 
 @end
