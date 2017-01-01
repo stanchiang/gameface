@@ -35,8 +35,7 @@ class PostGameView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.backgroundColor = UIColor.lightGray
-//        self.blurView()
+        self.blurView()
         
         restartButton.translatesAutoresizingMaskIntoConstraints = false
         restartButton.contentMode = .scaleAspectFit
@@ -65,6 +64,8 @@ class PostGameView: UIView {
         continueButton.imageEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset)
         continueButton.addTarget(self, action: #selector(restartAction(_:)), for: .touchUpInside)
         continueButton.backgroundColor = UIColor.clear
+        continueButton.layer.borderColor = UIColor.red.cgColor
+        continueButton.layer.borderWidth = 5.0
         addSubview(continueButton)
         
         continueTimer = KDCircularProgress()
@@ -72,14 +73,15 @@ class PostGameView: UIView {
         continueTimer.startAngle = -90
         continueTimer.progressThickness = 0.3
         continueTimer.trackThickness = 0.3
-        continueTimer.trackColor = UIColor.red
-        continueTimer.progressColors = [UIColor.lightGray]
+        continueTimer.trackColor = UIColor.white
         continueTimer.clockwise = true
         continueTimer.roundedCorners = false
         continueTimer.glowMode = .noGlow
         addSubview(continueTimer)
         
+        
     }
+    
 
     func loadVideo(_ previewURL: URL){
         videoURL = previewURL

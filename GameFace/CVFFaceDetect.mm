@@ -157,7 +157,7 @@ typedef struct {
         cv::circle(mat, tracker.facePosition(), 30, cv::Scalar(0, 255, 0), 5);
         [self.delegate hasDetectedFace:true];
     
-    } else if(false) {
+//    } else if(false) {
         
         dlib::cv_image<dlib::bgr_pixel> dlibMat(mat);
         

@@ -166,6 +166,12 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         powerUp2.layer.borderColor = UIColor.black.cgColor
         powerUp2.layer.borderWidth = 3
         powerUp2.layer.cornerRadius = powerUp2.frame.width / 2
+        
+        if postGameModal != nil {
+            postGameModal.layoutSubviews()
+            postGameModal.continueButton.layer.cornerRadius = postGameModal.continueButton.frame.size.width / 2
+            postGameModal.continueButton.layoutIfNeeded()
+        }
     }
     
     //MARK: Collection View Delegate
