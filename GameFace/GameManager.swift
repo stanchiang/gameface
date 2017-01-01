@@ -95,7 +95,7 @@ class GameManager: SKScene, GameSceneDelegate {
         let strSeconds = String(format: "%02d", parsedTime.1)
         let strFraction = String(format: "%02d", parsedTime.2)
 
-        highScoreOnStart.text = "highscore: \(strMinutes).\(strSeconds).\(strFraction)"
+        highScoreOnStart.text = "highscore: \(strMinutes).\(strSeconds).\(strFraction) | \(appDelegate.credits)"
         highScoreOnStart.fontColor = UIColor(netHex: 0x5C5854)
         highScoreOnStart.fontSize = 20
         addChild(highScoreOnStart)
@@ -139,8 +139,7 @@ class GameManager: SKScene, GameSceneDelegate {
             scoreValue.text = "🎉🎉\(strMinutes).\(strSeconds).\(strFraction)🎉🎉"
         } else {
             scoreValue.text = "\(strMinutes).\(strSeconds).\(strFraction)"
-        }
-        
+        }        
     }
     
     func updateTimer(_ rate: Double) {

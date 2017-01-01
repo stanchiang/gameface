@@ -287,6 +287,14 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
             appDelegate.userDefaults.set(0, forKey: "highScore")
         }
         
+        if let credits:Int = appDelegate.userDefaults.integer(forKey: "credits") {
+//            print("load total credits \(credits)")
+            appDelegate.credits = credits
+        } else {
+//            print("init total credits")
+            appDelegate.userDefaults.set(0, forKey: "credits")
+        }
+        
         return managerView
     }
     
@@ -299,8 +307,6 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         let powerUpSize = CGSize(width: size.width / 4, height: size.width / 4)
         
         spacer1.frame = CGRect(origin: CGPoint.zero, size: spacerSize)
-//        spacer1.backgroundColor = UIColor.blue
-//        spacer1.alpha = 0.5
         powerupView.addSubview(spacer1)
         
         let shades = UIImage(named: "shades")
@@ -313,8 +319,6 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         spacer1.addSubview(powerUp1)
 
         spacer2.frame = CGRect(origin: CGPoint(x: size.width / 2, y: 0), size: spacerSize)
-//        spacer2.backgroundColor = UIColor.orange
-//        spacer2.alpha = 0.5
         powerupView.addSubview(spacer2)
         
         let mustache = UIImage(named: "mustache")
@@ -374,6 +378,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     func initNewGame(){
         appDelegate.currentScore = 0
         appDelegate.mouth = []
+        appDelegate.activePowerups = []
         gamePlayArray = []
         
         if postGameModal != nil {
@@ -407,6 +412,9 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
             appDelegate.userDefaults.set(appDelegate.currentScore, forKey: "highScore")
             print("updated high score \(appDelegate.currentScore)")
         }
+        
+        //update total credits
+        appDelegate.userDefaults.set(appDelegate.credits, forKey: "credits")
         
         //destroy current game
         destroyGame()

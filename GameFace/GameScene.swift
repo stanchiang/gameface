@@ -180,6 +180,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         triggerShrink(sprite: sprite)
         sprite.removeFromParent()
         sceneDelegate?.updateTimer((gameVarDelegate?.getGameScoreBonus())! / 10.0)
+        addCredit(by: 1)
     }
     
     func registerBadOutcome(sprite: SKSpriteNode) {
@@ -190,6 +191,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     
     func registerNeutralOutcome(sprite: SKSpriteNode) {
         sprite.removeFromParent()
+    }
+    
+    func addCredit(by amount:Int){
+        appDelegate.credits += amount
+        print("total credits: \(appDelegate.credits)")
     }
     
     func didBegin(_ contact: SKPhysicsContact) {

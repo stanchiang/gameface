@@ -61,6 +61,8 @@
 		F6C0A0571DCFF60D003F00FA /* BCMeshTransformView.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C0A04B1DCFF60D003F00FA /* BCMeshTransformView.m */; };
 		F6C0A0581DCFF60D003F00FA /* BCMutableMeshTransform+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C0A04D1DCFF60D003F00FA /* BCMutableMeshTransform+Convenience.m */; };
 		F6E540991E17156E00F78577 /* FaceTracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6E540981E17156E00F78577 /* FaceTracker.cpp */; };
+		F6E540D51E18D16C00F78577 /* PowerUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E540D41E18D16C00F78577 /* PowerUpView.swift */; };
+		F6E540D71E18D24B00F78577 /* PowerUpManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E540D61E18D24B00F78577 /* PowerUpManagerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -146,6 +148,8 @@
 		F6C0A04D1DCFF60D003F00FA /* BCMutableMeshTransform+Convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BCMutableMeshTransform+Convenience.m"; sourceTree = "<group>"; };
 		F6E540971E17156E00F78577 /* FaceTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaceTracker.h; sourceTree = "<group>"; };
 		F6E540981E17156E00F78577 /* FaceTracker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FaceTracker.cpp; sourceTree = "<group>"; };
+		F6E540D41E18D16C00F78577 /* PowerUpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PowerUpView.swift; sourceTree = "<group>"; };
+		F6E540D61E18D24B00F78577 /* PowerUpManagerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PowerUpManagerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -270,6 +274,8 @@
 			children = (
 				F669C03B1DB1698D001161E1 /* CustomCollectionViewCell.swift */,
 				F669C0381DB15C3D001161E1 /* GameGallery.swift */,
+				F6E540D41E18D16C00F78577 /* PowerUpView.swift */,
+				F6E540D61E18D24B00F78577 /* PowerUpManagerView.swift */,
 				F63CE9401DBED65700582F22 /* PostGameView.swift */,
 			);
 			name = collectionView;
@@ -473,6 +479,7 @@
 				F679543A1DBE7AAA0075870B /* RenderSettings.swift in Sources */,
 				F68975F01DCD168900D9B542 /* PlayFabVersion.m in Sources */,
 				F6E540991E17156E00F78577 /* FaceTracker.cpp in Sources */,
+				F6E540D71E18D24B00F78577 /* PowerUpManagerView.swift in Sources */,
 				F63B9CB51E11AEDB0088A6FF /* KDCircularProgress.swift in Sources */,
 				F67EA2711DB3DF39006DE24B /* CVFFaceDetect.mm in Sources */,
 				F6772BC01DB207AC00328961 /* DebugView.swift in Sources */,
@@ -502,6 +509,7 @@
 				F68975EA1DCD168900D9B542 /* PlayFabClientAPI.m in Sources */,
 				A56695F01CE8B34B00BD7EAF /* AppDelegate.swift in Sources */,
 				F669C0391DB15C3D001161E1 /* GameGallery.swift in Sources */,
+				F6E540D51E18D16C00F78577 /* PowerUpView.swift in Sources */,
 				F68975EF1DCD168900D9B542 /* PlayFabSettings.m in Sources */,
 				F6339D941D590587006C4231 /* Randomizer.swift in Sources */,
 				F68975E81DCD168900D9B542 /* JAGPropertyFinder.m in Sources */,
