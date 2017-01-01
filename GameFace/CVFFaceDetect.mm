@@ -45,6 +45,10 @@ dlib::full_object_detection shape;
 
 FaceTracker tracker;
 
+Mat frame, converted, skinMask, kernel, skin;
+Scalar lower(0, 48, 80);
+Scalar upper(20, 255, 255);
+
 // Anthropometric for male adult
 // Relative position of various facial feature relative to sellion
 // Values taken from https://en.wikipedia.org/wiki/Human_head
@@ -118,11 +122,23 @@ typedef struct {
         _inited = true;
     }
 
-    cvtColor(mat, mat, CV_BGR2RGB);
+//    cvtColor(mat, mat, CV_BGR2RGB);
     
     tracker.getFrameAndDetect(mat);
+    
+    cvtColor(mat, converted, CV_BGR2HSV);
+    //cvtColor(mat, converted, CV_BGR2Lab); lab detects my hair (black) for some reason
+    inRange(converted, lower, upper, skinMask);
+    
+    kernel = getStructuringElement(MORPH_ELLIPSE, cv::Size(3,3));
+    erode(skinMask, skinMask, kernel, cv::Point(-1,-1), 2);
+    dilate(skinMask, skinMask, kernel, cv::Point(-1,-1), 2);
+//    morphologyEx(skinMask, skinMask, CV_MOP_OPEN, kernel, cv::Point(-1, -1), 2);
+    GaussianBlur(skinMask, skinMask, cv::Size(3,3), 0);
+    
     if (tracker.isFaceFound())
     {
+    } else if (false) {
         if (tracker.isTouchingBorder()) {
             //touching edge
             cv::rectangle(mat, tracker.face(), cv::Scalar(255, 0, 0), 3);
@@ -157,7 +173,7 @@ typedef struct {
         cv::circle(mat, tracker.facePosition(), 30, cv::Scalar(0, 255, 0), 5);
         [self.delegate hasDetectedFace:true];
     
-//    } else if(false) {
+    } else if(false) {
         
         dlib::cv_image<dlib::bgr_pixel> dlibMat(mat);
         
@@ -226,7 +242,7 @@ typedef struct {
 //    cv::Mat circles = [self drawHoughCircles:blurred :mat];
     }
     
-    [self matReady:mat];
+    [self matReady:skinMask];
 
 }
 
