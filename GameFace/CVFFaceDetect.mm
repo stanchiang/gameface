@@ -45,7 +45,7 @@ dlib::full_object_detection shape;
 
 FaceTracker tracker;
 
-Mat frame, converted, skinMask, kernel, skin;
+Mat converted, skinMask, kernel, skinMaskFaceBottom;
 Scalar lower(0, 48, 80);
 Scalar upper(20, 255, 255);
 
@@ -102,9 +102,9 @@ typedef struct {
         NSString* haarDataPath =
 //        [[NSBundle mainBundle] pathForResource:@"haarcascade_frontalface_alt.xml" ofType:nil];
         
-        [[NSBundle mainBundle] pathForResource:@"mallick_haarcascade_frontalface_alt.xml" ofType:nil];
-//        [[NSBundle mainBundle] pathForResource:@"mallick_haarcascade_profileface.xml" ofType:nil];
-
+//        [[NSBundle mainBundle] pathForResource:@"mallick_haarcascade_frontalface_alt.xml" ofType:nil];
+        [[NSBundle mainBundle] pathForResource:@"mallick_lbpcascade_frontalface.xml" ofType:nil];
+        
         cascade.load([haarDataPath UTF8String]);
         tracker.setFaceCascade([haarDataPath UTF8String]);
         
@@ -122,23 +122,14 @@ typedef struct {
         _inited = true;
     }
 
-//    cvtColor(mat, mat, CV_BGR2RGB);
+    cvtColor(mat, mat, CV_BGR2RGB);
     
     tracker.getFrameAndDetect(mat);
     
-    cvtColor(mat, converted, CV_BGR2HSV);
-    //cvtColor(mat, converted, CV_BGR2Lab); lab detects my hair (black) for some reason
-    inRange(converted, lower, upper, skinMask);
-    
-    kernel = getStructuringElement(MORPH_ELLIPSE, cv::Size(3,3));
-    erode(skinMask, skinMask, kernel, cv::Point(-1,-1), 2);
-    dilate(skinMask, skinMask, kernel, cv::Point(-1,-1), 2);
-//    morphologyEx(skinMask, skinMask, CV_MOP_OPEN, kernel, cv::Point(-1, -1), 2);
-    GaussianBlur(skinMask, skinMask, cv::Size(3,3), 0);
     
     if (tracker.isFaceFound())
     {
-    } else if (false) {
+//    } else if (false) {
         if (tracker.isTouchingBorder()) {
             //touching edge
             cv::rectangle(mat, tracker.face(), cv::Scalar(255, 0, 0), 3);
@@ -168,12 +159,30 @@ typedef struct {
                 cv::circle(mat, cv::Size(tracker.facePosition().x, bottomEdge), 3, cv::Scalar(0, 255, 0), 5);
             }
             
+            cvtColor(mat, converted, CV_RGB2HSV);
+            //cvtColor(mat, converted, CV_BGR2Lab); lab detects my hair (black) for some reason
+            inRange(converted, lower, upper, skinMask);
+            
+            kernel = getStructuringElement(MORPH_ELLIPSE, cv::Size(3,3));
+            erode(skinMask, skinMask, kernel, cv::Point(-1,-1), 2);
+            dilate(skinMask, skinMask, kernel, cv::Point(-1,-1), 2);
+            //    morphologyEx(skinMask, skinMask, CV_MOP_OPEN, kernel, cv::Point(-1, -1), 2); //faster than erode/dilate -- source pyimagesearch blog comment
+            GaussianBlur(skinMask, skinMask, cv::Size(3,3), 0);
+            skinMaskFaceBottom = skinMask(cv::Rect(tracker.face().x, tracker.face().y + tracker.face().height / 2, tracker.face().width , tracker.face().height / 2));
+            double totalpixels = skinMaskFaceBottom.rows * skinMaskFaceBottom.cols;
+            double whitepixels = countNonZero(skinMaskFaceBottom);
+            double percentBlackPixels = 1.0 - (whitepixels / totalpixels);
+            printf("blackpixels: %2f / %2f = %2f \n", whitepixels, totalpixels, percentBlackPixels);
+            if (percentBlackPixels > 0.3) {
+                printf("mouth open \n\n\n");
+            }
+            
         }
         
         cv::circle(mat, tracker.facePosition(), 30, cv::Scalar(0, 255, 0), 5);
         [self.delegate hasDetectedFace:true];
     
-    } else if(false) {
+//    } else if(false) {
         
         dlib::cv_image<dlib::bgr_pixel> dlibMat(mat);
         
@@ -239,8 +248,8 @@ typedef struct {
         [self pose:0 image:mat];
     
     }
-    
-    [self matReady:skinMask];
+//    mat = skinMask;
+    [self matReady:mat];
 
 }
 
@@ -406,32 +415,6 @@ typedef struct {
 
 -(Point2f) coordsOf: (size_t) face_idx feature: (FACIAL_FEATURE) feature {
     return [self toCv:shape.part(feature)];
-}
-
-
-// Draw circle (x, y, r) on image with a green center at (x, y) and a red
-// perimeter at radius r around the center.
-//
-- (void) drawCircle: (cv::Mat &) image: (cv::Vec3f &) circle
-{
-    //    std::cout << "circle == " << circle << std::endl;
-    const float centerX = circle[0];
-    const float centerY = circle[1];
-    const float fRadius = circle[2];
-    const cv::Point center(cvRound(centerX), cvRound(centerY));
-    static const int centerRadius = 3;
-    static const cv::Scalar colorGreen(0, 255, 0);
-    static const int centerThickness = CV_FILLED;
-    //    static const int lineKind = cv::LINE_8;
-    static const int lineKind = 8;
-    static const int shift = 0;
-    cv::circle(image, center, centerRadius, colorGreen,
-               centerThickness, lineKind, shift);
-    const int outerRadius = cvRound(fRadius);
-    static const cv::Scalar colorRed(0, 0, 255);
-    static const int outerThickness = 3;
-    cv::circle(image, center, outerRadius, colorRed,
-               outerThickness, lineKind, shift);
 }
 
 @end
