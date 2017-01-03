@@ -63,7 +63,9 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     var postGameModal:PostGameView!
     
     var testWarp:BCMutableMeshTransform!
-
+    
+    var powerUpAreaView:PowerUpView!
+    
     var spacer1:UIView = UIView()
     var powerUp1:UIButton = UIButton()
     
@@ -171,7 +173,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
             postGameModal.layoutSubviews()
             postGameModal.continueButton.layer.cornerRadius = postGameModal.continueButton.frame.size.width / 2
             postGameModal.continueButton.layoutIfNeeded()
-        }
+        }        
     }
     
     //MARK: Collection View Delegate
@@ -208,6 +210,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
             cell.contentView.addSubview(setupGameLayer())
             cell.contentView.addSubview(setupGameManager())
             cell.contentView.addSubview(setupPowerupView())
+            cell.contentView.addSubview(setupPUV())
             
             scene.sceneDelegate = manager
             scene.gameVarDelegate = debugView
@@ -331,6 +334,12 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         spacer2.addSubview(powerUp2)
 
         return powerupView
+    }
+    
+    func setupPUV() -> UIView {
+        let size = self.view.frame.size
+        powerUpAreaView = PowerUpView(frame: CGRect(x: 0, y: size.height - size.width / 2, width: size.width, height: size.width / 2))
+        return powerUpAreaView
     }
     
     func midpoint(p1:CGPoint, p2:CGPoint) -> CGPoint{

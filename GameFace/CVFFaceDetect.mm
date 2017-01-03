@@ -406,6 +406,11 @@ typedef struct {
     
 //    putText(image, "(" + to_string(int(pose(0,3) * 100)) + "cm, " + to_string(int(pose(1,3) * 100)) + "cm, " + to_string(int(pose(2,3) * 100)) + "cm)", [self coordsOf:face_idx feature:SELLION], FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0,0,255),2);
 //    printf("(%i cm, %i cm, %i cm) \n", int(pose(0,3) * 100), int(pose(1,3) * 100), int(pose(2,3) * 100));
+    
+//    printf("red (left/right) %i cm \n", int(pose(0,3) * 100));
+//    printf("green (up/down) %i cm \n", int(pose(1,3) * 100));
+//    printf("blue (clockwise/ counterclockwise) %i cm \n", int(pose(2,3) * 100));
+    
     head_pose pose_head	=	{pose,	// transformation matrix
         tvec,	// vector with translations
         rvec};	// vector with rotations

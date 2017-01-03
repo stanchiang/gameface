@@ -128,3 +128,9 @@ extension Array where Element: Equatable {
         }
     }
 }
+
+extension CGPoint {
+    func midpoint(with point: CGPoint) -> CGPoint {
+        return CGPoint( x: (self.x + point.x)/2, y: (self.y + point.y)/2)
+    }
+}
