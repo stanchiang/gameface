@@ -12,9 +12,9 @@ class PowerUpView: UIView {
     
     var spacer:UIView = UIView()
     var powerUpManagerButton:UIButton = UIButton()
-    
     var powerUpSize:CGSize!
-    
+    var powerUpManagerView:UIView = UIView()
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -46,6 +46,7 @@ class PowerUpView: UIView {
     
     func loadPowerUpManagerView(sender: UIButton) {
         print("load manager")
+        (appDelegate.window?.rootViewController as! GameGallery).loadPowerUpManager()
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -64,14 +64,14 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     
     var testWarp:BCMutableMeshTransform!
     
-    var powerUpAreaView:PowerUpView!
-    
     var spacer1:UIView = UIView()
     var powerUp1:UIButton = UIButton()
     
     var spacer2:UIView = UIView()
     var powerUp2:UIButton = UIButton()
     
+    
+    var powerupUpManagerView:PowerUpManagerView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -153,6 +153,13 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
             postGameModal.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
             postGameModal.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
             postGameModal.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor).isActive = true
+        }
+        
+        if powerupUpManagerView != nil {
+            powerupUpManagerView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+            powerupUpManagerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+            powerupUpManagerView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
+            powerupUpManagerView.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor).isActive = true
         }
     }
     
@@ -301,6 +308,12 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         return managerView
     }
     
+    func loadPowerUpManager() {
+        powerupUpManagerView = PowerUpManagerView()
+        powerupUpManagerView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(powerupUpManagerView)
+    }
+    
     func setupPowerupView() -> UIView {
         let size = self.view.frame.size
         powerupView = UIView(frame: CGRect(x: 0, y: size.height - size.width / 2, width: size.width, height: size.width / 2))
@@ -338,8 +351,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     
     func setupPUV() -> UIView {
         let size = self.view.frame.size
-        powerUpAreaView = PowerUpView(frame: CGRect(x: 0, y: size.height - size.width / 2, width: size.width, height: size.width / 2))
-        return powerUpAreaView
+        return PowerUpView(frame: CGRect(x: 0, y: size.height - size.width / 2, width: size.width, height: size.width / 2))
     }
     
     func midpoint(p1:CGPoint, p2:CGPoint) -> CGPoint{
