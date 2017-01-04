@@ -217,7 +217,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
             cell.contentView.addSubview(setupGameLayer())
             cell.contentView.addSubview(setupGameManager())
             cell.contentView.addSubview(setupPowerupView())
-            cell.contentView.addSubview(setupPUV())
+//            cell.contentView.addSubview(setupPUV())
             
             scene.sceneDelegate = manager
             scene.gameVarDelegate = debugView

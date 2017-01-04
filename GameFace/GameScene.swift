@@ -82,7 +82,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     }
     
     func setupInterface(){        
-        physicsWorld.gravity = CGVector(dx: 0, dy: 0)
+//        physicsWorld.gravity = CGVector(dx: 0, dy: 0)
         physicsWorld.contactDelegate = self
     }
     
@@ -134,7 +134,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         }
         
         self.addChild(sprite)
-        spriteRunAction(sprite: sprite, path: path, key: "orig")
+//        spriteRunAction(sprite: sprite, path: path, key: "orig")
     }
     
     func spriteRunAction(sprite:SKSpriteNode, path:CGPath, key: String) {
@@ -280,14 +280,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             
             for node in allNodes {
                 if node is SKSpriteNode {
-                    if (node.physicsBody?.categoryBitMask)! > 0 { node.speed = sceneDelegate!.getSpeed() }
-                    if !mouth.isEmpty && (node.physicsBody?.categoryBitMask)! == 1 && appDelegate.activePowerups.contains(PowerUp.catchall) {
-                        if (node.action(forKey: "orig") != nil) {
-                            node.removeAllActions()
-                            let newPath = arcBetweenPoints(fromPoint: node.position, toPoint: self.view!.convert( calcCenter(point1: mouth[2], point2: mouth[6]), to: self))
-                            spriteRunAction(sprite: node as! SKSpriteNode, path: newPath, key: "catchAll")
+                    if (node.physicsBody?.categoryBitMask)! > 0 {
+//                        node.speed = sceneDelegate!.getSpeed()
+                        if node.position.y < 200 {
+                            node.removeFromParent()
+                        }
+                        
+                        if appDelegate.activePowerups.contains(.slomo) {
+                            node.physicsBody?.velocity.dy *= 0.5
                         }
                     }
+                    
+                    if appDelegate.activePowerups.contains(.catchall) {
+//                        node.physicsBody
+                    }
+                    
+//                    if !mouth.isEmpty && (node.physicsBody?.categoryBitMask)! == 1 && appDelegate.activePowerups.contains(PowerUp.catchall) {
+//                        if (node.action(forKey: "orig") != nil) {
+//                            node.removeAllActions()
+//                            let newPath = arcBetweenPoints(fromPoint: node.position, toPoint: self.view!.convert( calcCenter(point1: mouth[2], point2: mouth[6]), to: self))
+//                            spriteRunAction(sprite: node as! SKSpriteNode, path: newPath, key: "catchAll")
+//                        }
+//                    }
                 }
             }
             
