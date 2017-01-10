@@ -19,6 +19,7 @@
 		F6339D941D590587006C4231 /* Randomizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6339D931D590587006C4231 /* Randomizer.swift */; };
 		F6339DA71D5905C5006C4231 /* candyEater.sks in Resources */ = {isa = PBXBuildFile; fileRef = F6339D9B1D5905C5006C4231 /* candyEater.sks */; };
 		F63847B31DBFD27600C86015 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63847B21DBFD27600C86015 /* Extensions.swift */; };
+		F63AD7411E24E0C300F583AD /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F63AD7401E24E0C300F583AD /* libjpeg.a */; };
 		F63B9CAA1E119B8D0088A6FF /* mallick_lbpcascade_frontalface.xml in Resources */ = {isa = PBXBuildFile; fileRef = F63B9CA81E119B8D0088A6FF /* mallick_lbpcascade_frontalface.xml */; };
 		F63B9CAB1E119B8D0088A6FF /* mallick_lbpcascade_profileface.xml in Resources */ = {isa = PBXBuildFile; fileRef = F63B9CA91E119B8D0088A6FF /* mallick_lbpcascade_profileface.xml */; };
 		F63B9CAD1E119C870088A6FF /* mallick_haarcascade_frontalface_alt.xml in Resources */ = {isa = PBXBuildFile; fileRef = F63B9CAC1E119C870088A6FF /* mallick_haarcascade_frontalface_alt.xml */; };
@@ -60,6 +61,8 @@
 		F6C0A0561DCFF60D003F00FA /* BCMeshTransformAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C0A0491DCFF60D003F00FA /* BCMeshTransformAnimation.m */; };
 		F6C0A0571DCFF60D003F00FA /* BCMeshTransformView.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C0A04B1DCFF60D003F00FA /* BCMeshTransformView.m */; };
 		F6C0A0581DCFF60D003F00FA /* BCMutableMeshTransform+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = F6C0A04D1DCFF60D003F00FA /* BCMutableMeshTransform+Convenience.m */; };
+		F6D2A8481E24DDEE00939B9F /* FaceDetectorAndTracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6D2A8461E24DDEE00939B9F /* FaceDetectorAndTracker.cpp */; };
+		F6D2A8491E24DDEE00939B9F /* FaceSwapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6D2A8471E24DDEE00939B9F /* FaceSwapper.cpp */; };
 		F6E540991E17156E00F78577 /* FaceTracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6E540981E17156E00F78577 /* FaceTracker.cpp */; };
 		F6E540D51E18D16C00F78577 /* PowerUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E540D41E18D16C00F78577 /* PowerUpView.swift */; };
 		F6E540D71E18D24B00F78577 /* PowerUpManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E540D61E18D24B00F78577 /* PowerUpManagerView.swift */; };
@@ -81,6 +84,7 @@
 		F6339D931D590587006C4231 /* Randomizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Randomizer.swift; sourceTree = "<group>"; };
 		F6339D9B1D5905C5006C4231 /* candyEater.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = candyEater.sks; sourceTree = "<group>"; };
 		F63847B21DBFD27600C86015 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		F63AD7401E24E0C300F583AD /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libjpeg.a; sourceTree = "<group>"; };
 		F63B9CA81E119B8D0088A6FF /* mallick_lbpcascade_frontalface.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mallick_lbpcascade_frontalface.xml; sourceTree = "<group>"; };
 		F63B9CA91E119B8D0088A6FF /* mallick_lbpcascade_profileface.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mallick_lbpcascade_profileface.xml; sourceTree = "<group>"; };
 		F63B9CAC1E119C870088A6FF /* mallick_haarcascade_frontalface_alt.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mallick_haarcascade_frontalface_alt.xml; sourceTree = "<group>"; };
@@ -146,6 +150,10 @@
 		F6C0A04B1DCFF60D003F00FA /* BCMeshTransformView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCMeshTransformView.m; sourceTree = "<group>"; };
 		F6C0A04C1DCFF60D003F00FA /* BCMutableMeshTransform+Convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BCMutableMeshTransform+Convenience.h"; sourceTree = "<group>"; };
 		F6C0A04D1DCFF60D003F00FA /* BCMutableMeshTransform+Convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BCMutableMeshTransform+Convenience.m"; sourceTree = "<group>"; };
+		F6D2A8441E24DDEE00939B9F /* FaceDetectorAndTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaceDetectorAndTracker.h; sourceTree = "<group>"; };
+		F6D2A8451E24DDEE00939B9F /* FaceSwapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaceSwapper.h; sourceTree = "<group>"; };
+		F6D2A8461E24DDEE00939B9F /* FaceDetectorAndTracker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FaceDetectorAndTracker.cpp; sourceTree = "<group>"; };
+		F6D2A8471E24DDEE00939B9F /* FaceSwapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FaceSwapper.cpp; sourceTree = "<group>"; };
 		F6E540971E17156E00F78577 /* FaceTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaceTracker.h; sourceTree = "<group>"; };
 		F6E540981E17156E00F78577 /* FaceTracker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FaceTracker.cpp; sourceTree = "<group>"; };
 		F6E540D41E18D16C00F78577 /* PowerUpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PowerUpView.swift; sourceTree = "<group>"; };
@@ -158,6 +166,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F64C2F391DADCFA7006E1021 /* opencv2.framework in Frameworks */,
+				F63AD7411E24E0C300F583AD /* libjpeg.a in Frameworks */,
 				A5A1B2D61CEA41E200626AC5 /* Accelerate.framework in Frameworks */,
 				A5A1B2D41CEA35B300626AC5 /* libdlib.a in Frameworks */,
 			);
@@ -214,6 +223,7 @@
 			isa = PBXGroup;
 			children = (
 				A5A1B2D31CEA35B300626AC5 /* libdlib.a */,
+				F63AD7401E24E0C300F583AD /* libjpeg.a */,
 				F64C2F381DADCFA7006E1021 /* opencv2.framework */,
 				A5A1B2D51CEA41E200626AC5 /* Accelerate.framework */,
 			);
@@ -265,6 +275,10 @@
 			children = (
 				F6E540971E17156E00F78577 /* FaceTracker.h */,
 				F6E540981E17156E00F78577 /* FaceTracker.cpp */,
+				F6D2A8441E24DDEE00939B9F /* FaceDetectorAndTracker.h */,
+				F6D2A8451E24DDEE00939B9F /* FaceSwapper.h */,
+				F6D2A8461E24DDEE00939B9F /* FaceDetectorAndTracker.cpp */,
+				F6D2A8471E24DDEE00939B9F /* FaceSwapper.cpp */,
 			);
 			name = FaceTracker;
 			sourceTree = "<group>";
@@ -482,6 +496,7 @@
 				F6E540D71E18D24B00F78577 /* PowerUpManagerView.swift in Sources */,
 				F63B9CB51E11AEDB0088A6FF /* KDCircularProgress.swift in Sources */,
 				F67EA2711DB3DF39006DE24B /* CVFFaceDetect.mm in Sources */,
+				F6D2A8481E24DDEE00939B9F /* FaceDetectorAndTracker.cpp in Sources */,
 				F6772BC01DB207AC00328961 /* DebugView.swift in Sources */,
 				F6C0A0541DCFF60D003F00FA /* BCMeshTransform+Interpolation.m in Sources */,
 				F6339D921D590573006C4231 /* GameScene.swift in Sources */,
@@ -491,6 +506,7 @@
 				F63CE9411DBED65700582F22 /* PostGameView.swift in Sources */,
 				F63847B31DBFD27600C86015 /* Extensions.swift in Sources */,
 				F6C0A0571DCFF60D003F00FA /* BCMeshTransformView.m in Sources */,
+				F6D2A8491E24DDEE00939B9F /* FaceSwapper.cpp in Sources */,
 				F68975EE1DCD168900D9B542 /* PlayFabSDK.m in Sources */,
 				F679543B1DBE7AAA0075870B /* VideoWriter.swift in Sources */,
 				F6C0A0551DCFF60D003F00FA /* BCMeshTransform.mm in Sources */,
@@ -627,6 +643,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -651,13 +668,14 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/gameface/lib",
+					"$(PROJECT_DIR)/GameFace",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.stan.gameface;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "gameface/gameface-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -665,6 +683,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -689,12 +708,13 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/gameface/lib",
+					"$(PROJECT_DIR)/GameFace",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.stan.gameface;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "gameface/gameface-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

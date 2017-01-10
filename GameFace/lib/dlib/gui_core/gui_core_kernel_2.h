@@ -7,10 +7,10 @@
 #error "DLIB_ISO_CPP_ONLY is defined so you can't use this OS dependent code.  Turn DLIB_ISO_CPP_ONLY off if you want to use it."
 #endif
 
-#ifdef DLIB_NO_GUI_SUPPORT
-#error "DLIB_NO_GUI_SUPPORT is defined so you can't use the GUI code.  Turn DLIB_NO_GUI_SUPPORT off if you want to use it."
-#error "Also make sure you have libx11-dev installed on your system"
-#endif
+//#ifdef DLIB_NO_GUI_SUPPORT
+//#error "DLIB_NO_GUI_SUPPORT is defined so you can't use the GUI code.  Turn DLIB_NO_GUI_SUPPORT off if you want to use it."
+//#error "Also make sure you have libx11-dev installed on your system"
+//#endif
 
 #include <string>
 
