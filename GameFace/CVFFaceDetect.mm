@@ -124,8 +124,17 @@ typedef struct {
 
     cvtColor(mat, mat, CV_BGR2RGB);
     
-    tracker.getFrameAndDetect(mat);
+    cvtColor(mat, converted, CV_RGB2HSV);
+    //cvtColor(mat, converted, CV_BGR2Lab); lab detects my hair (black) for some reason
+    inRange(converted, lower, upper, skinMask);
     
+    kernel = getStructuringElement(MORPH_ELLIPSE, cv::Size(3,3));
+    erode(skinMask, skinMask, kernel, cv::Point(-1,-1), 2);
+    dilate(skinMask, skinMask, kernel, cv::Point(-1,-1), 2);
+    //    morphologyEx(skinMask, skinMask, CV_MOP_OPEN, kernel, cv::Point(-1, -1), 2); //faster than erode/dilate -- source pyimagesearch blog comment
+    GaussianBlur(skinMask, skinMask, cv::Size(3,3), 0);
+
+    tracker.getFrameAndDetect(mat);
     
     if (tracker.isFaceFound())
     {
@@ -135,51 +144,60 @@ typedef struct {
             cv::rectangle(mat, tracker.face(), cv::Scalar(255, 0, 0), 3);
         } else {
             //normal box
+            Mat back;
+            cvtColor(mat, back, CV_HSV2RGB);
             cv::rectangle(mat, tracker.face(), cv::Scalar(0, 0, 255), 3);
-            
-            int padding = 50;
-            
-            int leftEdge = tracker.facePosition().x + tracker.face().width / 2.0;
-            if (leftEdge >= mat.cols - padding) {
-                cv::circle(mat, cv::Size(leftEdge, tracker.facePosition().y), 3, cv::Scalar(0, 255, 0), 5);
-            }
-            
-            int rightEdge = tracker.facePosition().x - tracker.face().width / 2.0;
-            if ( rightEdge <= 0 + padding) {
-                cv::circle(mat, cv::Size(rightEdge, tracker.facePosition().y), 3, cv::Scalar(0, 255, 0), 5);
-            }
-            
-            int topEdge = tracker.facePosition().y - tracker.face().height / 2.0;
-            if (topEdge <= 0 + padding) {
-                cv::circle(mat, cv::Size(tracker.facePosition().x, topEdge), 3, cv::Scalar(0, 255, 0), 5);
-            }
-            
-            int bottomEdge = tracker.facePosition().y + tracker.face().height / 2.0;
-            if (bottomEdge >= mat.rows - padding) {
-                cv::circle(mat, cv::Size(tracker.facePosition().x, bottomEdge), 3, cv::Scalar(0, 255, 0), 5);
-            }
-            
-            cvtColor(mat, converted, CV_RGB2HSV);
-            //cvtColor(mat, converted, CV_BGR2Lab); lab detects my hair (black) for some reason
-            inRange(converted, lower, upper, skinMask);
-            
-            kernel = getStructuringElement(MORPH_ELLIPSE, cv::Size(3,3));
-            erode(skinMask, skinMask, kernel, cv::Point(-1,-1), 2);
-            dilate(skinMask, skinMask, kernel, cv::Point(-1,-1), 2);
-            //    morphologyEx(skinMask, skinMask, CV_MOP_OPEN, kernel, cv::Point(-1, -1), 2); //faster than erode/dilate -- source pyimagesearch blog comment
-            GaussianBlur(skinMask, skinMask, cv::Size(3,3), 0);
-            skinMaskFaceBottom = skinMask(cv::Rect(tracker.face().x, tracker.face().y + tracker.face().height / 2, tracker.face().width , tracker.face().height / 2));
-            double totalpixels = skinMaskFaceBottom.rows * skinMaskFaceBottom.cols;
-            double whitepixels = countNonZero(skinMaskFaceBottom);
-            double percentBlackPixels = 1.0 - (whitepixels / totalpixels);
-            printf("blackpixels: %2f / %2f = %2f \n", whitepixels, totalpixels, percentBlackPixels);
-            if (percentBlackPixels > 0.3) {
-                printf("mouth open \n\n\n");
-            }
+            cv::circle(mat, tracker.facePosition(), 30, cv::Scalar(0, 255, 0), 5);
+            Mat backFace = back(tracker.face());
+            cv::resize(backFace, backFace, cv::Size(backFace.rows / 4,backFace.cols / 4));
+            float H = [self face2Color:backFace];
+            lower = Scalar(H - 10, 100, 100);
+            upper = Scalar(H + 10, 255, 255);
+            printf("%f - %f - %f \n", lower[0], H, upper[0]);
+
+//            int padding = 50;
+//            
+//            int leftEdge = tracker.facePosition().x + tracker.face().width / 2.0;
+//            if (leftEdge >= mat.cols - padding) {
+//                cv::circle(mat, cv::Size(leftEdge, tracker.facePosition().y), 3, cv::Scalar(0, 255, 0), 5);
+//            }
+//            
+//            int rightEdge = tracker.facePosition().x - tracker.face().width / 2.0;
+//            if ( rightEdge <= 0 + padding) {
+//                cv::circle(mat, cv::Size(rightEdge, tracker.facePosition().y), 3, cv::Scalar(0, 255, 0), 5);
+//            }
+//            
+//            int topEdge = tracker.facePosition().y - tracker.face().height / 2.0;
+//            if (topEdge <= 0 + padding) {
+//                cv::circle(mat, cv::Size(tracker.facePosition().x, topEdge), 3, cv::Scalar(0, 255, 0), 5);
+//            }
+//            
+//            int bottomEdge = tracker.facePosition().y + tracker.face().height / 2.0;
+//            if (bottomEdge >= mat.rows - padding) {
+//                cv::circle(mat, cv::Size(tracker.facePosition().x, bottomEdge), 3, cv::Scalar(0, 255, 0), 5);
+//            }
+//            
+//            cvtColor(mat, converted, CV_RGB2HSV);
+//            //cvtColor(mat, converted, CV_BGR2Lab); lab detects my hair (black) for some reason
+//            inRange(converted, lower, upper, skinMask);
+//            
+//            kernel = getStructuringElement(MORPH_ELLIPSE, cv::Size(3,3));
+//            erode(skinMask, skinMask, kernel, cv::Point(-1,-1), 2);
+//            dilate(skinMask, skinMask, kernel, cv::Point(-1,-1), 2);
+//            //    morphologyEx(skinMask, skinMask, CV_MOP_OPEN, kernel, cv::Point(-1, -1), 2); //faster than erode/dilate -- source pyimagesearch blog comment
+//            GaussianBlur(skinMask, skinMask, cv::Size(3,3), 0);
+//            skinMaskFaceBottom = skinMask(cv::Rect(tracker.face().x, tracker.face().y + tracker.face().height / 2, tracker.face().width , tracker.face().height / 2));
+//            double totalpixels = skinMaskFaceBottom.rows * skinMaskFaceBottom.cols;
+//            double whitepixels = countNonZero(skinMaskFaceBottom);
+//            double percentBlackPixels = 1.0 - (whitepixels / totalpixels);
+//            printf("blackpixels: %2f / %2f = %2f \n", whitepixels, totalpixels, percentBlackPixels);
+//            if (percentBlackPixels > 0.3) {
+//                printf("mouth open \n\n\n");
+//            }
             
         }
         
-        cv::circle(mat, tracker.facePosition(), 30, cv::Scalar(0, 255, 0), 5);
+        
         [self.delegate hasDetectedFace:true];
     
 //    } else if(false) {
@@ -422,4 +440,50 @@ typedef struct {
     return [self toCv:shape.part(feature)];
 }
 
+-(float) face2Color: (Mat) face {
+    //http://stackoverflow.com/questions/10240912/input-matrix-to-opencv-kmeans-clustering/10242156#10242156
+    
+    Mat samples(face.rows * face.cols, 3, CV_32F);
+    for( int y = 0; y < face.rows; y++ )
+        for( int x = 0; x < face.cols; x++ )
+            for( int z = 0; z < 3; z++)
+                samples.at<float>(y + x*face.rows, z) = face.at<Vec3b>(y,x)[z];
+    
+    int clusterCount = 1;
+    Mat labels;
+    int attempts = 5;
+    Mat centers;
+    kmeans(samples, clusterCount, labels, TermCriteria(CV_TERMCRIT_ITER|CV_TERMCRIT_EPS, 10000, 0.0001), attempts, KMEANS_PP_CENTERS, centers );
+    
+    
+    int cluster_idx = labels.at<int>(0,0);
+    Scalar bgr2hsv(centers.at<float>(cluster_idx, 0), centers.at<float>(cluster_idx, 1), centers.at<float>(cluster_idx, 2));
+    
+    return [self rgb2hsv: bgr2hsv[2] : bgr2hsv[1] : bgr2hsv[0]];
+}
+
+//http://lolengine.net/blog/2013/01/13/fast-rgb-to-hsv
+-(float) rgb2hsv:(float)r :(float)g :(float)b {
+    float h, s, v;
+    
+    float K = 0.f;
+    
+    if (g < b)
+    {
+        std::swap(g, b);
+        K = -1.f;
+    }
+    
+    if (r < g)
+    {
+        std::swap(r, g);
+        K = -2.f / 6.f - K;
+    }
+    
+    float chroma = r - std::min(g, b);
+    h = fabs(K + (g - b) / (6.f * chroma + 1e-20f));
+    s = chroma / (r + 1e-20f);
+    v = r;
+    return h;
+}
 @end
