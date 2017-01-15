@@ -49,11 +49,11 @@ dlib::full_object_detection shape;
 
 FaceTracker tracker;
 
-const size_t num_faces = 2;
+//const size_t num_faces = 2;
 int i = 0;
 
 //FaceDetectorAndTracker detector([[[NSBundle mainBundle] pathForResource:@"mallick_lbpcascade_frontalface.xml" ofType:nil] UTF8String], 0, num_faces);
-FaceSwapper face_swapper([[[NSBundle mainBundle] pathForResource:@"shape_predictor_68_face_landmarks" ofType:@"dat"] UTF8String]);
+//FaceSwapper face_swapper([[[NSBundle mainBundle] pathForResource:@"shape_predictor_68_face_landmarks" ofType:@"dat"] UTF8String]);
 
 
 Mat converted, skinMask, kernel, skinMaskFaceBottom;
@@ -115,14 +115,14 @@ typedef struct {
 //        
 ////        [[NSBundle mainBundle] pathForResource:@"mallick_haarcascade_frontalface_alt.xml" ofType:nil];
         [[NSBundle mainBundle] pathForResource:@"mallick_lbpcascade_frontalface.xml" ofType:nil];
-//
+
         cascade.load([haarDataPath UTF8String]);
-//        tracker.setFaceCascade([haarDataPath UTF8String]);
-//        
-//        NSString *modelFileName = [[NSBundle mainBundle] pathForResource:@"shape_predictor_68_face_landmarks" ofType:@"dat"];
-//        modelFileNameCString = [modelFileName UTF8String];
-//        dlib::deserialize(modelFileNameCString) >> sp;
-//        
+        tracker.setFaceCascade([haarDataPath UTF8String]);
+
+        NSString *modelFileName = [[NSBundle mainBundle] pathForResource:@"shape_predictor_68_face_landmarks" ofType:@"dat"];
+        modelFileNameCString = [modelFileName UTF8String];
+        dlib::deserialize(modelFileNameCString) >> sp;
+
 ////        for (int i = 0; i < [self.delegate getDelaunayEdges].count; i++) {
 ////            NSMutableArray *m = [self.delegate getDelaunayEdges][i];
 ////            for (int j = 0; j < m.count; j++) {
@@ -134,180 +134,180 @@ typedef struct {
     }
 
     cvtColor(mat, mat, CV_BGR2RGB);
-    std::vector<cv::Rect> cv_faces;// = detector.faces();
-
-    Mat gray, smallImg( cvRound (mat.rows/scale), cvRound(mat.cols/scale), CV_8UC1 );
-    
-    cvtColor( mat, gray, CV_RGB2GRAY );
-    resize( gray, smallImg, smallImg.size(), 0, 0, INTER_LINEAR );
-    equalizeHist( smallImg, smallImg );
-    
-    cascade.detectMultiScale( smallImg, cv_faces,
-                             1.2, 2, 0
-                             //|CV_HAAR_FIND_BIGGEST_OBJECT
-                             //|CV_HAAR_DO_ROUGH_SEARCH
-                             |CV_HAAR_SCALE_IMAGE
-                             ,
-                             cv::Size(75, 75) );
-    for( vector<cv::Rect>::const_iterator r = cv_faces.begin(); r != cv_faces.end(); r++, i++ ) {
-        Mat smallImgROI;
-        vector<cv::Rect> nestedObjects;
-        cv::Point center;
-        Scalar color = Scalar(0,0,0);
-        int radius;
-        center.x = cvRound((r->x + r->width*0.5)*scale);
-        center.y = cvRound((r->y + r->height*0.5)*scale);
-        radius = cvRound((r->width + r->height)*0.25*scale);
-        circle( mat, center, radius, color, 3, 8, 0 );
-    }
-    
-    if (cv_faces.size() == num_faces) {
-        face_swapper.swapFaces(mat, cv_faces[0], cv_faces[1]);
-    }
+//    std::vector<cv::Rect> cv_faces;// = detector.faces();
 //
-//    cvtColor(mat, converted, CV_RGB2HSV);
-//    //cvtColor(mat, converted, CV_BGR2Lab); lab detects my hair (black) for some reason
-//    inRange(converted, lower, upper, skinMask);
+//    Mat gray, smallImg( cvRound (mat.rows/scale), cvRound(mat.cols/scale), CV_8UC1 );
 //    
-//    kernel = getStructuringElement(MORPH_ELLIPSE, cv::Size(3,3));
-//    erode(skinMask, skinMask, kernel, cv::Point(-1,-1), 2);
-//    dilate(skinMask, skinMask, kernel, cv::Point(-1,-1), 2);
-//    //    morphologyEx(skinMask, skinMask, CV_MOP_OPEN, kernel, cv::Point(-1, -1), 2); //faster than erode/dilate -- source pyimagesearch blog comment
-//    GaussianBlur(skinMask, skinMask, cv::Size(3,3), 0);
-//
-//    tracker.getFrameAndDetect(mat);
+//    cvtColor( mat, gray, CV_RGB2GRAY );
+//    resize( gray, smallImg, smallImg.size(), 0, 0, INTER_LINEAR );
+//    equalizeHist( smallImg, smallImg );
 //    
-//    if (tracker.isFaceFound())
-//    {
-////    } else if (false) {
-//        if (tracker.isTouchingBorder()) {
-//            //touching edge
-//            cv::rectangle(mat, tracker.face(), cv::Scalar(255, 0, 0), 3);
-//        } else {
-//            //normal box
-//            Mat back;
-//            cvtColor(mat, back, CV_HSV2RGB);
-//            cv::rectangle(mat, tracker.face(), cv::Scalar(0, 0, 255), 3);
-//            cv::circle(mat, tracker.facePosition(), 30, cv::Scalar(0, 255, 0), 5);
-//            Mat backFace = back(tracker.face());
-//            cv::resize(backFace, backFace, cv::Size(backFace.rows / 4,backFace.cols / 4));
-//            float H = [self face2Color:backFace];
-//            lower = Scalar(H - 10, 100, 100);
-//            upper = Scalar(H + 10, 255, 255);
-//            printf("%f - %f - %f \n", lower[0], H, upper[0]);
-//
-////            int padding = 50;
-////            
-////            int leftEdge = tracker.facePosition().x + tracker.face().width / 2.0;
-////            if (leftEdge >= mat.cols - padding) {
-////                cv::circle(mat, cv::Size(leftEdge, tracker.facePosition().y), 3, cv::Scalar(0, 255, 0), 5);
-////            }
-////            
-////            int rightEdge = tracker.facePosition().x - tracker.face().width / 2.0;
-////            if ( rightEdge <= 0 + padding) {
-////                cv::circle(mat, cv::Size(rightEdge, tracker.facePosition().y), 3, cv::Scalar(0, 255, 0), 5);
-////            }
-////            
-////            int topEdge = tracker.facePosition().y - tracker.face().height / 2.0;
-////            if (topEdge <= 0 + padding) {
-////                cv::circle(mat, cv::Size(tracker.facePosition().x, topEdge), 3, cv::Scalar(0, 255, 0), 5);
-////            }
-////            
-////            int bottomEdge = tracker.facePosition().y + tracker.face().height / 2.0;
-////            if (bottomEdge >= mat.rows - padding) {
-////                cv::circle(mat, cv::Size(tracker.facePosition().x, bottomEdge), 3, cv::Scalar(0, 255, 0), 5);
-////            }
-////            
-////            cvtColor(mat, converted, CV_RGB2HSV);
-////            //cvtColor(mat, converted, CV_BGR2Lab); lab detects my hair (black) for some reason
-////            inRange(converted, lower, upper, skinMask);
-////            
-////            kernel = getStructuringElement(MORPH_ELLIPSE, cv::Size(3,3));
-////            erode(skinMask, skinMask, kernel, cv::Point(-1,-1), 2);
-////            dilate(skinMask, skinMask, kernel, cv::Point(-1,-1), 2);
-////            //    morphologyEx(skinMask, skinMask, CV_MOP_OPEN, kernel, cv::Point(-1, -1), 2); //faster than erode/dilate -- source pyimagesearch blog comment
-////            GaussianBlur(skinMask, skinMask, cv::Size(3,3), 0);
-////            skinMaskFaceBottom = skinMask(cv::Rect(tracker.face().x, tracker.face().y + tracker.face().height / 2, tracker.face().width , tracker.face().height / 2));
-////            double totalpixels = skinMaskFaceBottom.rows * skinMaskFaceBottom.cols;
-////            double whitepixels = countNonZero(skinMaskFaceBottom);
-////            double percentBlackPixels = 1.0 - (whitepixels / totalpixels);
-////            printf("blackpixels: %2f / %2f = %2f \n", whitepixels, totalpixels, percentBlackPixels);
-////            if (percentBlackPixels > 0.3) {
-////                printf("mouth open \n\n\n");
-////            }
-//            
-//        }
-//        
-//        
-//        [self.delegate hasDetectedFace:true];
-//    
-////    } else if(false) {
-//        
-//        dlib::cv_image<dlib::bgr_pixel> dlibMat(mat);
-//        
-//        //        for converting either direction use this http://stackoverflow.com/a/34873134/1079379
-//        //        static cv::Rect dlibRectangleToOpenCV(dlib::rectangle r){return cv::Rect(cv::Point2i(r.left(), r.top()), cv::Point2i(r.right() + 1, r.bottom() + 1));}
-//        //        static dlib::rectangle openCVRectToDlib(cv::Rect r){return dlib::rectangle((long)r.tl().x, (long)r.tl().y, (long)r.br().x - 1, (long)r.br().y - 1);}
-//        
-//        dlib::rectangle dlibRect((long)tracker.face().tl().x, (long)tracker.face().tl().y, (long)tracker.face().br().x - 1, (long)tracker.face().br().y - 1);
-//        //        if ([self.delegate showFaceDetect]) {
-////                        dlib::draw_rectangle(dlibMat, dlibRect, dlib::rgb_pixel(0, 255, 255));
-//        //        }
-//        
-//        shape = sp(dlibMat, dlibRect);
-//        NSMutableArray *m = [NSMutableArray new];
-//        
-//        /////
-//        // Draws the contours of the face and face features onto the image
-//        
-//        // Define colors for drawing.
-//        Scalar delaunay_color(255,255,255), points_color(0, 0, 255);
-//        
-//        // Rectangle to be used with Subdiv2D
-//        cv::Size size = mat.size();
-//        cv::Rect rect(0, 0, size.width, size.height);
-//        
-//        // Create an instance of Subdiv2D
-//        Subdiv2D subdiv(rect);
-//        /////
-//        
-//        for (unsigned long k = 0; k < shape.num_parts(); k++) {
-//            if ([self.delegate showFaceDetect]) {
-//                //                draw_solid_circle(dlibMat, shape.part(k), 3, dlib::rgb_pixel(0, 255, 0));
-//            }
-//            
-//            CGPoint landmark = CGPointMake( [self pixelToPoints:shape.part(k).x()], [self pixelToPoints:shape.part(k).y()]);
-//            
-//            //inside lips outline
-//            if (k >= 60) { [m addObject: [NSValue valueWithCGPoint: landmark ]]; }
-//            
-//            //nose bridge
-//            if (k == 28) { [self.delegate noseBridgePosition: landmark ]; }
-//            
-//            //nose tip
-//            if (k == 31) { [self.delegate noseTipPosition: landmark ]; }
-//            
-//            //philtrum
-//            if (k == 52) {
-//                CGPoint landmark34 = CGPointMake( [self pixelToPoints:shape.part(34).x()], [self pixelToPoints:shape.part(34).y()]);
-//                CGPoint midpoint = CGPointMake( (landmark.x + landmark34.x) / 2.0 , (landmark.y + landmark34.y) / 2.0 );
-//                [self.delegate mustachePosition:midpoint];
-//            }
-//            
-//            if ([self.delegate showFaceDetect] && rect.contains([self toCv:shape.part(k)])) {
-//                subdiv.insert([self toCv:shape.part(k)]);
-//            }
-//        }
-//        
-//        if ([self.delegate showFaceDetect]) {
-//            [self draw_delaunay:mat subdiv:subdiv delaunay:delaunay_color];
-//        }
-//        
-//        [self.delegate mouthVerticePositions:m];
-//        [self pose:0 image:mat];
-//    
+//    cascade.detectMultiScale( smallImg, cv_faces,
+//                             1.2, 2, 0
+//                             //|CV_HAAR_FIND_BIGGEST_OBJECT
+//                             //|CV_HAAR_DO_ROUGH_SEARCH
+//                             |CV_HAAR_SCALE_IMAGE
+//                             ,
+//                             cv::Size(75, 75) );
+//    for( vector<cv::Rect>::const_iterator r = cv_faces.begin(); r != cv_faces.end(); r++, i++ ) {
+//        Mat smallImgROI;
+//        vector<cv::Rect> nestedObjects;
+//        cv::Point center;
+//        Scalar color = Scalar(0,0,0);
+//        int radius;
+//        center.x = cvRound((r->x + r->width*0.5)*scale);
+//        center.y = cvRound((r->y + r->height*0.5)*scale);
+//        radius = cvRound((r->width + r->height)*0.25*scale);
+//        circle( mat, center, radius, color, 3, 8, 0 );
 //    }
-////    mat = skinMask;
+//    
+//    if (cv_faces.size() == num_faces) {
+//        face_swapper.swapFaces(mat, cv_faces[0], cv_faces[1]);
+//    }
+
+    cvtColor(mat, converted, CV_RGB2HSV);
+    //cvtColor(mat, converted, CV_BGR2Lab); lab detects my hair (black) for some reason
+    inRange(converted, lower, upper, skinMask);
+    
+    kernel = getStructuringElement(MORPH_ELLIPSE, cv::Size(3,3));
+    erode(skinMask, skinMask, kernel, cv::Point(-1,-1), 2);
+    dilate(skinMask, skinMask, kernel, cv::Point(-1,-1), 2);
+    //    morphologyEx(skinMask, skinMask, CV_MOP_OPEN, kernel, cv::Point(-1, -1), 2); //faster than erode/dilate -- source pyimagesearch blog comment
+    GaussianBlur(skinMask, skinMask, cv::Size(3,3), 0);
+
+    tracker.getFrameAndDetect(mat);
+    
+    if (tracker.isFaceFound())
+    {
+//    } else if (false) {
+        if (tracker.isTouchingBorder()) {
+            //touching edge
+            cv::rectangle(mat, tracker.face(), cv::Scalar(255, 0, 0), 3);
+        } else {
+            //normal box
+            Mat back;
+            cvtColor(mat, back, CV_HSV2RGB);
+            cv::rectangle(skinMask, tracker.face(), cv::Scalar(255, 255, 255), 3);
+//            cv::circle(skinMask, tracker.facePosition(), 30, cv::Scalar(0, 0, 0), 5);
+            Mat backFace = back(tracker.face());
+            cv::resize(backFace, backFace, cv::Size(backFace.rows / 4,backFace.cols / 4));
+            float H = [self face2Color:backFace];
+            lower = Scalar(H - 10, 100, 100);
+            upper = Scalar(H + 10, 255, 255);
+            printf("%f - %f - %f \n", lower[0], H, upper[0]);
+
+//            int padding = 50;
+//            
+//            int leftEdge = tracker.facePosition().x + tracker.face().width / 2.0;
+//            if (leftEdge >= mat.cols - padding) {
+//                cv::circle(mat, cv::Size(leftEdge, tracker.facePosition().y), 3, cv::Scalar(0, 255, 0), 5);
+//            }
+//            
+//            int rightEdge = tracker.facePosition().x - tracker.face().width / 2.0;
+//            if ( rightEdge <= 0 + padding) {
+//                cv::circle(mat, cv::Size(rightEdge, tracker.facePosition().y), 3, cv::Scalar(0, 255, 0), 5);
+//            }
+//            
+//            int topEdge = tracker.facePosition().y - tracker.face().height / 2.0;
+//            if (topEdge <= 0 + padding) {
+//                cv::circle(mat, cv::Size(tracker.facePosition().x, topEdge), 3, cv::Scalar(0, 255, 0), 5);
+//            }
+//            
+//            int bottomEdge = tracker.facePosition().y + tracker.face().height / 2.0;
+//            if (bottomEdge >= mat.rows - padding) {
+//                cv::circle(mat, cv::Size(tracker.facePosition().x, bottomEdge), 3, cv::Scalar(0, 255, 0), 5);
+//            }
+//            
+//            cvtColor(mat, converted, CV_RGB2HSV);
+//            //cvtColor(mat, converted, CV_BGR2Lab); lab detects my hair (black) for some reason
+//            inRange(converted, lower, upper, skinMask);
+//            
+//            kernel = getStructuringElement(MORPH_ELLIPSE, cv::Size(3,3));
+//            erode(skinMask, skinMask, kernel, cv::Point(-1,-1), 2);
+//            dilate(skinMask, skinMask, kernel, cv::Point(-1,-1), 2);
+//            //    morphologyEx(skinMask, skinMask, CV_MOP_OPEN, kernel, cv::Point(-1, -1), 2); //faster than erode/dilate -- source pyimagesearch blog comment
+//            GaussianBlur(skinMask, skinMask, cv::Size(3,3), 0);
+//            skinMaskFaceBottom = skinMask(cv::Rect(tracker.face().x, tracker.face().y + tracker.face().height / 2, tracker.face().width , tracker.face().height / 2));
+//            double totalpixels = skinMaskFaceBottom.rows * skinMaskFaceBottom.cols;
+//            double whitepixels = countNonZero(skinMaskFaceBottom);
+//            double percentBlackPixels = 1.0 - (whitepixels / totalpixels);
+//            printf("blackpixels: %2f / %2f = %2f \n", whitepixels, totalpixels, percentBlackPixels);
+//            if (percentBlackPixels > 0.3) {
+//                printf("mouth open \n\n\n");
+//            }
+            
+        }
+        
+        
+        [self.delegate hasDetectedFace:true];
+    
+//    } else if(false) {
+        
+        dlib::cv_image<dlib::bgr_pixel> dlibMat(mat);
+        
+        //        for converting either direction use this http://stackoverflow.com/a/34873134/1079379
+        //        static cv::Rect dlibRectangleToOpenCV(dlib::rectangle r){return cv::Rect(cv::Point2i(r.left(), r.top()), cv::Point2i(r.right() + 1, r.bottom() + 1));}
+        //        static dlib::rectangle openCVRectToDlib(cv::Rect r){return dlib::rectangle((long)r.tl().x, (long)r.tl().y, (long)r.br().x - 1, (long)r.br().y - 1);}
+        
+        dlib::rectangle dlibRect((long)tracker.face().tl().x, (long)tracker.face().tl().y, (long)tracker.face().br().x - 1, (long)tracker.face().br().y - 1);
+        //        if ([self.delegate showFaceDetect]) {
+//                        dlib::draw_rectangle(dlibMat, dlibRect, dlib::rgb_pixel(0, 255, 255));
+        //        }
+        
+        shape = sp(dlibMat, dlibRect);
+        NSMutableArray *m = [NSMutableArray new];
+        
+        /////
+        // Draws the contours of the face and face features onto the image
+        
+        // Define colors for drawing.
+        Scalar delaunay_color(255,255,255), points_color(0, 0, 255);
+        
+        // Rectangle to be used with Subdiv2D
+        cv::Size size = mat.size();
+        cv::Rect rect(0, 0, size.width, size.height);
+        
+        // Create an instance of Subdiv2D
+        Subdiv2D subdiv(rect);
+        /////
+        
+        for (unsigned long k = 0; k < shape.num_parts(); k++) {
+            if ([self.delegate showFaceDetect]) {
+                //                draw_solid_circle(dlibMat, shape.part(k), 3, dlib::rgb_pixel(0, 255, 0));
+            }
+            
+            CGPoint landmark = CGPointMake( [self pixelToPoints:shape.part(k).x()], [self pixelToPoints:shape.part(k).y()]);
+            
+            //inside lips outline
+            if (k >= 60) { [m addObject: [NSValue valueWithCGPoint: landmark ]]; }
+            
+            //nose bridge
+            if (k == 28) { [self.delegate noseBridgePosition: landmark ]; }
+            
+            //nose tip
+            if (k == 31) { [self.delegate noseTipPosition: landmark ]; }
+            
+            //philtrum
+            if (k == 52) {
+                CGPoint landmark34 = CGPointMake( [self pixelToPoints:shape.part(34).x()], [self pixelToPoints:shape.part(34).y()]);
+                CGPoint midpoint = CGPointMake( (landmark.x + landmark34.x) / 2.0 , (landmark.y + landmark34.y) / 2.0 );
+                [self.delegate mustachePosition:midpoint];
+            }
+            
+            if ([self.delegate showFaceDetect] && rect.contains([self toCv:shape.part(k)])) {
+                subdiv.insert([self toCv:shape.part(k)]);
+            }
+        }
+        
+        if ([self.delegate showFaceDetect]) {
+            [self draw_delaunay:mat subdiv:subdiv delaunay:delaunay_color];
+        }
+        
+        [self.delegate mouthVerticePositions:m];
+        [self pose:0 image:mat];
+    
+    }
+    mat = skinMask;
     [self matReady:mat];
 
 }
