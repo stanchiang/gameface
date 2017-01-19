@@ -27,6 +27,7 @@
 #include <opencv2/calib3d/calib3d.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/core/core.hpp>
+#include "opencv2/video/tracking.hpp"
 
 #include <dlib/opencv.h>
 #include <dlib/image_processing/frontal_face_detector.h>
@@ -37,6 +38,7 @@
 #include <array>
 #include <string>
 #include <iostream>
+#include <stdexcept>
 
 using namespace std;
 using namespace cv;
@@ -59,6 +61,14 @@ int i = 0;
 Mat converted, skinMask, kernel, skinMaskFaceBottom;
 Scalar lower(0, 48, 80);
 Scalar upper(20, 255, 255);
+
+cv::KalmanFilter filter;
+//Set velocities
+cv::vector<cv::Point> mousePoints;
+cv::vector<cv::Point> kalmanPoints;
+//And measurement matrix
+cv::Mat_<float> measurement(2,1);
+
 
 // Anthropometric for male adult
 // Relative position of various facial feature relative to sellion
@@ -103,6 +113,8 @@ typedef struct {
     bool _inited;
 }
 
+
+
 @end
 
 @implementation CVFFaceDetect
@@ -116,7 +128,7 @@ typedef struct {
 ////        [[NSBundle mainBundle] pathForResource:@"mallick_haarcascade_frontalface_alt.xml" ofType:nil];
         [[NSBundle mainBundle] pathForResource:@"mallick_lbpcascade_frontalface.xml" ofType:nil];
 
-        cascade.load([haarDataPath UTF8String]);
+//        cascade.load([haarDataPath UTF8String]);
         tracker.setFaceCascade([haarDataPath UTF8String]);
 
         NSString *modelFileName = [[NSBundle mainBundle] pathForResource:@"shape_predictor_68_face_landmarks" ofType:@"dat"];
@@ -129,6 +141,32 @@ typedef struct {
 ////                NSLog( @"%@", m[j]);
 ////            }
 ////        }
+        
+        ////////kalman filter setup
+        measurement.setTo(cv::Scalar(0));
+        
+        //Create a KalmanFilter class
+        filter = cv::KalmanFilter(4, 2, 0);
+        
+        //Initialize KalmanFilter
+        filter.transitionMatrix  = *(cv::Mat_<float>(4,4) << 1,0,1,0,
+                                     0,1,0,1,
+                                     0,0,1,0,
+                                     0,0,0,1);
+        
+        
+        filter.statePre.at<float>(0) = 0;
+        filter.statePre.at<float>(1) = 0;
+        filter.statePre.at<float>(2) = 0;
+        filter.statePre.at<float>(3) = 0;
+        
+        cv::setIdentity(filter.measurementMatrix);
+        cv::setIdentity(filter.processNoiseCov, cv::Scalar::all(1e-4));
+        cv::setIdentity(filter.measurementNoiseCov, cv::Scalar::all(1e-1));
+        cv::setIdentity(filter.errorCovPost, cv::Scalar::all(0.1));
+        
+        
+        ///////
         
         _inited = true;
     }
@@ -165,15 +203,15 @@ typedef struct {
 //        face_swapper.swapFaces(mat, cv_faces[0], cv_faces[1]);
 //    }
 
-    cvtColor(mat, converted, CV_RGB2HSV);
-    //cvtColor(mat, converted, CV_BGR2Lab); lab detects my hair (black) for some reason
-    inRange(converted, lower, upper, skinMask);
-    
-    kernel = getStructuringElement(MORPH_ELLIPSE, cv::Size(3,3));
-    erode(skinMask, skinMask, kernel, cv::Point(-1,-1), 2);
-    dilate(skinMask, skinMask, kernel, cv::Point(-1,-1), 2);
-    //    morphologyEx(skinMask, skinMask, CV_MOP_OPEN, kernel, cv::Point(-1, -1), 2); //faster than erode/dilate -- source pyimagesearch blog comment
-    GaussianBlur(skinMask, skinMask, cv::Size(3,3), 0);
+//    cvtColor(mat, converted, CV_RGB2HSV);
+//    //cvtColor(mat, converted, CV_BGR2Lab); lab detects my hair (black) for some reason
+//    inRange(converted, lower, upper, skinMask);
+//    
+//    kernel = getStructuringElement(MORPH_ELLIPSE, cv::Size(3,3));
+////    erode(skinMask, skinMask, kernel, cv::Point(-1,-1), 2);
+//    dilate(skinMask, skinMask, kernel, cv::Point(-1,-1), 2);
+//    //    morphologyEx(skinMask, skinMask, CV_MOP_OPEN, kernel, cv::Point(-1, -1), 2); //faster than erode/dilate -- source pyimagesearch blog comment
+//    GaussianBlur(skinMask, skinMask, cv::Size(3,3), 0);
 
     tracker.getFrameAndDetect(mat);
     
@@ -184,17 +222,42 @@ typedef struct {
             //touching edge
             cv::rectangle(mat, tracker.face(), cv::Scalar(255, 0, 0), 3);
         } else {
-            //normal box
-            Mat back;
-            cvtColor(mat, back, CV_HSV2RGB);
-            cv::rectangle(skinMask, tracker.face(), cv::Scalar(255, 255, 255), 3);
-//            cv::circle(skinMask, tracker.facePosition(), 30, cv::Scalar(0, 0, 0), 5);
-            Mat backFace = back(tracker.face());
-            cv::resize(backFace, backFace, cv::Size(backFace.rows / 4,backFace.cols / 4));
-            float H = [self face2Color:backFace];
-            lower = Scalar(H - 10, 100, 100);
-            upper = Scalar(H + 10, 255, 255);
-            printf("%f - %f - %f \n", lower[0], H, upper[0]);
+//            //normal box
+//            Mat back;
+//            cvtColor(mat, back, CV_HSV2RGB);
+////            cv::rectangle(skinMask, tracker.face(), cv::Scalar(255, 255, 255), 3);
+////            cv::circle(skinMask, tracker.facePosition(), 30, cv::Scalar(0, 0, 0), 5);
+//            Mat backFace = back(tracker.face());
+//            
+//            cv::Scalar mean = cv::mean( backFace );
+//            float H = [self rgb2hsv:mean[2] :mean[1] :mean[0]];
+//            
+////            cv::resize(backFace, backFace, cv::Size(backFace.rows / 4,backFace.cols / 4));
+////            float H = [self face2Color:backFace];
+//            lower = Scalar(H - 10, 100, 100);
+//            upper = Scalar(H + 10, 255, 255);
+//            
+//            std::vector<std::vector<cv::Point> > contours;
+//            cv::findContours( skinMask, contours, CV_RETR_LIST, CV_CHAIN_APPROX_NONE );
+//
+//            vector<vector<cv::Point> > contours_poly( contours.size() );
+//            vector<cv::Rect> boundRect( contours.size() );
+//            
+//            for( size_t i = 0; i < contours.size(); i++ )
+//            {
+//                approxPolyDP( Mat(contours[i]), contours_poly[i], 3, true );
+//                boundRect[i] = boundingRect( Mat(contours_poly[i]) );
+//            }
+//            
+//            for( size_t i = 0; i< contours.size(); i++ )
+//            {
+//                Scalar color = cv::Scalar(255,255,255);
+//                cv::drawContours(skinMask, contours, i, color, -1);
+////                rectangle( skinMask, boundRect[i].tl(), boundRect[i].br(), color, 2, 8, 0 );
+////                groupRectangles(boundRect, 1);
+//            }
+            
+//            printf("%f - %f - %f \n", lower[0], H, upper[0]);
 
 //            int padding = 50;
 //            
@@ -238,6 +301,34 @@ typedef struct {
             
         }
         
+        
+        //Predict
+        cv::Mat prediction = filter.predict();
+        cv::Point predictionPoint(prediction.at<float>(0), prediction.at<float>(1));
+        
+        //Get the mouse points
+        measurement(0) = tracker.face().x;
+        measurement(1) = tracker.face().y;
+        
+        //Updated phase
+        cv::Mat estimated = filter.correct(measurement);
+        
+        cv::Point statePoint(estimated.at<float>(0), estimated.at<float>(1));
+        cv::Point measuredPoint(measurement(0), measurement(1));
+        
+        mousePoints.push_back(measuredPoint);
+        kalmanPoints.push_back(statePoint);
+        
+//        for(size_t i = 0; i < mousePoints.size() - 1; ++i)
+//            cv::line(mat, mousePoints[i], mousePoints[i+1], cv::Scalar(255,0,0), 1);
+//        for(size_t i = 0; i < kalmanPoints.size() - 1; ++i)
+//            cv::line(mat, kalmanPoints[i], kalmanPoints[i+1], cv::Scalar(0,0,255), 1);
+        
+        //tracker with kalman filter
+        cv::Rect kfRect(statePoint.x, statePoint.y, tracker.face().width, tracker.face().height);
+        cv::Point kfCenter(statePoint.x + tracker.face().width / 2.0, statePoint.y + tracker.face().height / 2.0);
+        cv::rectangle(mat, kfRect, cv::Scalar(0, 0, 255), 2);
+        cv::circle(mat, kfCenter, 30, cv::Scalar(0, 0, 255), 2);
         
         [self.delegate hasDetectedFace:true];
     
@@ -302,12 +393,12 @@ typedef struct {
         if ([self.delegate showFaceDetect]) {
             [self draw_delaunay:mat subdiv:subdiv delaunay:delaunay_color];
         }
-        
+    
         [self.delegate mouthVerticePositions:m];
         [self pose:0 image:mat];
     
     }
-    mat = skinMask;
+//    mat = skinMask;
     [self matReady:mat];
 
 }
