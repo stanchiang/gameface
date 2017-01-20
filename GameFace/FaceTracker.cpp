@@ -40,9 +40,34 @@ bool FaceTracker::isFaceFound() const
 	return m_foundFace;
 }
 
-bool FaceTracker::isTouchingBorder() const
+int FaceTracker::isTouchingBorder(cv::Mat frame, cv::Rect faceRect, int padding)
 {
-    return false;
+    int borderValue = 0;
+    
+    int leftEdge = faceRect.x + faceRect.width;
+    if( leftEdge >= frame.cols - padding) borderValue += 2;//{ cv::circle(mat, cv::Size(leftEdge, tracker.facePosition().y), 3, cv::Scalar(0, 255, 0), 5); }
+    
+    int rightEdge = faceRect.x;
+    if ( rightEdge <= 0 + padding) borderValue += 3;//{ cv::circle(frame, cv::Size(rightEdge, tracker.facePosition().y), 3, cv::Scalar(0, 255, 0), 5); }
+    
+    int topEdge = faceRect.y;
+    if (topEdge <= 0 + padding) borderValue += 4;//{ cv::circle(frame, cv::Size(tracker.face().x, topEdge), 3, cv::Scalar(0, 255, 0), 5); }
+    
+    int bottomEdge = faceRect.y + faceRect.height;
+    if (bottomEdge >= frame.rows - padding) borderValue += 8;//{ cv::circle(mat, cv::Size(tracker.face().x, bottomEdge), 3, cv::Scalar(0, 255, 0), 5); }
+    
+    //2 = left
+    //3 = right
+    //4 = top
+    //5 = left right
+    //6 = top left
+    //7 = top right
+    //8 = bottom
+    //10 = bottom left
+    //11 = bottom right
+    //12 = top bottom
+    //17 = left right top bottom
+    return borderValue;
 }
 
 cv::Rect FaceTracker::face() const

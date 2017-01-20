@@ -218,7 +218,7 @@ typedef struct {
     if (tracker.isFaceFound())
     {
 //    } else if (false) {
-        if (tracker.isTouchingBorder()) {
+        if (tracker.isTouchingBorder(mat, tracker.face(), 50) > 0) {
             //touching edge
             cv::rectangle(mat, tracker.face(), cv::Scalar(255, 0, 0), 3);
         } else {
@@ -259,28 +259,6 @@ typedef struct {
             
 //            printf("%f - %f - %f \n", lower[0], H, upper[0]);
 
-//            int padding = 50;
-//            
-//            int leftEdge = tracker.facePosition().x + tracker.face().width / 2.0;
-//            if (leftEdge >= mat.cols - padding) {
-//                cv::circle(mat, cv::Size(leftEdge, tracker.facePosition().y), 3, cv::Scalar(0, 255, 0), 5);
-//            }
-//            
-//            int rightEdge = tracker.facePosition().x - tracker.face().width / 2.0;
-//            if ( rightEdge <= 0 + padding) {
-//                cv::circle(mat, cv::Size(rightEdge, tracker.facePosition().y), 3, cv::Scalar(0, 255, 0), 5);
-//            }
-//            
-//            int topEdge = tracker.facePosition().y - tracker.face().height / 2.0;
-//            if (topEdge <= 0 + padding) {
-//                cv::circle(mat, cv::Size(tracker.facePosition().x, topEdge), 3, cv::Scalar(0, 255, 0), 5);
-//            }
-//            
-//            int bottomEdge = tracker.facePosition().y + tracker.face().height / 2.0;
-//            if (bottomEdge >= mat.rows - padding) {
-//                cv::circle(mat, cv::Size(tracker.facePosition().x, bottomEdge), 3, cv::Scalar(0, 255, 0), 5);
-//            }
-//            
 //            cvtColor(mat, converted, CV_RGB2HSV);
 //            //cvtColor(mat, converted, CV_BGR2Lab); lab detects my hair (black) for some reason
 //            inRange(converted, lower, upper, skinMask);
