@@ -50,9 +50,10 @@ dlib::shape_predictor sp;
 dlib::full_object_detection shape;
 
 FaceTracker tracker;
-
+cv::Rect trackerFace;
+int borderSum = 0;
+int padding = 25;
 //const size_t num_faces = 2;
-int i = 0;
 
 //FaceDetectorAndTracker detector([[[NSBundle mainBundle] pathForResource:@"mallick_lbpcascade_frontalface.xml" ofType:nil] UTF8String], 0, num_faces);
 //FaceSwapper face_swapper([[[NSBundle mainBundle] pathForResource:@"shape_predictor_68_face_landmarks" ofType:@"dat"] UTF8String]);
@@ -119,9 +120,7 @@ typedef struct {
 {
     if (!_inited) {
         NSString* haarDataPath =
-////        [[NSBundle mainBundle] pathForResource:@"haarcascade_frontalface_alt.xml" ofType:nil];
-//        
-////        [[NSBundle mainBundle] pathForResource:@"mallick_haarcascade_frontalface_alt.xml" ofType:nil];
+//        [[NSBundle mainBundle] pathForResource:@"mallick_haarcascade_frontalface_alt.xml" ofType:nil];
         [[NSBundle mainBundle] pathForResource:@"mallick_lbpcascade_frontalface.xml" ofType:nil];
 
 //        cascade.load([haarDataPath UTF8String]);
@@ -202,15 +201,46 @@ typedef struct {
     
     if (tracker.isFaceFound())
     {
-        
+        trackerFace = tracker.face();
+        borderSum = tracker.isTouchingBorder(mat, trackerFace, padding);
+        if ( borderSum == 0) {
+            if (tracker.isAlreadyTouchingBorder) {
+                if (tracker.oldLeft) {
+                    if (trackerFace.width < tracker.oldRect.width) {
+                        color = cv::Scalar(0, 0, 255);
+                        trackerFace.width = mat.cols - trackerFace.x - padding;
+                        printf("update width\n");
+                        
+                    } else {
+                        tracker.oldLeft = false;
+                        tracker.isAlreadyTouchingBorder = false;
+                        printf("======done updating======\n");
+                    }
+                }
+            } else {
+                color = cv::Scalar(0, 255, 0);
+            }
+            
+        } else {
+            
+            if (!tracker.isAlreadyTouchingBorder) {
+                tracker.isAlreadyTouchingBorder = true;
+                tracker.oldRect = trackerFace;
+                printf("save old rect \n");
+                color = cv::Scalar(0, 0, 0);
+            } else {
+                color = cv::Scalar(255, 0, 0);
+            }
+ 
+        }
         
         //Predict
         cv::Mat prediction = filter.predict();
         cv::Point predictionPoint(prediction.at<float>(0), prediction.at<float>(1));
         
         //Get the mouse points
-        measurement(0) = tracker.face().x;
-        measurement(1) = tracker.face().y;
+        measurement(0) = trackerFace.x;
+        measurement(1) = trackerFace.y;
         
         //Updated phase
         cv::Mat estimated = filter.correct(measurement);
@@ -221,20 +251,9 @@ typedef struct {
         mousePoints.push_back(measuredPoint);
         kalmanPoints.push_back(statePoint);
         
-//        for(size_t i = 0; i < mousePoints.size() - 1; ++i)
-//            cv::line(mat, mousePoints[i], mousePoints[i+1], cv::Scalar(255,0,0), 1);
-//        for(size_t i = 0; i < kalmanPoints.size() - 1; ++i)
-//            cv::line(mat, kalmanPoints[i], kalmanPoints[i+1], cv::Scalar(0,0,255), 1);
-        
         //tracker with kalman filter
-        cv::Rect kfRect(statePoint.x, statePoint.y, tracker.face().width, tracker.face().height);
-        cv::Point kfCenter(statePoint.x + tracker.face().width / 2.0, statePoint.y + tracker.face().height / 2.0);
-        
-        if (tracker.isTouchingBorder(mat, tracker.face(), 25) > 0) {
-            color = cv::Scalar(255, 0, 0);
-        } else {
-            color = cv::Scalar(0, 0, 255);
-        }
+        cv::Rect kfRect(statePoint.x, statePoint.y, trackerFace.width, trackerFace.height);
+        cv::Point kfCenter(statePoint.x + trackerFace.width / 2.0, statePoint.y + trackerFace.height / 2.0);
 
         cv::rectangle(mat, kfRect, color, 3);
         cv::circle(mat, kfCenter, 30, color, 2);
@@ -248,9 +267,9 @@ typedef struct {
         //        for converting either direction use this http://stackoverflow.com/a/34873134/1079379
         //        static cv::Rect dlibRectangleToOpenCV(dlib::rectangle r){return cv::Rect(cv::Point2i(r.left(), r.top()), cv::Point2i(r.right() + 1, r.bottom() + 1));}
         //        static dlib::rectangle openCVRectToDlib(cv::Rect r){return dlib::rectangle((long)r.tl().x, (long)r.tl().y, (long)r.br().x - 1, (long)r.br().y - 1);}
-//        dlib::rectangle dlibRect((long)tracker.face().tl().x, (long)tracker.face().tl().y, (long)tracker.face().br().x - 1, (long)tracker.face().br().y - 1);
+//        dlib::rectangle dlibRect((long)trackerFace.tl().x, (long)trackerFace.tl().y, (long)trackerFace.br().x - 1, (long)trackerFace.br().y - 1);
         dlib::rectangle dlibRect((long)kfRect.tl().x, (long)kfRect.tl().y, (long)kfRect.br().x - 1, (long)kfRect.br().y - 1);
-        //        if ([self.delegate showFaceDetect]) { dlib::draw_rectangle(dlibMat, dlibRect, dlib::rgb_pixel(0, 255, 255)); }
+//        if ([self.delegate showFaceDetect]) { dlib::draw_rectangle(dlibMat, dlibRect, dlib::rgb_pixel(0, 255, 255)); }
         
         shape = sp(dlibMat, dlibRect);
         NSMutableArray *m = [NSMutableArray new];
@@ -363,7 +382,6 @@ typedef struct {
         
         // fillConvexPoly needs a vector of Point and not Point2f
         tri2CroppedInt.push_back( cv::Point((int)(tri2[i].x - r2.x), (int)(tri2[i].y - r2.y)) );
-        
     }
     
     // Apply warpImage to small rectangular patches
@@ -478,50 +496,4 @@ typedef struct {
     return [self toCv:shape.part(feature)];
 }
 
--(float) face2Color: (Mat) face {
-    //http://stackoverflow.com/questions/10240912/input-matrix-to-opencv-kmeans-clustering/10242156#10242156
-    
-    Mat samples(face.rows * face.cols, 3, CV_32F);
-    for( int y = 0; y < face.rows; y++ )
-        for( int x = 0; x < face.cols; x++ )
-            for( int z = 0; z < 3; z++)
-                samples.at<float>(y + x*face.rows, z) = face.at<Vec3b>(y,x)[z];
-    
-    int clusterCount = 1;
-    Mat labels;
-    int attempts = 5;
-    Mat centers;
-    kmeans(samples, clusterCount, labels, TermCriteria(CV_TERMCRIT_ITER|CV_TERMCRIT_EPS, 10000, 0.0001), attempts, KMEANS_PP_CENTERS, centers );
-    
-    
-    int cluster_idx = labels.at<int>(0,0);
-    Scalar bgr2hsv(centers.at<float>(cluster_idx, 0), centers.at<float>(cluster_idx, 1), centers.at<float>(cluster_idx, 2));
-    
-    return [self rgb2hsv: bgr2hsv[2] : bgr2hsv[1] : bgr2hsv[0]];
-}
-
-//http://lolengine.net/blog/2013/01/13/fast-rgb-to-hsv
--(float) rgb2hsv:(float)r :(float)g :(float)b {
-    float h, s, v;
-    
-    float K = 0.f;
-    
-    if (g < b)
-    {
-        std::swap(g, b);
-        K = -1.f;
-    }
-    
-    if (r < g)
-    {
-        std::swap(r, g);
-        K = -2.f / 6.f - K;
-    }
-    
-    float chroma = r - std::min(g, b);
-    h = fabs(K + (g - b) / (6.f * chroma + 1e-20f));
-    s = chroma / (r + 1e-20f);
-    v = r;
-    return h;
-}
 @end

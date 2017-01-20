@@ -45,16 +45,28 @@ int FaceTracker::isTouchingBorder(cv::Mat frame, cv::Rect faceRect, int padding)
     int borderValue = 0;
     
     int leftEdge = faceRect.x + faceRect.width;
-    if( leftEdge >= frame.cols - padding) borderValue += 2;//{ cv::circle(mat, cv::Size(leftEdge, tracker.facePosition().y), 3, cv::Scalar(0, 255, 0), 5); }
+    if( leftEdge >= frame.cols - padding) {
+        oldLeft = true;
+        borderValue += 2;//{ cv::circle(mat, cv::Size(leftEdge, tracker.facePosition().y), 3, cv::Scalar(0, 255, 0), 5); }
+    }
     
     int rightEdge = faceRect.x;
-    if ( rightEdge <= 0 + padding) borderValue += 3;//{ cv::circle(frame, cv::Size(rightEdge, tracker.facePosition().y), 3, cv::Scalar(0, 255, 0), 5); }
+    if ( rightEdge <= 0 + padding) {
+        oldRight = true;
+        borderValue += 3;//{ cv::circle(frame, cv::Size(rightEdge, tracker.facePosition().y), 3, cv::Scalar(0, 255, 0), 5); }
+    }
     
     int topEdge = faceRect.y;
-    if (topEdge <= 0 + padding) borderValue += 4;//{ cv::circle(frame, cv::Size(tracker.face().x, topEdge), 3, cv::Scalar(0, 255, 0), 5); }
+    if (topEdge <= 0 + padding) {
+        oldTop = true;
+        borderValue += 4;//{ cv::circle(frame, cv::Size(tracker.face().x, topEdge), 3, cv::Scalar(0, 255, 0), 5); }
+    }
     
     int bottomEdge = faceRect.y + faceRect.height;
-    if (bottomEdge >= frame.rows - padding) borderValue += 8;//{ cv::circle(mat, cv::Size(tracker.face().x, bottomEdge), 3, cv::Scalar(0, 255, 0), 5); }
+    if (bottomEdge >= frame.rows - padding) {
+        oldBottom = true;
+        borderValue += 8;//{ cv::circle(mat, cv::Size(tracker.face().x, bottomEdge), 3, cv::Scalar(0, 255, 0), 5); }
+    }
     
     //2 = left
     //3 = right

@@ -11,8 +11,15 @@ class FaceTracker {
 	    void                    setResizedWidth(const int width);
 	    int                     resizedWidth() const;
 		bool					isFaceFound() const;
-//        bool                    m_isAlreadyTouchingBorder = false;
-        int					isTouchingBorder(cv::Mat frame, cv::Rect faceRect, int padding);
+    
+        bool                    oldLeft = false;
+        bool                    oldRight = false;
+        bool                    oldTop = false;
+        bool                    oldBottom = false;
+        cv::Rect                oldRect;
+        bool                    isAlreadyTouchingBorder = false;
+    
+        int                     isTouchingBorder(cv::Mat frame, cv::Rect faceRect, int padding);
 	    cv::Rect                face() const;
 	    cv::Point               facePosition() const;
 	    void                    setTemplateMatchingMaxDuration(const double s);
