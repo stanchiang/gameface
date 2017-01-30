@@ -27,6 +27,7 @@
 		F63B9CB51E11AEDB0088A6FF /* KDCircularProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63B9CB41E11AEDB0088A6FF /* KDCircularProgress.swift */; };
 		F63CE9411DBED65700582F22 /* PostGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63CE9401DBED65700582F22 /* PostGameView.swift */; };
 		F64C2F391DADCFA7006E1021 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64C2F381DADCFA7006E1021 /* opencv2.framework */; };
+		F64DCB0B1E3472DD00DF6746 /* head-obj.obj in Resources */ = {isa = PBXBuildFile; fileRef = F64DCB0A1E3472DD00DF6746 /* head-obj.obj */; };
 		F669C0391DB15C3D001161E1 /* GameGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = F669C0381DB15C3D001161E1 /* GameGallery.swift */; };
 		F669C03D1DB1698D001161E1 /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F669C03B1DB1698D001161E1 /* CustomCollectionViewCell.swift */; };
 		F6772BC01DB207AC00328961 /* DebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6772BBF1DB207AC00328961 /* DebugView.swift */; };
@@ -92,6 +93,7 @@
 		F63B9CB41E11AEDB0088A6FF /* KDCircularProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KDCircularProgress.swift; sourceTree = "<group>"; };
 		F63CE9401DBED65700582F22 /* PostGameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostGameView.swift; sourceTree = "<group>"; };
 		F64C2F381DADCFA7006E1021 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
+		F64DCB0A1E3472DD00DF6746 /* head-obj.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "head-obj.obj"; sourceTree = "<group>"; };
 		F669C0381DB15C3D001161E1 /* GameGallery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameGallery.swift; sourceTree = "<group>"; };
 		F669C03B1DB1698D001161E1 /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
 		F6772BBF1DB207AC00328961 /* DebugView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugView.swift; sourceTree = "<group>"; };
@@ -322,6 +324,7 @@
 				A56695EF1CE8B34B00BD7EAF /* AppDelegate.swift */,
 				A56695F81CE8B34B00BD7EAF /* LaunchScreen.storyboard */,
 				A56695F61CE8B34B00BD7EAF /* Assets.xcassets */,
+				F64DCB0A1E3472DD00DF6746 /* head-obj.obj */,
 				A56695FB1CE8B34B00BD7EAF /* Info.plist */,
 				A5A1B2CF1CEA317B00626AC5 /* gameface-Bridging-Header.h */,
 				F6339DB01D5905CE006C4231 /* Animation */,
@@ -476,6 +479,7 @@
 				F63B9CAD1E119C870088A6FF /* mallick_haarcascade_frontalface_alt.xml in Resources */,
 				F67EA2731DB3DFE0006DE24B /* haarcascade_frontalface_alt.xml in Resources */,
 				F6C0A0501DCFF60D003F00FA /* BCMeshShader.fsh in Resources */,
+				F64DCB0B1E3472DD00DF6746 /* head-obj.obj in Resources */,
 				F63B9CAF1E119CA90088A6FF /* mallick_haarcascade_profileface.xml in Resources */,
 				F63B9CAB1E119B8D0088A6FF /* mallick_lbpcascade_profileface.xml in Resources */,
 				A5A1B2D81CEA431600626AC5 /* shape_predictor_68_face_landmarks.dat in Resources */,

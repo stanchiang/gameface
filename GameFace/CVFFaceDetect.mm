@@ -50,7 +50,7 @@ dlib::shape_predictor sp;
 dlib::full_object_detection shape;
 
 FaceTracker tracker;
-cv::Rect trackerFace;
+//cv::Rect trackerFace;
 int borderSum = 0;
 int padding = 25;
 //const size_t num_faces = 2;
@@ -201,46 +201,17 @@ typedef struct {
     
     if (tracker.isFaceFound())
     {
-        trackerFace = tracker.face();
-        borderSum = tracker.isTouchingBorder(mat, trackerFace, padding);
-        if ( borderSum == 0) {
-            if (tracker.isAlreadyTouchingBorder) {
-                if (tracker.oldLeft) {
-                    if (trackerFace.width < tracker.oldRect.width) {
-                        color = cv::Scalar(0, 0, 255);
-                        trackerFace.width = mat.cols - trackerFace.x - padding;
-                        printf("update width\n");
-                        
-                    } else {
-                        tracker.oldLeft = false;
-                        tracker.isAlreadyTouchingBorder = false;
-                        printf("======done updating======\n");
-                    }
-                }
-            } else {
-                color = cv::Scalar(0, 255, 0);
-            }
-            
-        } else {
-            
-            if (!tracker.isAlreadyTouchingBorder) {
-                tracker.isAlreadyTouchingBorder = true;
-                tracker.oldRect = trackerFace;
-                printf("save old rect \n");
-                color = cv::Scalar(0, 0, 0);
-            } else {
-                color = cv::Scalar(255, 0, 0);
-            }
- 
-        }
-        
+
+        borderSum = tracker.isTouchingBorder(mat, tracker.face(), padding);
+
         //Predict
         cv::Mat prediction = filter.predict();
         cv::Point predictionPoint(prediction.at<float>(0), prediction.at<float>(1));
         
         //Get the mouse points
-        measurement(0) = trackerFace.x;
-        measurement(1) = trackerFace.y;
+        measurement(0) = tracker.face().x;
+        measurement(1) = tracker.face().y;
+
         
         //Updated phase
         cv::Mat estimated = filter.correct(measurement);
@@ -252,8 +223,8 @@ typedef struct {
         kalmanPoints.push_back(statePoint);
         
         //tracker with kalman filter
-        cv::Rect kfRect(statePoint.x, statePoint.y, trackerFace.width, trackerFace.height);
-        cv::Point kfCenter(statePoint.x + trackerFace.width / 2.0, statePoint.y + trackerFace.height / 2.0);
+        cv::Rect kfRect(statePoint.x, statePoint.y, tracker.face().width, tracker.face().height);
+        cv::Point kfCenter(statePoint.x + tracker.face().width / 2.0, statePoint.y + tracker.face().height / 2.0);
 
         cv::rectangle(mat, kfRect, color, 3);
         cv::circle(mat, kfCenter, 30, color, 2);

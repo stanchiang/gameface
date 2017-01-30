@@ -195,7 +195,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     
     func addCredit(by amount:Int){
         appDelegate.credits += amount
-        print("total credits: \(appDelegate.credits)")
+//        print("total credits: \(appDelegate.credits)")
     }
     
     func didBegin(_ contact: SKPhysicsContact) {

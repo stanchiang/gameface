@@ -54,7 +54,9 @@ class GameManager: SKScene, GameSceneDelegate {
     
     func addFaceMeshGuide(){
         faceMeshGuide = SKSpriteNode(imageNamed: "faceMesh")
-        faceMeshGuide.size = CGSize(width: 250, height: 250)
+//        faceMeshGuide.size = CGSize(width: 250, height: 250)
+        faceMeshGuide.aspectFillToSize(CGSize(width: 250, height: 250))
+        
         faceMeshGuide.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2)
         addChild(faceMeshGuide)
     }
