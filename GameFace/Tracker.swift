@@ -12,28 +12,19 @@ class Tracker {
     static let sharedInstance = Tracker()
     fileprivate init() {}
 
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     func appLaunchConfiguration() {
         Segment.sharedInstance.configuration()
+        
+        let hasUUIDIdentified = appDelegate.userDefaults.bool(forKey: "UUIDIdentified")
+        if !hasUUIDIdentified {
+            Segment.sharedInstance.userSetup()
+            appDelegate.userDefaults.set(true, forKey: "UUIDIdentified")
+        }
     }
     
-    func loginRequest() {
-        
-    }
-    
-    func saveHighScore() {
-        
-    }
-    
-    func startedPlaying() {
-        
-    }
-        
-    func tappedPlayAgain() {
-        
-    }
-
-    func tappedShare() {
-        
+    func record(event: Event) {
+        Segment.sharedInstance.recordEvent(event: event)
     }
 
 }

@@ -240,6 +240,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         
         if appDelegate.gameState == .inPlay && sceneDelegate?.getTimer() <= 0 {
             appDelegate.gameState = .postGame
+            Tracker.sharedInstance.record(event: .gameEnded)
             if gameVarDelegate!.getWillRecordGame() {
                 sceneDelegate?.loadPostGame()
             } else {

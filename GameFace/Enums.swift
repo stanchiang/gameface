@@ -15,6 +15,11 @@ enum GameState:String {
     case postGame
 }
 
+enum Event:String {
+    case gameStarted
+    case gameEnded
+}
+
 enum GameItem:String {
     case glasses
 }
@@ -38,12 +43,4 @@ enum Sprite:String {
     case mustache
     case candy
     case bomb
-}
-
-enum PlayerEvent:String {
-    case player_started_playing //isFirstTimePlaying, isfrompostgamemodal
-    case player_finished_game
-    case player_reset_game //isWhileInGame
-    case player_exited_app //isWhileInGame
-    case player_tapped_share
 }
