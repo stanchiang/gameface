@@ -1,0 +1,5 @@
+framework module LayerKit {
+  umbrella header "LayerKit-umbrella.h"
+  export *
+  module * { export * }
+}

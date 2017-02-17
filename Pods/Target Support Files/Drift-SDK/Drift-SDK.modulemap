@@ -1,0 +1,6 @@
+framework module Drift_SDK {
+  umbrella header "Drift-SDK-umbrella.h"
+
+  export *
+  module * { export * }
+}

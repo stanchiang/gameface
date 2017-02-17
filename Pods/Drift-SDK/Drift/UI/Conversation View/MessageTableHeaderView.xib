@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="MessageTableHeaderView" customModule="Drift" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="499" height="42"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r3d-xn-fST" customClass="GradientView" customModule="Drift" customModuleProvider="target">
+                    <rect key="frame" x="15" y="20.5" width="469" height="1"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="jvR-p8-VNl"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="28h-LP-MY5">
+                    <rect key="frame" x="215" y="0.0" width="69" height="42"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TODAY" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JVr-DI-6SM">
+                            <rect key="frame" x="10" y="0.0" width="49" height="42"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="14"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="JVr-DI-6SM" secondAttribute="bottom" id="4iJ-7E-0Mm"/>
+                        <constraint firstAttribute="trailing" secondItem="JVr-DI-6SM" secondAttribute="trailing" constant="10" id="9Ds-gw-15l"/>
+                        <constraint firstItem="JVr-DI-6SM" firstAttribute="top" secondItem="28h-LP-MY5" secondAttribute="top" id="PEd-QC-pHn"/>
+                        <constraint firstItem="JVr-DI-6SM" firstAttribute="leading" secondItem="28h-LP-MY5" secondAttribute="leading" constant="10" id="Zdl-Px-Cvb"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="r3d-xn-fST" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="12j-Ka-ItO"/>
+                <constraint firstItem="28h-LP-MY5" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="C2h-gl-s0f"/>
+                <constraint firstAttribute="bottom" secondItem="28h-LP-MY5" secondAttribute="bottom" id="JDV-Kc-ygx"/>
+                <constraint firstItem="28h-LP-MY5" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="T5U-uy-G6l"/>
+                <constraint firstItem="r3d-xn-fST" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Wbl-TJ-pQH"/>
+                <constraint firstAttribute="trailing" secondItem="r3d-xn-fST" secondAttribute="trailing" constant="15" id="dj8-4A-AUC"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="barView" destination="r3d-xn-fST" id="t1O-mV-W7W"/>
+                <outlet property="headerLabel" destination="JVr-DI-6SM" id="ri6-ps-qNN"/>
+            </connections>
+        </view>
+    </objects>
+</document>

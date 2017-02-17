@@ -7,4 +7,5 @@ target 'GameFace' do
 
   # Pods for GameFace
   pod "Analytics", "3.5.5"
+  pod 'Drift-SDK', :git => 'https://github.com/Driftt/drift-sdk-ios.git'
 end

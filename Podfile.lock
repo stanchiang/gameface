@@ -1,12 +1,42 @@
 PODS:
+  - Alamofire (4.2.0)
+  - AlamofireImage (3.2.0):
+    - Alamofire (~> 4.1)
   - Analytics (3.5.5)
+  - Drift-SDK (1.0.0):
+    - AlamofireImage (~> 3.0)
+    - LayerKit (~> 0.17)
+    - ObjectMapper (~> 2.0)
+    - SlackTextViewController (~> 1.9.3)
+    - SVProgressHUD (~> 2.0)
+  - LayerKit (0.23.3)
+  - ObjectMapper (2.2.2)
+  - SlackTextViewController (1.9.5)
+  - SVProgressHUD (2.1.2)
 
 DEPENDENCIES:
   - Analytics (= 3.5.5)
+  - Drift-SDK (from `https://github.com/Driftt/drift-sdk-ios.git`)
+
+EXTERNAL SOURCES:
+  Drift-SDK:
+    :git: https://github.com/Driftt/drift-sdk-ios.git
+
+CHECKOUT OPTIONS:
+  Drift-SDK:
+    :commit: 88ec621af0a0911dee2bfca18546424263c64440
+    :git: https://github.com/Driftt/drift-sdk-ios.git
 
 SPEC CHECKSUMS:
+  Alamofire: aa2e09d871c9160ac53c90e83c68064a94e3dfbe
+  AlamofireImage: 157ed682cc81d3b9db4fb90c1f12180ac552d93b
   Analytics: af1da699765b652112483847ea73ad7c6adbd0e9
+  Drift-SDK: 1060300bc69858133e7864c6dc95cb9ac51fefbb
+  LayerKit: 128b3b0c036422458d621f81f36e6b42d372feba
+  ObjectMapper: 9e385c2295bcc4e16eabbcfc85db801442bba545
+  SlackTextViewController: fbcdadbb8090673f604484ff5b6eb8d77baed42a
+  SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
 
-PODFILE CHECKSUM: d966a0daadd4e8a0fa17f02af93a000de8df97b0
+PODFILE CHECKSUM: d5a9f509c0af3e9ffbe6c4b1bf6fad489fa62ed1
 
 COCOAPODS: 1.1.1
