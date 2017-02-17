@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = GameGallery()
         window?.makeKeyAndVisible()
         window?.frame = UIScreen.main.bounds
-        Tracker.sharedInstance.loginRequest()
+        Tracker.sharedInstance.appLaunchConfiguration()
         return true
 
     }

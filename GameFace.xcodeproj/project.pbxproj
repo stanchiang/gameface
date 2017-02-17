@@ -20,6 +20,8 @@
 		F6339D941D590587006C4231 /* Randomizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6339D931D590587006C4231 /* Randomizer.swift */; };
 		F6339DA71D5905C5006C4231 /* candyEater.sks in Resources */ = {isa = PBXBuildFile; fileRef = F6339D9B1D5905C5006C4231 /* candyEater.sks */; };
 		F63847B31DBFD27600C86015 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63847B21DBFD27600C86015 /* Extensions.swift */; };
+		F63A29C11E56AB0500C05569 /* Segment.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63A29C01E56AB0500C05569 /* Segment.swift */; };
+		F63A29C31E56ACD900C05569 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63A29C21E56ACD900C05569 /* Constants.swift */; };
 		F63AD7411E24E0C300F583AD /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F63AD7401E24E0C300F583AD /* libjpeg.a */; };
 		F63B9CAA1E119B8D0088A6FF /* mallick_lbpcascade_frontalface.xml in Resources */ = {isa = PBXBuildFile; fileRef = F63B9CA81E119B8D0088A6FF /* mallick_lbpcascade_frontalface.xml */; };
 		F63B9CAB1E119B8D0088A6FF /* mallick_lbpcascade_profileface.xml in Resources */ = {isa = PBXBuildFile; fileRef = F63B9CA91E119B8D0088A6FF /* mallick_lbpcascade_profileface.xml */; };
@@ -78,6 +80,8 @@
 		F6339D931D590587006C4231 /* Randomizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Randomizer.swift; sourceTree = "<group>"; };
 		F6339D9B1D5905C5006C4231 /* candyEater.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = candyEater.sks; sourceTree = "<group>"; };
 		F63847B21DBFD27600C86015 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		F63A29C01E56AB0500C05569 /* Segment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Segment.swift; sourceTree = "<group>"; };
+		F63A29C21E56ACD900C05569 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		F63AD7401E24E0C300F583AD /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libjpeg.a; sourceTree = "<group>"; };
 		F63B9CA81E119B8D0088A6FF /* mallick_lbpcascade_frontalface.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mallick_lbpcascade_frontalface.xml; sourceTree = "<group>"; };
 		F63B9CA91E119B8D0088A6FF /* mallick_lbpcascade_profileface.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mallick_lbpcascade_profileface.xml; sourceTree = "<group>"; };
@@ -226,6 +230,7 @@
 			isa = PBXGroup;
 			children = (
 				F677E6371DCE8C2000D3A966 /* Tracker.swift */,
+				F63A29C01E56AB0500C05569 /* Segment.swift */,
 			);
 			name = Analytics;
 			sourceTree = "<group>";
@@ -311,6 +316,7 @@
 			isa = PBXGroup;
 			children = (
 				A56695EF1CE8B34B00BD7EAF /* AppDelegate.swift */,
+				F63A29C21E56ACD900C05569 /* Constants.swift */,
 				A56695F81CE8B34B00BD7EAF /* LaunchScreen.storyboard */,
 				A56695F61CE8B34B00BD7EAF /* Assets.xcassets */,
 				F64DCB0A1E3472DD00DF6746 /* head-obj.obj */,
@@ -496,6 +502,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F679543A1DBE7AAA0075870B /* RenderSettings.swift in Sources */,
+				F63A29C31E56ACD900C05569 /* Constants.swift in Sources */,
 				F6E540991E17156E00F78577 /* FaceTracker.cpp in Sources */,
 				F6E540D71E18D24B00F78577 /* PowerUpManagerView.swift in Sources */,
 				F63B9CB51E11AEDB0088A6FF /* KDCircularProgress.swift in Sources */,
@@ -511,6 +518,7 @@
 				F6D2A8491E24DDEE00939B9F /* FaceSwapper.cpp in Sources */,
 				F679543B1DBE7AAA0075870B /* VideoWriter.swift in Sources */,
 				F6C0A0551DCFF60D003F00FA /* BCMeshTransform.mm in Sources */,
+				F63A29C11E56AB0500C05569 /* Segment.swift in Sources */,
 				F6C0A0561DCFF60D003F00FA /* BCMeshTransformAnimation.m in Sources */,
 				A566961E1CE8B4A100BD7EAF /* CameraHandler.swift in Sources */,
 				F614CDD41DAFFDAA0061F7FA /* Enums.swift in Sources */,
