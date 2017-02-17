@@ -21,10 +21,16 @@ class Tracker {
             Segment.sharedInstance.userSetup()
             appDelegate.userDefaults.set(true, forKey: "UUIDIdentified")
         }
+        
+        DriftSDK.sharedInstance.configuration()
     }
     
     func record(event: Event) {
         Segment.sharedInstance.recordEvent(event: event)
+    }
+    
+    func startDrift(){
+        DriftSDK.sharedInstance.start()
     }
 
 }
