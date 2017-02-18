@@ -16,7 +16,6 @@
 		A5A1B2D61CEA41E200626AC5 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5A1B2D51CEA41E200626AC5 /* Accelerate.framework */; };
 		A5A1B2D81CEA431600626AC5 /* shape_predictor_68_face_landmarks.dat in Resources */ = {isa = PBXBuildFile; fileRef = A5A1B2D71CEA431600626AC5 /* shape_predictor_68_face_landmarks.dat */; };
 		F614CDD41DAFFDAA0061F7FA /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = F614CDD31DAFFDAA0061F7FA /* Enums.swift */; };
-		F61545401E56C0D400D91345 /* Drift.swift in Sources */ = {isa = PBXBuildFile; fileRef = F615453F1E56C0D400D91345 /* Drift.swift */; };
 		F6339D921D590573006C4231 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6339D911D590573006C4231 /* GameScene.swift */; };
 		F6339D941D590587006C4231 /* Randomizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6339D931D590587006C4231 /* Randomizer.swift */; };
 		F6339DA71D5905C5006C4231 /* candyEater.sks in Resources */ = {isa = PBXBuildFile; fileRef = F6339D9B1D5905C5006C4231 /* candyEater.sks */; };
@@ -77,7 +76,6 @@
 		A5A1B2D71CEA431600626AC5 /* shape_predictor_68_face_landmarks.dat */ = {isa = PBXFileReference; lastKnownFileType = file; name = shape_predictor_68_face_landmarks.dat; path = lib/shape_predictor_68_face_landmarks.dat; sourceTree = "<group>"; };
 		A7C0EC2400EA0312B03DA71B /* Pods_GameFace.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GameFace.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F614CDD31DAFFDAA0061F7FA /* Enums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
-		F615453F1E56C0D400D91345 /* Drift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Drift.swift; sourceTree = "<group>"; };
 		F6339D911D590573006C4231 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		F6339D931D590587006C4231 /* Randomizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Randomizer.swift; sourceTree = "<group>"; };
 		F6339D9B1D5905C5006C4231 /* candyEater.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = candyEater.sks; sourceTree = "<group>"; };
@@ -232,7 +230,6 @@
 			isa = PBXGroup;
 			children = (
 				F677E6371DCE8C2000D3A966 /* Tracker.swift */,
-				F615453F1E56C0D400D91345 /* Drift.swift */,
 				F63A29C01E56AB0500C05569 /* Segment.swift */,
 			);
 			name = Analytics;
@@ -532,7 +529,6 @@
 				F67EA26E1DB3DEE7006DE24B /* CVFImageProcessor.mm in Sources */,
 				F67954391DBE7AAA0075870B /* ImageAnimator.swift in Sources */,
 				F6C0A0531DCFF60D003F00FA /* BCMeshTexture.m in Sources */,
-				F61545401E56C0D400D91345 /* Drift.swift in Sources */,
 				A56695F01CE8B34B00BD7EAF /* AppDelegate.swift in Sources */,
 				F669C0391DB15C3D001161E1 /* GameGallery.swift in Sources */,
 				F6E540D51E18D16C00F78577 /* PowerUpView.swift in Sources */,

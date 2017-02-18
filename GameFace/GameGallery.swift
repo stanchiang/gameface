@@ -361,7 +361,6 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     func powerup1TouchDown(sender: UIButton){
         manager.startPowerUp(.slomo)
         powerUp1.alpha = 0.5
-        Tracker.sharedInstance.startDrift()
     }
     
     func powerup1TouchUpInside(sender: UIButton){

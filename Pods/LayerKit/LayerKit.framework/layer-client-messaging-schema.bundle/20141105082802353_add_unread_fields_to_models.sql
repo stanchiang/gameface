@@ -1,3 +1,0 @@
-ALTER TABLE conversations ADD COLUMN has_unread_messages INTEGER NOT NULL DEFAULT 0;
-
-ALTER TABLE messages ADD COLUMN is_unread INTEGER NOT NULL DEFAULT 0;
