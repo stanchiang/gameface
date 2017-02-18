@@ -62,6 +62,7 @@
 		F6EE84721E58BC9500A7F342 /* sliceFuse.sks in Resources */ = {isa = PBXBuildFile; fileRef = F6EE846F1E58BC9500A7F342 /* sliceFuse.sks */; };
 		F6EE84731E58BC9500A7F342 /* sliceHitBomb.sks in Resources */ = {isa = PBXBuildFile; fileRef = F6EE84701E58BC9500A7F342 /* sliceHitBomb.sks */; };
 		F6EE84741E58BC9500A7F342 /* sliceHitEnemy.sks in Resources */ = {isa = PBXBuildFile; fileRef = F6EE84711E58BC9500A7F342 /* sliceHitEnemy.sks */; };
+		F6EE84841E58D2D900A7F342 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = F6EE84831E58D2D900A7F342 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -148,6 +149,7 @@
 		F6EE847C1E58BCF600A7F342 /* swoosh3.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = swoosh3.caf; sourceTree = "<group>"; };
 		F6EE847D1E58BCF600A7F342 /* whack.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = whack.caf; sourceTree = "<group>"; };
 		F6EE847E1E58BCF600A7F342 /* wrong.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = wrong.caf; sourceTree = "<group>"; };
+		F6EE84831E58D2D900A7F342 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -332,6 +334,7 @@
 		F67D513C1DC18FE90018501C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				F6EE84831E58D2D900A7F342 /* README.md */,
 				A56695EF1CE8B34B00BD7EAF /* AppDelegate.swift */,
 				F63A29C21E56ACD900C05569 /* Constants.swift */,
 				A56695F81CE8B34B00BD7EAF /* LaunchScreen.storyboard */,
@@ -562,6 +565,7 @@
 				F6D2A8491E24DDEE00939B9F /* FaceSwapper.cpp in Sources */,
 				F679543B1DBE7AAA0075870B /* VideoWriter.swift in Sources */,
 				F6C0A0551DCFF60D003F00FA /* BCMeshTransform.mm in Sources */,
+				F6EE84841E58D2D900A7F342 /* README.md in Sources */,
 				F63A29C11E56AB0500C05569 /* Segment.swift in Sources */,
 				F6C0A0561DCFF60D003F00FA /* BCMeshTransformAnimation.m in Sources */,
 				A566961E1CE8B4A100BD7EAF /* CameraHandler.swift in Sources */,
