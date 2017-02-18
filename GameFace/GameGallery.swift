@@ -216,7 +216,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
             cell.note.alpha = 0
             cell.contentView.addSubview(setupGameLayer())
             cell.contentView.addSubview(setupGameManager())
-            cell.contentView.addSubview(setupPowerupView())
+//            cell.contentView.addSubview(setupPowerupView())
 //            cell.contentView.addSubview(setupPUV())
             
             scene.sceneDelegate = manager

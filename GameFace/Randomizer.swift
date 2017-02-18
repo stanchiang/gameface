@@ -38,7 +38,7 @@ func RandomColor() -> UIColor {
 	return UIColor(red: RandomCGFloat(), green: RandomCGFloat(), blue: RandomCGFloat(), alpha: 1)
 }
 
-func runAfterDelay(_ delay: TimeInterval, block: @escaping ()->()) {
-	let time = DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-	DispatchQueue.main.asyncAfter(deadline: time, execute: block)
+func RunAfterDelay(_ delay: TimeInterval, block: @escaping ()->()) {
+    let time = DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+    DispatchQueue.main.asyncAfter(deadline: time, execute: block)
 }

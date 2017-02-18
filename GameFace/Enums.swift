@@ -44,3 +44,11 @@ enum Sprite:String {
     case candy
     case bomb
 }
+
+enum SequenceType: Int {
+    case oneNoBomb, one, twoWithOneBomb, two, three, four, chain, fastChain
+}
+
+enum ForceBomb {
+    case never, always, random
+}
