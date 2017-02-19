@@ -85,6 +85,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     var nextSequenceQueued = true
     var bombSoundEffect: AVAudioPlayer!
     var activeEnemies = [SKSpriteNode]()
+    var distManager = [Int:CGFloat]()
+    var minDist:CGFloat!
+
 //////////
     
     override func didMove(to view: SKView) {
@@ -99,15 +102,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
 //        createLives()
 //        createAvatar()
         
-        RunAfterDelay(2) { [unowned self] in
-            self.tossEnemies()
-        }
+//        RunAfterDelay(2) { [unowned self] in
+//            self.tossEnemies()
+//        }
 //////////
         
     }
     
-    func setupInterface(){        
-//        physicsWorld.gravity = CGVector(dx: 0, dy: 0)
+    func setupInterface(){
         physicsWorld.contactDelegate = self
     }
     
@@ -124,7 +126,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             let start = CGPoint(x: RandomCGFloat(0, max: self.frame.width), y: self.frame.height)
             let end = CGPoint(x: RandomCGFloat(self.frame.width * 1/CGFloat(gameVarDelegate!.getSpriteEndRange()),
                                                max: self.frame.width * CGFloat(gameVarDelegate!.getSpriteEndRange() - 1)/CGFloat(gameVarDelegate!.getSpriteEndRange())), y: 0)
-            createNew(fromPoint: start, toPoint: end)
+            if scene?.children.count < 4 {
+                createNew(fromPoint: start, toPoint: end)
+            }
             
             frameUpdateStartTime = nil
         }
@@ -168,16 +172,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             
             if sprite.name == Sprite.candy.rawValue {
                 if (sprite.action(forKey: "orig") != nil) {
-//                    print("completion - candy missed")
+                    print("completion - candy missed")
                     self.registerBadOutcome(sprite: sprite)
                 } else {
-//                    print("completion - candy caught")
+                    print("completion - candy caught")
                     self.registerGoodOutcome(sprite: sprite)
                 }
             }
             
             if sprite.name == Sprite.bomb.rawValue {
-//                print("completion - bomb dodged")
+                print("completion - bomb dodged")
                 self.registerNeutralOutcome(sprite: sprite)
             }
         })
@@ -243,12 +247,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         sprite.physicsBody?.categoryBitMask = 4
         
         if sprite.name == Sprite.candy.rawValue {
-//            print("contact - candy caught")
+            print("contact - candy caught")
             registerGoodOutcome(sprite: sprite)
         }
         
         if sprite.name == Sprite.bomb.rawValue {
-//            print("contact - bomb caught")
+            print("contact - bomb caught")
             registerBadOutcome(sprite: sprite)
         }
     }
@@ -271,7 +275,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             } else {
                 (appDelegate.window?.rootViewController as! GameGallery).resetGame()
             }
-            
         }
         
         let mouth = appDelegate.mouth
@@ -283,7 +286,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         }
         
         if appDelegate.gameState == .inPlay {
+            
+            
             (appDelegate.window?.rootViewController as! GameGallery).collectionView.isScrollEnabled = false
+            
+            let allNodes:[SKNode] = (scene?.children)!
+            
             if mouthSprite != nil { mouthSprite.removeFromParent() }
             if shadesSprite != nil { shadesSprite.removeFromParent() }
             if stacheSprite != nil { stacheSprite.removeFromParent() }
@@ -297,29 +305,44 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
 //use when we get boost fps - it will stop showing sprite if face is not detected, but then sprites give off strobe effect
 //                    appDelegate.mouth = []
                     sceneDelegate?.updateTimer((gameVarDelegate?.getOpenMouthDrainRate())! * -1.0 / 1000)
+                    
+                    for (index, node) in allNodes.enumerated() {
+                        if let nodeName = node.name {
+                            if (nodeName == Sprite.candy.rawValue || nodeName == Sprite.bomb.rawValue) && mouthSprite.position.y <= node.position.y {
+                                let distance:CGFloat = CGFloat(hypotf(Float(mouthSprite.position.x - node.position.x), Float(mouthSprite.position.y - node.position.y)))
+                                distManager.updateValue(distance, forKey: index)
+                            }
+                        }
+                    }
                 }else {
                     sceneDelegate?.updateTimer((gameVarDelegate?.getClosedMouthDrainRate())! * -1.0 / 1000)
                 }
+                
+                if let minKey = keyMinValue(dict: distManager), let minDist = distManager[minKey] {
+                    if minDist < 100 {
+                        physicsWorld.speed = 0.1
+                    } else {
+                        physicsWorld.speed = 0.85
+                    }
+                }
+                distManager.removeAll()
             }
             
-            let allNodes:[SKNode] = (scene?.children)!
             
             for node in allNodes {
                 if node is SKSpriteNode {
                     if (node.physicsBody?.categoryBitMask)! > 0 {
-//                        node.speed = sceneDelegate!.getSpeed()
+                        node.speed = sceneDelegate!.getSpeed()
                         if node.position.y < 200 {
                             node.removeFromParent()
                         }
                         
-                        if appDelegate.activePowerups.contains(.slomo) {
-                            node.physicsBody?.velocity.dy *= 0.5
-                        }
+//                        if appDelegate.activePowerups.contains(.slomo) { node.physicsBody?.velocity.dy *= 0.5 }
                     }
                     
-                    if appDelegate.activePowerups.contains(.catchall) {
+//                    if appDelegate.activePowerups.contains(.catchall) {
 //                        node.physicsBody
-                    }
+//                    }
                     
 //                    if !mouth.isEmpty && (node.physicsBody?.categoryBitMask)! == 1 && appDelegate.activePowerups.contains(PowerUp.catchall) {
 //                        if (node.action(forKey: "orig") != nil) {
@@ -331,75 +354,68 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                 }
             }
             
-            if !appDelegate.activePowerups.isEmpty {
-                sceneDelegate?.updateTimer((gameVarDelegate?.getOpenMouthDrainRate())! * -2.0 * Double(appDelegate.activePowerups.count) / 1000)
-                if appDelegate.noseBridge != nil && appDelegate.activePowerups.contains(PowerUp.slomo) { addShades(appDelegate.noseBridge) }
-                if appDelegate.mustache != nil && appDelegate.activePowerups.contains(PowerUp.catchall) { addStache(appDelegate.mustache) }
-            }
+//            if !appDelegate.activePowerups.isEmpty {
+//                sceneDelegate?.updateTimer((gameVarDelegate?.getOpenMouthDrainRate())! * -2.0 * Double(appDelegate.activePowerups.count) / 1000)
+//                if appDelegate.noseBridge != nil && appDelegate.activePowerups.contains(PowerUp.slomo) { addShades(appDelegate.noseBridge) }
+//                if appDelegate.mustache != nil && appDelegate.activePowerups.contains(PowerUp.catchall) { addStache(appDelegate.mustache) }
+//            }
             
             if gameVarDelegate!.getWillRecordGame() {
                 if (appDelegate.window?.rootViewController as! GameGallery).gamePlayArray.count >= Int( 30 * gameVarDelegate!.getVideoLength() ) {
                     (appDelegate.window?.rootViewController as! GameGallery).gamePlayArray.removeFirst()
                 }
                 
-//apparently we don't need to go to the background just drawhierarchy without screenupdates
-//                DispatchQueue.global(qos: .background).async { [unowned self]() -> Void in
-                    (self.appDelegate.window?.rootViewController as! GameGallery).takeScreenShot()
-//                }
+                (self.appDelegate.window?.rootViewController as! GameGallery).takeScreenShot()
             }
         }
         
-        if activeEnemies.count > 0 {
-            for (index, node) in activeEnemies.enumerated() {
-                //if out of screen bounds
-                if node.position.y < -node.size.height || node.position.x < -node.size.width || node.position.x > frame.width + node.size.width {
-                    node.removeAllActions()
-                    
-                    if node.name == "enemy" {
-                        node.name = ""
-//                        subtractLife()
-                        
-                        node.removeFromParent()
-                        
-                        if let index = activeEnemies.index(of: node) {
-                            activeEnemies.remove(at: index)
-                        }
-                    } else if node.name == "bombContainer" {
-                        node.name = ""
-                        node.removeFromParent()
-                        
-                        if let index = activeEnemies.index(of: node) {
-                            activeEnemies.remove(at: index)
-                        }
-                    }
-                } else {
-                    
-//                    // when face exists and mouth is open and the node of interest is a game sprite
-//                    //TODO: see if it seems more natural if we only calculate distance of sprite on their way down even though the user can catch any sprite
-//                    if activeTriggered && (node.name == "enemy" || node.name == "bombContainer") {
-//                        //save distance of each node to dictionary (index, distance)
-//                        let distance:CGFloat = CGFloat(hypotf(Float(dog.position.x - node.position.x), Float(dog.position.y - node.position.y)))
+//        if activeEnemies.count > 0 {
+//            for (index, node) in activeEnemies.enumerated() {
+//                //if out of screen bounds
+//                if node.position.y < -node.size.height || node.position.x < -node.size.width || node.position.x > frame.width + node.size.width {
+//                    node.removeAllActions()
+//                    
+//                    if node.name == "enemy" {
+//                        node.name = ""
+////                        subtractLife()
 //                        
-//                        distManager.updateValue(distance, forKey: index)
+//                        node.removeFromParent()
+//                        
+//                        if let index = activeEnemies.index(of: node) {
+//                            activeEnemies.remove(at: index)
+//                        }
+//                    } else if node.name == "bombContainer" {
+//                        node.name = ""
+//                        node.removeFromParent()
+//                        
+//                        if let index = activeEnemies.index(of: node) {
+//                            activeEnemies.remove(at: index)
+//                        }
 //                    }
-                }
-            }
-            
-            
-            
-//            //pick out the min distanc value and check the distance against game speed algo
-//            if let minKey = keyMinValue(dict: distManager), let minDist = distManager[minKey] {
-//                if minDist < 100 { physicsWorld.speed = 0.1 }
+//                } else {
+////                    // when face exists and mouth is open and the node of interest is a game sprite
+////                    //TODO: see if it seems more natural if we only calculate distance of sprite on their way down even though the user can catch any sprite
+////                    if activeTriggered && (node.name == "enemy" || node.name == "bombContainer") {
+////                        //save distance of each node to dictionary (index, distance)
+////                        let distance:CGFloat = CGFloat(hypotf(Float(dog.position.x - node.position.x), Float(dog.position.y - node.position.y)))
+////                        distManager.updateValue(distance, forKey: index)
+////                    }
+//                }
 //            }
-//            distManager.removeAll()
-        } else {
-            if !nextSequenceQueued {
-                RunAfterDelay(popupTime, block: { [unowned self] in
-                    self.tossEnemies()
-                })
-            }
-            nextSequenceQueued = true
-        }
+//            
+////            //pick out the min distanc value and check the distance against game speed algo
+////            if let minKey = keyMinValue(dict: distManager), let minDist = distManager[minKey] {
+////                if minDist < 100 { physicsWorld.speed = 0.1 }
+////            }
+////            distManager.removeAll()
+//        } else {
+//            if !nextSequenceQueued {
+//                RunAfterDelay(popupTime, block: { [unowned self] in
+//                    self.tossEnemies()
+//                })
+//            }
+//            nextSequenceQueued = true
+//        }
     }
     
     func triggerGameStart(_ mouth:[CGPoint]) -> Bool {
@@ -544,10 +560,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
 //////////
     
     func tossEnemies() {
-        if appDelegate.gameState == .postGame {
+        print("==========\(appDelegate.gameState)")
+        if appDelegate.gameState != .inPlay {
             return
         }
         
+        print("tossing")
         //        game gets faster over time, increasing difficulty
         popupTime *= 0.991
         chainDelay *= 0.99
@@ -598,7 +616,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             RunAfterDelay(chainDelay / 10.0 * 4) { [unowned self] in self.createEnemy() }
         }
         
-        //        sequencePosition += 1
+//        sequencePosition += 1
         
         nextSequenceQueued = false
     }
@@ -673,6 +691,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
 
 //////////
 
+    func startTossing() {
+        RunAfterDelay(2) { [unowned self] in
+            self.tossEnemies()
+        }
+    }
 }
 
 //////////

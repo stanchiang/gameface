@@ -259,8 +259,8 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
         
         gameView.addSubview(skView as UIView)
         
-//        skView.showsFPS = true
-//        skView.showsNodeCount = true
+        skView.showsFPS = true
+        skView.showsNodeCount = true
         
         /* Sprite Kit applies additional optimizations to improve rendering performance */
         skView.ignoresSiblingOrder = true
@@ -422,6 +422,7 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     func startPlaying() {
         //start basketball drops and mouth sprite updates
         appDelegate.gameState = .inPlay
+//        self.scene.tossEnemies()
         Tracker.sharedInstance.record(event: .gameStarted)
         self.scene.addGameTimer()
     }
