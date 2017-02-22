@@ -230,7 +230,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         }
         
         guard sprite != nil else { return }
-                
+        
         switch mouthColor {
         case UIColor.green:
             print("========= is green")
@@ -241,7 +241,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         default:
             break
         }
-        
+        print("testing")
         if
             mouthColor == UIColor.red
                 &&
@@ -448,7 +448,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         mouthSprite.name = Sprite.mouth.rawValue
         mouthSprite.position = self.view!.convert(center, to: self)
         
-        mouthSprite.physicsBody!.contactTestBitMask = 1 | 2
+        mouthSprite.physicsBody!.contactTestBitMask = UInt32(1 | 2 | 4)
         mouthSprite.physicsBody!.categoryBitMask = 0
         self.addChild(mouthSprite)
 
