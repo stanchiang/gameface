@@ -58,26 +58,26 @@ class PostGameView: UIView {
         previewView.backgroundColor = UIColor.clear
         addSubview(previewView)
         
-        continueButton.translatesAutoresizingMaskIntoConstraints = false
-        continueButton.contentMode = .scaleAspectFit
-        continueButton.setImage(continueIcon, for: UIControlState.normal)
-        continueButton.imageEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset)
-        continueButton.addTarget(self, action: #selector(restartAction(_:)), for: .touchUpInside)
-        continueButton.backgroundColor = UIColor.clear
-        continueButton.layer.borderColor = UIColor.red.cgColor
-        continueButton.layer.borderWidth = 5.0
-        addSubview(continueButton)
+//        continueButton.translatesAutoresizingMaskIntoConstraints = false
+//        continueButton.contentMode = .scaleAspectFit
+//        continueButton.setImage(continueIcon, for: UIControlState.normal)
+//        continueButton.imageEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset)
+//        continueButton.addTarget(self, action: #selector(restartAction(_:)), for: .touchUpInside)
+//        continueButton.backgroundColor = UIColor.clear
+//        continueButton.layer.borderColor = UIColor.red.cgColor
+//        continueButton.layer.borderWidth = 5.0
+//        addSubview(continueButton)
         
-        continueTimer = KDCircularProgress()
-        continueTimer.translatesAutoresizingMaskIntoConstraints = false
-        continueTimer.startAngle = -90
-        continueTimer.progressThickness = 0.3
-        continueTimer.trackThickness = 0.3
-        continueTimer.trackColor = UIColor.white
-        continueTimer.clockwise = true
-        continueTimer.roundedCorners = false
-        continueTimer.glowMode = .noGlow
-        addSubview(continueTimer)
+//        continueTimer = KDCircularProgress()
+//        continueTimer.translatesAutoresizingMaskIntoConstraints = false
+//        continueTimer.startAngle = -90
+//        continueTimer.progressThickness = 0.3
+//        continueTimer.trackThickness = 0.3
+//        continueTimer.trackColor = UIColor.white
+//        continueTimer.clockwise = true
+//        continueTimer.roundedCorners = false
+//        continueTimer.glowMode = .noGlow
+//        addSubview(continueTimer)
         
         
     }
@@ -95,7 +95,7 @@ class PostGameView: UIView {
                                                          name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
                                                          object: self.player.currentItem)
         
-        startContinueTimer()
+//        startContinueTimer()
     }
     
     func playerItemDidReachEnd(_ notification: Notification) {
@@ -119,24 +119,26 @@ class PostGameView: UIView {
         previewView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         previewView.bottomAnchor.constraint(equalTo: restartButton.topAnchor, constant: self.frame.width * -1/20).isActive = true
         
-        continueButton.centerYAnchor.constraint(equalTo: previewView.centerYAnchor).isActive = true
-        continueButton.leadingAnchor.constraint(equalTo: previewView.trailingAnchor).isActive = true
-        continueButton.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        continueButton.heightAnchor.constraint(equalTo: continueButton.widthAnchor).isActive = true
+//        continueButton.centerYAnchor.constraint(equalTo: previewView.centerYAnchor).isActive = true
+//        continueButton.leadingAnchor.constraint(equalTo: previewView.trailingAnchor).isActive = true
+//        continueButton.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+//        continueButton.heightAnchor.constraint(equalTo: continueButton.widthAnchor).isActive = true
         
-        continueTimer.centerXAnchor.constraint(equalTo: continueButton.centerXAnchor).isActive = true
-        continueTimer.centerYAnchor.constraint(equalTo: continueButton.centerYAnchor).isActive = true
-        continueTimer.widthAnchor.constraint(equalTo: continueButton.widthAnchor).isActive = true
-        continueTimer.heightAnchor.constraint(equalTo: continueButton.heightAnchor).isActive = true
+//        continueTimer.centerXAnchor.constraint(equalTo: continueButton.centerXAnchor).isActive = true
+//        continueTimer.centerYAnchor.constraint(equalTo: continueButton.centerYAnchor).isActive = true
+//        continueTimer.widthAnchor.constraint(equalTo: continueButton.widthAnchor).isActive = true
+//        continueTimer.heightAnchor.constraint(equalTo: continueButton.heightAnchor).isActive = true
     }
     
     func restartAction(_ sender: UIButton) {
         print("restart game")
+        Tracker.sharedInstance.record(event: .tappedRestart)
         delegate?.initNewGame()
     }
     
     func shareAction(_ sender: UIButton) {
         print("share game")
+        Tracker.sharedInstance.record(event: .tappedShare)
         var activityItems = [AnyObject]()
         if videoURL != nil {
             activityItems.append(videoURL as AnyObject)
@@ -146,18 +148,18 @@ class PostGameView: UIView {
         (window?.rootViewController as! GameGallery).present(activityViewController, animated: true, completion: nil)
     }
     
-    func startContinueTimer() {
-        continueTimer.animate(fromAngle: 0, toAngle: 360, duration: 3) { [unowned self] completed in
-            if completed {
-                print("animation stopped, completed")
-                self.continueButton.alpha = 0
-            } else {
-                print("animation stopped, was interrupted")
-            }
-        }
-
+//    func startContinueTimer() {
+//        continueTimer.animate(fromAngle: 0, toAngle: 360, duration: 3) { [unowned self] completed in
+//            if completed {
+//                print("animation stopped, completed")
+//                self.continueButton.alpha = 0
+//            } else {
+//                print("animation stopped, was interrupted")
+//            }
+//        }
+//
 //        Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(timerAction), userInfo: nil, repeats: false)
-    }
+//    }
     
 //    func timerAction(){
 //        continueButton.alpha = 0

@@ -422,7 +422,6 @@ class GameGallery: UIViewController, UICollectionViewDataSource, UICollectionVie
     func startPlaying() {
         //start basketball drops and mouth sprite updates
         appDelegate.gameState = .inPlay
-//        self.scene.tossEnemies()
         Tracker.sharedInstance.record(event: .gameStarted)
         self.scene.addGameTimer()
     }

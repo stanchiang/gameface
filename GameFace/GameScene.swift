@@ -77,14 +77,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     
     var frameUpdateStartTime:TimeInterval?
     var endTime:TimeInterval!
+    
+    var distance: Float!
+    var collisionDistance: Float!
+    var last3Dist = [Float]()
+    var mouthColor: UIColor!
+    
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
 //////////
-    var popupTime = 0.9
-    var chainDelay = 3.0
-    var nextSequenceQueued = true
-    var bombSoundEffect: AVAudioPlayer!
-    var activeEnemies = [SKSpriteNode]()
     var distManager = [Int:CGFloat]()
     var minDist:CGFloat!
 
@@ -93,19 +94,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     override func didMove(to view: SKView) {
         setupInterface()
 
-//////////
         physicsWorld.gravity = CGVector(dx: 0, dy: -6)
         physicsWorld.speed = 0.85
-        
-//        createTimer()
-//        createScore()
-//        createLives()
-//        createAvatar()
-        
-//        RunAfterDelay(2) { [unowned self] in
-//            self.tossEnemies()
-//        }
-//////////
         
     }
     
@@ -229,32 +219,55 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     
     func didBegin(_ contact: SKPhysicsContact) {
         var sprite:SKSpriteNode!
-
-        if contact.bodyA.categoryBitMask == 4 || contact.bodyB.categoryBitMask == 4 { return }
+        
+        if contact.bodyA.categoryBitMask == 8 || contact.bodyB.categoryBitMask == 8 { return }
         
         if contact.bodyA.node?.name == Sprite.mouth.rawValue {
-            if let object = contact.bodyB.node as? SKSpriteNode{
-                sprite = object
-            }
+            if let object = contact.bodyB.node as? SKSpriteNode{ sprite = object }
+            
         } else if contact.bodyB.node?.name == Sprite.mouth.rawValue {
-            if let object = contact.bodyA.node as? SKSpriteNode{
-                sprite = object
-            }
+            if let object = contact.bodyA.node as? SKSpriteNode{ sprite = object }
         }
         
         guard sprite != nil else { return }
-        
-        sprite.physicsBody?.categoryBitMask = 4
-        
-        if sprite.name == Sprite.candy.rawValue {
-            print("contact - candy caught")
-            registerGoodOutcome(sprite: sprite)
+                
+        switch mouthColor {
+        case UIColor.green:
+            print("========= is green")
+            print("green sprite mask value = \(sprite.physicsBody?.categoryBitMask)")
+        case UIColor.red:
+            print("========= is red")
+            print("red sprite mask value = \(sprite.physicsBody?.categoryBitMask)")
+        default:
+            break
         }
         
-        if sprite.name == Sprite.bomb.rawValue {
-            print("contact - bomb caught")
-            registerBadOutcome(sprite: sprite)
+        if
+            mouthColor == UIColor.red
+                &&
+            sprite.physicsBody?.categoryBitMask == 4
+        {
+            print("22222 will swallow")
+            
+            if sprite.name == Sprite.candy.rawValue {
+                print("contact - candy caught")
+                registerGoodOutcome(sprite: sprite)
+            }
+            
+            if sprite.name == Sprite.bomb.rawValue {
+                print("contact - bomb caught")
+                registerBadOutcome(sprite: sprite)
+            }
+            
+            print("33333 did swallow")
+            sprite.physicsBody?.categoryBitMask = 8
         }
+        
+        if mouthColor == UIColor.green && sprite.physicsBody?.categoryBitMask < 4 {
+            sprite.physicsBody?.categoryBitMask = 4
+            print("11111 can swallow")
+        }
+
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -299,28 +312,40 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             //        if we have data to work with
             if !mouth.isEmpty && mouth.first!.x != 0 && mouth.first!.y != 0 {
                 //        create player position and draw shape based on mouth array
-                if checkMouth(mouth, dist: 5){
-                    addMouth(mouth)
-                    
+                
+                if checkMouth(mouth, dist: 10) {
+                    mouthColor = UIColor.green
+                } else {
+                    mouthColor = UIColor.red
+                }
+                
+                switch mouthColor {
+                case UIColor.green:
+                    print("set to --- green")
+                case UIColor.red:
+                    print("set to --- red")
+                default:
+                    break
+                }
+                
+                addMouth(mouth, color: mouthColor)
+                
 //use when we get boost fps - it will stop showing sprite if face is not detected, but then sprites give off strobe effect
 //                    appDelegate.mouth = []
-                    sceneDelegate?.updateTimer((gameVarDelegate?.getOpenMouthDrainRate())! * -1.0 / 1000)
-                    
-                    for (index, node) in allNodes.enumerated() {
-                        if let nodeName = node.name {
-                            if (nodeName == Sprite.candy.rawValue || nodeName == Sprite.bomb.rawValue) && mouthSprite.position.y <= node.position.y {
-                                let distance:CGFloat = CGFloat(hypotf(Float(mouthSprite.position.x - node.position.x), Float(mouthSprite.position.y - node.position.y)))
-                                distManager.updateValue(distance, forKey: index)
-                            }
+                sceneDelegate?.updateTimer((gameVarDelegate?.getOpenMouthDrainRate())! * -1.0 / 1000)
+                
+                for (index, node) in allNodes.enumerated() {
+                    if let nodeName = node.name {
+                        if (nodeName == Sprite.candy.rawValue || nodeName == Sprite.bomb.rawValue) && mouthSprite.position.y < node.position.y + 50 {
+                            let distance:CGFloat = CGFloat(hypotf(Float(mouthSprite.position.x - node.position.x), Float(mouthSprite.position.y - node.position.y)))
+                            distManager.updateValue(distance, forKey: index)
                         }
                     }
-                }else {
-                    sceneDelegate?.updateTimer((gameVarDelegate?.getClosedMouthDrainRate())! * -1.0 / 1000)
                 }
                 
                 if let minKey = keyMinValue(dict: distManager), let minDist = distManager[minKey] {
-                    if minDist < 100 {
-                        physicsWorld.speed = 0.1
+                    if minDist < 200 {
+                        physicsWorld.speed = 0.05
                     } else {
                         physicsWorld.speed = 0.85
                     }
@@ -368,54 +393,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                 (self.appDelegate.window?.rootViewController as! GameGallery).takeScreenShot()
             }
         }
-        
-//        if activeEnemies.count > 0 {
-//            for (index, node) in activeEnemies.enumerated() {
-//                //if out of screen bounds
-//                if node.position.y < -node.size.height || node.position.x < -node.size.width || node.position.x > frame.width + node.size.width {
-//                    node.removeAllActions()
-//                    
-//                    if node.name == "enemy" {
-//                        node.name = ""
-////                        subtractLife()
-//                        
-//                        node.removeFromParent()
-//                        
-//                        if let index = activeEnemies.index(of: node) {
-//                            activeEnemies.remove(at: index)
-//                        }
-//                    } else if node.name == "bombContainer" {
-//                        node.name = ""
-//                        node.removeFromParent()
-//                        
-//                        if let index = activeEnemies.index(of: node) {
-//                            activeEnemies.remove(at: index)
-//                        }
-//                    }
-//                } else {
-////                    // when face exists and mouth is open and the node of interest is a game sprite
-////                    //TODO: see if it seems more natural if we only calculate distance of sprite on their way down even though the user can catch any sprite
-////                    if activeTriggered && (node.name == "enemy" || node.name == "bombContainer") {
-////                        //save distance of each node to dictionary (index, distance)
-////                        let distance:CGFloat = CGFloat(hypotf(Float(dog.position.x - node.position.x), Float(dog.position.y - node.position.y)))
-////                        distManager.updateValue(distance, forKey: index)
-////                    }
-//                }
-//            }
-//            
-////            //pick out the min distanc value and check the distance against game speed algo
-////            if let minKey = keyMinValue(dict: distManager), let minDist = distManager[minKey] {
-////                if minDist < 100 { physicsWorld.speed = 0.1 }
-////            }
-////            distManager.removeAll()
-//        } else {
-//            if !nextSequenceQueued {
-//                RunAfterDelay(popupTime, block: { [unowned self] in
-//                    self.tossEnemies()
-//                })
-//            }
-//            nextSequenceQueued = true
-//        }
     }
     
     func triggerGameStart(_ mouth:[CGPoint]) -> Bool {
@@ -430,13 +407,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         if !mouth.isEmpty && mouth.first!.x != 0 && mouth.first!.y != 0 {
             let p1 = mouth[2]
             let p2 = mouth[6]
-            let distance = hypotf(Float(p1.x) - Float(p2.x), Float(p1.y) - Float(p2.y));
+            distance = hypotf(Float(p1.x) - Float(p2.x), Float(p1.y) - Float(p2.y));
+            
+            last3Dist.append(distance)
+            if last3Dist.count > 3 { last3Dist.removeFirst() }
+            
             if distance > dist { return true }
         }
         return false
     }
     
-    func addMouth(_ mouth:[CGPoint]) {
+    func addMouth(_ mouth:[CGPoint], color: UIColor) {
         
         var anchorPoint:CGPoint!
         let pathToDraw:CGMutablePath = CGMutablePath()
@@ -456,7 +437,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         
         mouthShape = SKShapeNode(path: pathToDraw)
         mouthShape.isAntialiased = true
-        mouthShape.strokeColor = UIColor.cyan//RandomColor()
+        mouthShape.strokeColor = color
 //        polygon.fillColor = RandomColor()
         mouthShape.name = "mouthshape"
 
@@ -556,149 +537,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         //need to run timer every milisecond but then do a secondary interval to determine when to actually spawn game sprites
         gameTimer = Timer.scheduledTimer(timeInterval: 1/1000, target: self, selector: #selector(setupNew), userInfo: nil, repeats: true)
     }
-
-//////////
-    
-    func tossEnemies() {
-        print("==========\(appDelegate.gameState)")
-        if appDelegate.gameState != .inPlay {
-            return
-        }
-        
-        print("tossing")
-        //        game gets faster over time, increasing difficulty
-        popupTime *= 0.991
-        chainDelay *= 0.99
-        physicsWorld.speed *= 1.02
-        
-        let sequenceType = SequenceType.oneNoBomb
-        
-        switch sequenceType {
-        case .oneNoBomb:
-            createEnemy(forceBomb: .never)
-            
-        case .one:
-            createEnemy()
-            
-        case .twoWithOneBomb:
-            createEnemy(forceBomb: .never)
-            createEnemy(forceBomb: .always)
-            
-        case .two:
-            createEnemy()
-            createEnemy()
-            
-        case .three:
-            createEnemy()
-            createEnemy()
-            createEnemy()
-            
-        case .four:
-            createEnemy()
-            createEnemy()
-            createEnemy()
-            createEnemy()
-            
-        case .chain:
-            createEnemy()
-            
-            RunAfterDelay(chainDelay / 5.0) { [unowned self] in self.createEnemy() }
-            RunAfterDelay(chainDelay / 5.0 * 2) { [unowned self] in self.createEnemy() }
-            RunAfterDelay(chainDelay / 5.0 * 3) { [unowned self] in self.createEnemy() }
-            RunAfterDelay(chainDelay / 5.0 * 4) { [unowned self] in self.createEnemy() }
-            
-        case .fastChain:
-            createEnemy()
-            
-            RunAfterDelay(chainDelay / 10.0) { [unowned self] in self.createEnemy() }
-            RunAfterDelay(chainDelay / 10.0 * 2) { [unowned self] in self.createEnemy() }
-            RunAfterDelay(chainDelay / 10.0 * 3) { [unowned self] in self.createEnemy() }
-            RunAfterDelay(chainDelay / 10.0 * 4) { [unowned self] in self.createEnemy() }
-        }
-        
-//        sequencePosition += 1
-        
-        nextSequenceQueued = false
-    }
-    
-    func createEnemy(forceBomb: ForceBomb = .random) {
-        var enemy: SKSpriteNode
-        var enemyType = RandomInt(0, max: 6)
-        if forceBomb == .never {
-            enemyType = 1
-        } else if forceBomb == .always {
-            enemyType = 0
-        }
-        
-        if enemyType == 0 {
-            enemy = SKSpriteNode()
-            
-            enemy.name = "bombContainer"
-            
-            let bombImage = SKSpriteNode(imageNamed: "sliceBomb")
-            bombImage.name = "bomb"
-            enemy.addChild(bombImage)
-            
-            if bombSoundEffect != nil {
-                bombSoundEffect.stop()
-                bombSoundEffect = nil
-            }
-            
-            let path = Bundle.main.path(forResource: "sliceBombFuse.caf", ofType: nil)!
-            let url = URL(fileURLWithPath: path)
-            let sound = try! AVAudioPlayer(contentsOf: url)
-            bombSoundEffect = sound
-            sound.play()
-            
-            let emitter = SKEmitterNode(fileNamed: "sliceFuse")!
-            emitter.position = CGPoint(x: 76, y: 64)
-            enemy.addChild(emitter)
-        } else {
-            enemy = SKSpriteNode(imageNamed: "penguin")
-            run(SKAction.playSoundFileNamed("launch.caf", waitForCompletion: false))
-            enemy.name = "enemy"
-        }
-        
-//        enemy.zPosition = dog.zPosition + 1
-        
-        // position on screen
-        let randomPosition = CGPoint(x: RandomInt(0, max: Int(frame.width)), y: 0)
-        enemy.position = randomPosition
-        
-        let randomAngularVelocity = CGFloat(RandomInt(-6, max: 6)) / 2.0
-        var randomXVelocity = 0
-        
-        if randomPosition.x < frame.width * 1 / 4 {
-            randomXVelocity = RandomInt(8, max: 15)
-        } else if randomPosition.x < frame.width * 2 / 4 {
-            randomXVelocity = RandomInt(3, max: 5)
-        } else if randomPosition.x < frame.width * 3 / 4 {
-            randomXVelocity = -RandomInt(3, max: 5)
-        } else {
-            randomXVelocity = -RandomInt(8, max: 15)
-        }
-        randomXVelocity /= 3
-        let randomYVelocity = RandomInt(24, max: 32)
-        
-        enemy.physicsBody = SKPhysicsBody(circleOfRadius: 64)
-        enemy.physicsBody!.velocity = CGVector(dx: randomXVelocity * 40, dy: randomYVelocity * 40)
-        enemy.physicsBody!.angularVelocity = randomAngularVelocity
-        enemy.physicsBody!.collisionBitMask = 0
-        
-        addChild(enemy)
-        activeEnemies.append(enemy)
-    }
-
-//////////
-
-    func startTossing() {
-        RunAfterDelay(2) { [unowned self] in
-            self.tossEnemies()
-        }
-    }
 }
 
-//////////
 func keyMinValue(dict: [Int: CGFloat]) -> Int? {
     
     for (key, value) in dict {
@@ -709,4 +549,3 @@ func keyMinValue(dict: [Int: CGFloat]) -> Int? {
     
     return nil
 }
-//////////

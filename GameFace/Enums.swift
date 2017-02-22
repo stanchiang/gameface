@@ -18,6 +18,8 @@ enum GameState:String {
 enum Event:String {
     case gameStarted
     case gameEnded
+    case tappedRestart
+    case tappedShare
 }
 
 enum GameItem:String {
