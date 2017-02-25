@@ -1,5 +1,7 @@
 # gameface
 
+![demo](demo.gif)
+
 ## gitignored dependencies
 
 ### opencv
@@ -8,7 +10,3 @@
 
 ### constants.swift
   * segment analytics api write key if you want to record user engagement metrics 
-
-## demo
-
-![demo](demo.gif)
