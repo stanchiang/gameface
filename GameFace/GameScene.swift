@@ -80,7 +80,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
     
     var distance: Float!
     var collisionDistance: Float!
-    var last3Dist = [Float]()
     var mouthColor: UIColor!
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -231,24 +230,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
         
         guard sprite != nil else { return }
         
-        switch mouthColor {
-        case UIColor.green:
-            print("========= is green")
-            print("green sprite mask value = \(sprite.physicsBody?.categoryBitMask)")
-        case UIColor.red:
-            print("========= is red")
-            print("red sprite mask value = \(sprite.physicsBody?.categoryBitMask)")
-        default:
-            break
-        }
-        print("testing")
-        if
-            mouthColor == UIColor.red
-                &&
-            sprite.physicsBody?.categoryBitMask == 4
-        {
-            print("22222 will swallow")
-            
+        if mouthColor == UIColor.red && sprite.physicsBody?.categoryBitMask == 4 {
             if sprite.name == Sprite.candy.rawValue {
                 print("contact - candy caught")
                 registerGoodOutcome(sprite: sprite)
@@ -259,13 +241,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                 registerBadOutcome(sprite: sprite)
             }
             
-            print("33333 did swallow")
             sprite.physicsBody?.categoryBitMask = 8
         }
         
         if mouthColor == UIColor.green && sprite.physicsBody?.categoryBitMask < 4 {
             sprite.physicsBody?.categoryBitMask = 4
-            print("11111 can swallow")
         }
 
     }
@@ -319,51 +299,48 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
                     mouthColor = UIColor.red
                 }
                 
-                switch mouthColor {
-                case UIColor.green:
-                    print("set to --- green")
-                case UIColor.red:
-                    print("set to --- red")
-                default:
-                    break
-                }
-                
                 addMouth(mouth, color: mouthColor)
                 
 //use when we get boost fps - it will stop showing sprite if face is not detected, but then sprites give off strobe effect
 //                    appDelegate.mouth = []
                 sceneDelegate?.updateTimer((gameVarDelegate?.getOpenMouthDrainRate())! * -1.0 / 1000)
-                
                 for (index, node) in allNodes.enumerated() {
-                    if let nodeName = node.name {
-                        if (nodeName == Sprite.candy.rawValue || nodeName == Sprite.bomb.rawValue) && mouthSprite.position.y < node.position.y + 50 {
+                    if let nodeName = node.name,
+                        (nodeName == Sprite.candy.rawValue || nodeName == Sprite.bomb.rawValue) {
+                        if mouthColor == UIColor.green {
                             let distance:CGFloat = CGFloat(hypotf(Float(mouthSprite.position.x - node.position.x), Float(mouthSprite.position.y - node.position.y)))
                             distManager.updateValue(distance, forKey: index)
+                        }
+                        
+                        if node.position.y < node.frame.size.height {
+                            node.removeFromParent()
                         }
                     }
                 }
                 
-                if let minKey = keyMinValue(dict: distManager), let minDist = distManager[minKey] {
-                    if minDist < 200 {
+                if let minKey = keyMinValue(dict: distManager), let minDist = distManager[minKey],
+                    minDist < 100 && mouthSprite.position.y < allNodes[minKey].position.y + 50 {
+                    if mouthColor == UIColor.green {
                         physicsWorld.speed = 0.05
-                    } else {
-                        physicsWorld.speed = 0.85
                     }
+                } else {
+                    physicsWorld.speed = 0.85
                 }
+                
                 distManager.removeAll()
             }
             
             
-            for node in allNodes {
-                if node is SKSpriteNode {
-                    if (node.physicsBody?.categoryBitMask)! > 0 {
-                        node.speed = sceneDelegate!.getSpeed()
-                        if node.position.y < 200 {
-                            node.removeFromParent()
-                        }
+//            for node in allNodes {
+//                if node is SKSpriteNode {
+//                    if (node.physicsBody?.categoryBitMask)! > 0 {
+//                        node.speed = sceneDelegate!.getSpeed()
+//                        if node.position.y < 200 {
+//                            node.removeFromParent()
+//                        }
                         
 //                        if appDelegate.activePowerups.contains(.slomo) { node.physicsBody?.velocity.dy *= 0.5 }
-                    }
+//                    }
                     
 //                    if appDelegate.activePowerups.contains(.catchall) {
 //                        node.physicsBody
@@ -376,8 +353,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
 //                            spriteRunAction(sprite: node as! SKSpriteNode, path: newPath, key: "catchAll")
 //                        }
 //                    }
-                }
-            }
+//                }
+//            }
             
 //            if !appDelegate.activePowerups.isEmpty {
 //                sceneDelegate?.updateTimer((gameVarDelegate?.getOpenMouthDrainRate())! * -2.0 * Double(appDelegate.activePowerups.count) / 1000)
@@ -408,9 +385,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, GameManagerDelegate {
             let p1 = mouth[2]
             let p2 = mouth[6]
             distance = hypotf(Float(p1.x) - Float(p2.x), Float(p1.y) - Float(p2.y));
-            
-            last3Dist.append(distance)
-            if last3Dist.count > 3 { last3Dist.removeFirst() }
             
             if distance > dist { return true }
         }
