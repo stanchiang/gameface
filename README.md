@@ -5,7 +5,7 @@
 ## gitignored dependencies
 
 ### opencv
-  1. download version 2.4.13 in precompiled, ready for iOS use [here](http://opencv.org/downloads.html)
+  1. unzip opencv.framework.zip
   2. add it to facialRec/Frameworks/
 
 ### constants.swift
